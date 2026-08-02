@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find me Pracharak</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f7fafd;
+        --card: rgba(255, 255, 255, 0.9);
+        --text: #3d556e;
+        --muted: #7d93aa;
+        --border: #d9e5f1;
+        --primary: #6ba2d6;
+        --primary-2: #91c7e6;
+        --shadow: 0 24px 70px rgba(96, 136, 172, 0.16);
+        --radius-xl: 28px;
+        --radius-md: 16px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 18px;
+        color: var(--text);
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(107, 162, 214, 0.16), transparent 34%),
+          radial-gradient(circle at 90% 12%, rgba(145, 199, 230, 0.14), transparent 24%),
+          linear-gradient(180deg, #fbfdff 0%, #f2f8fd 100%);
+        background-attachment: fixed;
+      }
+
+      .wrap {
+        width: min(1060px, 100%);
+        margin: 0 auto;
+        padding: 12px 24px 60px;
+      }
+
+      .site-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 14px 24px;
+        margin-bottom: 26px;
+      }
+
+      .site-logo {
+        width: auto;
+        height: 52px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--border);
+        transition: color 160ms ease;
+        white-space: nowrap;
+      }
+
+      .back-link:hover {
+        color: var(--primary);
+      }
+
+      .hero {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-size: clamp(1.7rem, 4vw, 3rem);
+        letter-spacing: -0.04em;
+        line-height: 1.05;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.02rem;
+        line-height: 1.55;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .filter-card {
+        padding: 22px;
+        margin-bottom: 24px;
+      }
+
+      .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .field {
+        display: grid;
+        gap: 10px;
+      }
+
+      .field > label {
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-weight: 700;
+      }
+
+      .label-en {
+        display: block;
+        font-size: 1rem;
+        line-height: 1.4;
+      }
+
+      .label-hi {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        font-weight: 600;
+      }
+
+      select,
+      input[type="date"],
+      input[type="text"] {
+        width: 100%;
+        min-height: 54px;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+        color: var(--text);
+        font-family: inherit;
+        font-size: 1rem;
+      }
+
+      .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.5;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .btn {
+        min-height: 54px;
+        padding: 0 26px;
+        border: 0;
+        border-radius: 999px;
+        font-weight: 800;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 1rem;
+      }
+
+      .btn-primary {
+        color: white;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        box-shadow: 0 16px 34px rgba(107, 162, 214, 0.28);
+      }
+
+      .result-wrap {
+        display: none;
+      }
+
+      .result-wrap.open {
+        display: block;
+      }
+
+      .result-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+
+      .result-title {
+        margin: 0;
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 1.15rem;
+      }
+
+      .mock-badge {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(125, 147, 170, 0.14);
+        color: #8fa3b8;
+      }
+
+      .tableWrap {
+        overflow-x: auto;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        background: white;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+      }
+
+      th {
+        text-align: left;
+        padding: 14px 16px;
+        font-weight: 700;
+        border-bottom: 1px solid var(--border);
+        color: var(--text);
+        white-space: nowrap;
+        background: rgba(107, 162, 214, 0.06);
+      }
+
+      td {
+        padding: 13px 16px;
+        border-bottom: 1px solid rgba(217, 229, 241, 0.5);
+        white-space: nowrap;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      td.mono {
+        font-variant-numeric: tabular-nums;
+      }
+
+      @media (max-width: 760px) {
+        .wrap {
+          padding: 12px 14px 30px;
+        }
+
+        .hero {
+          text-align: center;
+          margin-bottom: 22px;
+        }
+
+        .site-head {
+          padding: 12px 16px;
+          margin-bottom: 22px;
+        }
+
+        .site-logo {
+          height: 44px;
+        }
+
+        .hero h1 {
+          font-size: clamp(1.3rem, 5.8vw, 1.7rem);
+          letter-spacing: -0.03em;
+          line-height: 1.2;
+        }
+
+        .filter-card {
+          padding: 18px 14px;
+        }
+
+        .filter-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-head">
+      <img src="/logo/logo.webp" alt="Logo" class="site-logo" />
+      <a class="back-link" href="/">← Home / होम</a>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <h1>Find me Pracharak</h1>
+        <p>
+          Select all the filters to find the Pracharaks and how long they have not visited the
+          place. / सभी फ़िल्टर चुनें और जानें प्रचारक कितने समय से उस स्थान पर नहीं आए हैं।
+        </p>
+      </div>
+
+      <form class="card filter-card" id="filterForm" novalidate>
+        <div class="filter-grid">
+          <div class="field">
+            <label for="branch">
+              <span class="label-en">Branch *</span>
+              <span class="label-hi">शाखा *</span>
+            </label>
+            <select id="branch" name="branch" required>
+              <option value="">Select branch / शाखा चुनें</option>
+            </select>
+            <p class="hint">All branches of Delhi NCR / दिल्ली NCR की सभी शाखाएं</p>
+          </div>
+
+          <div class="field">
+            <label for="bhawan">
+              <span class="label-en">Bhawan *</span>
+              <span class="label-hi">भवन *</span>
+            </label>
+            <select id="bhawan" name="bhawan" required>
+              <option value="">Select bhawan / भवन चुनें</option>
+            </select>
+            <p class="hint">Which bhawan / कौन सा भवन</p>
+          </div>
+
+          <div class="field">
+            <label for="date">
+              <span class="label-en">Date *</span>
+              <span class="label-hi">तारीख *</span>
+            </label>
+            <input id="date" name="date" type="date" required />
+          </div>
+
+          <div class="field">
+            <label for="samagamType">
+              <span class="label-en">Samagam type *</span>
+              <span class="label-hi">समागम प्रकार *</span>
+            </label>
+            <select id="samagamType" name="samagamType" required>
+              <option value="">Select type / प्रकार चुनें</option>
+              <option value="open-samagam">Open Samagam</option>
+              <option value="ems">EMS</option>
+              <option value="bal">Bal</option>
+              <option value="mahila">Mahila</option>
+              <option value="funeral">Funeral</option>
+              <option value="others">Others</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Search / खोजें</button>
+        </div>
+      </form>
+
+      <section class="result-wrap" id="resultWrap">
+        <div class="result-head">
+          <h2 class="result-title" id="resultTitle"></h2>
+          <span class="mock-badge">Sample data / नमूना डेटा</span>
+        </div>
+        <div class="tableWrap">
+          <table id="resultTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pracharak Name</th>
+                <th>Age</th>
+                <th>Bhawan</th>
+                <th>Not visited for</th>
+                <th>Last visit</th>
+              </tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="/zones-data.js"></script>
+    <script>
+      const form = document.getElementById("filterForm");
+      const branchSelect = document.getElementById("branch");
+      const bhawanSelect = document.getElementById("bhawan");
+      const dateInput = document.getElementById("date");
+      const samagamType = document.getElementById("samagamType");
+      const resultWrap = document.getElementById("resultWrap");
+      const resultTitle = document.getElementById("resultTitle");
+      const resultBody = document.getElementById("resultBody");
+
+      const zoneData = window.ZONE_DATA || { specialZones: [] };
+      const delhiZone = (zoneData.specialZones || []).find((z) => String(z.zoneNo) === "12");
+      const branches = delhiZone?.sectors || [];
+
+      function populateSelect(select, list, label) {
+        list.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.sectorNo;
+          option.textContent = `${item.sectorNo} - ${item.sectorName}`;
+          select.appendChild(option);
+        });
+        if (!list.length) {
+          const option = document.createElement("option");
+          option.value = "";
+          option.textContent = label;
+          select.appendChild(option);
+        }
+      }
+
+      populateSelect(branchSelect, branches, "No data yet");
+      populateSelect(bhawanSelect, branches, "No data yet");
+
+      const TYPE_LABELS = {
+        "open-samagam": "Open Samagam",
+        ems: "EMS",
+        bal: "Bal",
+        mahila: "Mahila",
+        funeral: "Funeral",
+        others: "Others",
+      };
+
+      const MOCK_NAMES = [
+        "Sanjay Bhai",
+        "Ramesh Bhai",
+        "Mukesh Bhai",
+        "Rajendra Bhai",
+        "Anil Bhai",
+        "Mahesh Bhai",
+        "Bhupendra Bhai",
+        "Jignesh Bhai",
+        "Kamlesh Bhai",
+        "Pradeep Bhai",
+        "Hitesh Bhai",
+        "Naresh Bhai",
+        "Suresh Bhai",
+        "Deepak Bhai",
+        "Ashok Bhai",
+        "Vinod Bhai",
+        "Kiran Bhai",
+        "Amit Bhai",
+        "Sunil Bhai",
+        "Vijay Bhai",
+      ];
+
+      function hashStr(value) {
+        let h = 0;
+        for (let i = 0; i < value.length; i += 1) {
+          h = (h * 31 + value.charCodeAt(i)) >>> 0;
+        }
+        return h;
+      }
+
+      function formatDate(date) {
+        const dd = String(date.getDate()).padStart(2, "0");
+        const mm = String(date.getMonth() + 1).padStart(2, "0");
+        return `${dd}/${mm}/${date.getFullYear()}`;
+      }
+
+      function durationText(totalMonths) {
+        if (totalMonths >= 12) {
+          const years = Math.floor(totalMonths / 12);
+          const months = totalMonths % 12;
+          return months ? `${years} year${years > 1 ? "s" : ""} ${months} month${months > 1 ? "s" : ""}` : `${years} year${years > 1 ? "s" : ""}`;
+        }
+        return `${totalMonths} month${totalMonths > 1 ? "s" : ""}`;
+      }
+
+      function buildMockRows() {
+        const seed = `${branchSelect.value}|${bhawanSelect.value}|${dateInput.value}|${samagamType.value}`;
+        const h = hashStr(seed);
+        const bhawanName =
+          bhawanSelect.selectedOptions[0]?.textContent?.replace(/^[0-9]+\s*-\s*/, "") || "Bhawan";
+        const count = 4 + (h % 4);
+        const rows = [];
+
+        for (let i = 0; i < count; i += 1) {
+          const name = MOCK_NAMES[(h + i * 7) % MOCK_NAMES.length];
+          const age = 30 + (((h >> 3) + i * 5) % 30);
+          const months = 2 + (((h >> 2) + i * 11) % 58);
+
+          const lastVisit = new Date();
+          lastVisit.setMonth(lastVisit.getMonth() - months);
+          lastVisit.setDate(Math.max(1, lastVisit.getDate() - ((h + i * 13) % 14)));
+
+          rows.push({ name, age, bhawanName, months, lastVisit });
+        }
+
+        return rows;
+      }
+
+      function requiredMessage(field) {
+        const label = field.querySelector("label");
+        const en = label?.querySelector(".label-en")?.textContent?.replace(/\*/g, "").trim() || "This field";
+        const hi = label?.querySelector(".label-hi")?.textContent?.replace(/\*/g, "").trim() || "यह फ़ील्ड";
+        return `Please select ${en} / कृपया ${hi} चुनें।`;
+      }
+
+      function validateField(field) {
+        const control = field.querySelector("select, input");
+        if (!control) return true;
+        control.setCustomValidity("");
+        if (control.disabled) return true;
+        const value = String(control.value || "").trim();
+        if (control.required && !value) {
+          control.setCustomValidity(requiredMessage(field));
+          return false;
+        }
+        return true;
+      }
+
+      function validateAll() {
+        let ok = true;
+        form.querySelectorAll(".field").forEach((field) => {
+          if (!validateField(field)) ok = false;
+        });
+        return ok;
+      }
+
+      form.addEventListener("invalid", (event) => {
+        const field = event.target.closest(".field");
+        if (field) event.target.setCustomValidity(requiredMessage(field));
+      }, true);
+
+      form.addEventListener("input", (event) => {
+        if (event.target) event.target.setCustomValidity("");
+      });
+      form.addEventListener("change", (event) => {
+        if (event.target) event.target.setCustomValidity("");
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!validateAll() || !form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const rows = buildMockRows();
+        resultBody.innerHTML = "";
+
+        rows.forEach((row, index) => {
+          const tr = document.createElement("tr");
+          const cells = [
+            String(index + 1),
+            row.name,
+            String(row.age),
+            row.bhawanName,
+            durationText(row.months),
+            formatDate(row.lastVisit),
+          ];
+          cells.forEach((text, ci) => {
+            const td = document.createElement("td");
+            td.textContent = text;
+            if (ci >= 4) td.className = "mono";
+            tr.appendChild(td);
+          });
+          resultBody.appendChild(tr);
+        });
+
+        resultTitle.textContent = `${TYPE_LABELS[samagamType.value]} · ${rowBhawanLabel()}`;
+        resultWrap.classList.add("open");
+        resultWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      function rowBhawanLabel() {
+        return bhawanSelect.selectedOptions[0]?.textContent?.replace(/^[0-9]+\s*-\s*/, "") || "";
+      }
+    </script>
+  </body>
+</html>

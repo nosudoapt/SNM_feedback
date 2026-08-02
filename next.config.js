@@ -7,6 +7,7 @@ const nextConfig = {
       { source: "/feedback/pracharak-mahatma", destination: "/feedback/pracharak-mahatma.html" },
       { source: "/feedback/branch-incharge", destination: "/feedback/branch-incharge.html" },
       { source: "/gbm-ebm", destination: "/gbm-ebm.html" },
+      { source: "/find-pracharak", destination: "/find-pracharak.html" },
     ];
   },
 };
