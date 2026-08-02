@@ -1,0 +1,1252 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback for Branch Incharge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f7fafd;
+        --card: rgba(255, 255, 255, 0.9);
+        --text: #3d556e;
+        --muted: #7d93aa;
+        --border: #d9e5f1;
+        --primary: #6ba2d6;
+        --primary-2: #91c7e6;
+        --shadow: 0 24px 70px rgba(96, 136, 172, 0.16);
+        --radius-xl: 28px;
+        --radius-md: 16px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 18px;
+        color: var(--text);
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(107, 162, 214, 0.16), transparent 34%),
+          radial-gradient(circle at 90% 12%, rgba(145, 199, 230, 0.14), transparent 24%),
+          linear-gradient(180deg, #fbfdff 0%, #f2f8fd 100%);
+        background-attachment: fixed;
+      }
+
+      .wrap {
+        width: min(1060px, 100%);
+        margin: 0 auto;
+        padding: 12px 24px 60px;
+      }
+
+      .site-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 14px 24px;
+        margin-bottom: 26px;
+      }
+
+      .site-logo {
+        width: auto;
+        height: 52px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--border);
+        transition: color 160ms ease;
+        white-space: nowrap;
+      }
+
+      .back-link:hover {
+        color: var(--primary);
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        letter-spacing: -0.04em;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3.6rem);
+        line-height: 1;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .form-card {
+        padding: 22px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .field {
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+
+      .field > label {
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-weight: 700;
+      }
+
+      .label-en {
+        display: block;
+        font-size: 1.02rem;
+        line-height: 1.45;
+      }
+
+      .label-hi {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.96rem;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      textarea,
+      select,
+      input[type="text"],
+      input[type="tel"],
+      input[type="search"] {
+        width: 100%;
+        min-height: 54px;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+        color: var(--text);
+      }
+
+      textarea {
+        min-height: 128px;
+        resize: vertical;
+      }
+
+      textarea::placeholder,
+      input::placeholder {
+        color: #b47b8f;
+      }
+
+      .read-only {
+        background: #fbfbfc;
+      }
+
+      .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .section-block {
+        display: grid;
+        gap: 22px;
+        margin-top: 22px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .radio-row {
+        display: grid;
+        gap: 12px;
+      }
+
+      .radio-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .radio-card {
+        position: relative;
+      }
+
+      .radio-card input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+
+      .radio-card label {
+        display: block;
+        min-height: 58px;
+        padding: 16px 18px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+        cursor: pointer;
+        line-height: 1.5;
+        transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+      }
+
+      .radio-card input:checked + label {
+        border-color: rgba(107, 162, 214, 0.45);
+        background: rgba(107, 162, 214, 0.08);
+        color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .radio-pair {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .status {
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(107, 162, 214, 0.07);
+        border: 1px solid rgba(107, 162, 214, 0.16);
+        color: #21438b;
+        line-height: 1.5;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .btn {
+        min-height: 54px;
+        padding: 0 22px;
+        border: 0;
+        border-radius: 999px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        color: white;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        box-shadow: 0 16px 34px rgba(107, 162, 214, 0.28);
+      }
+
+      .result {
+        margin-top: 18px;
+        display: none;
+      }
+
+      .result.open {
+        display: block;
+      }
+
+      .result pre {
+        margin: 0;
+        padding: 16px;
+        border-radius: 18px;
+        background: #0f172a;
+        color: #e2e8f0;
+        overflow: auto;
+        font-size: 0.92rem;
+      }
+
+      .zone-search-wrap {
+        position: relative;
+      }
+
+      .zone-suggestions {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 6px);
+        z-index: 12;
+        max-height: 260px;
+        overflow: auto;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: #fff;
+        box-shadow: 0 18px 36px rgba(96, 136, 172, 0.14);
+        display: none;
+      }
+
+      .zone-suggestions.open {
+        display: block;
+      }
+
+      .zone-suggestion {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        text-align: left;
+        padding: 14px 16px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .zone-suggestion:last-child {
+        border-bottom: 0;
+      }
+
+      .zone-suggestion strong {
+        display: block;
+        font-size: 1rem;
+      }
+
+      .zone-suggestion span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .zone-picker {
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .zone-picker.open {
+        display: flex;
+      }
+
+      .zone-picker-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(24, 4, 12, 0.55);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        animation: zoneFadeIn 200ms ease;
+      }
+
+      .zone-picker-sheet {
+        position: relative;
+        width: 100%;
+        max-height: 74vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border-radius: 28px 28px 0 0;
+        background: rgba(255, 249, 250, 0.82);
+        -webkit-backdrop-filter: blur(30px) saturate(180%);
+        backdrop-filter: blur(30px) saturate(180%);
+        border-top: 1px solid rgba(255, 255, 255, 0.65);
+        box-shadow: 0 -18px 60px rgba(40, 4, 16, 0.28);
+        animation: zoneSheetUp 300ms cubic-bezier(0.32, 0.72, 0, 1);
+      }
+
+      .zone-picker-handle {
+        width: 40px;
+        height: 5px;
+        border-radius: 999px;
+        background: rgba(107, 162, 214, 0.3);
+        margin: 12px auto 6px;
+        flex-shrink: 0;
+      }
+
+      .zone-picker-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 18px 10px;
+      }
+
+      .zone-picker-title {
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 1.04rem;
+        color: var(--text);
+      }
+
+      .zone-picker-close {
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(107, 162, 214, 0.12);
+        color: var(--primary);
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+
+      .zone-picker-search {
+        padding: 4px 18px 12px;
+      }
+
+      .zone-picker-search input {
+        width: 100%;
+        min-height: 50px;
+        padding: 12px 16px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.85);
+        color: var(--text);
+        font-size: 1rem;
+      }
+
+      .zone-picker-search input:focus {
+        outline: none;
+        border-color: rgba(107, 162, 214, 0.55);
+        box-shadow: 0 0 0 4px rgba(107, 162, 214, 0.1);
+      }
+
+      .zone-picker-list {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 10px 24px;
+      }
+
+      .zone-picker-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        border: 0;
+        background: transparent;
+        padding: 15px 12px;
+        border-radius: 14px;
+        color: var(--text);
+        cursor: pointer;
+        text-align: left;
+        font-size: 0.98rem;
+      }
+
+      .zone-picker-item:active {
+        background: rgba(107, 162, 214, 0.08);
+      }
+
+      .zone-picker-item strong {
+        min-width: 46px;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(107, 162, 214, 0.1);
+        color: var(--primary);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      .zone-picker-item span {
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .zone-picker-empty {
+        text-align: center;
+        color: var(--muted);
+        padding: 28px 0;
+      }
+
+      @keyframes zoneFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes zoneSheetUp {
+        from {
+          transform: translateY(48px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .wrap {
+          padding: 12px 14px 30px;
+        }
+
+        .hero {
+          text-align: center;
+          margin-bottom: 22px;
+        }
+
+        .site-head {
+          padding: 12px 16px;
+          margin-bottom: 22px;
+        }
+
+        .site-logo {
+          height: 44px;
+        }
+
+        .hero h1 {
+          font-size: clamp(1.3rem, 5.8vw, 1.7rem);
+          letter-spacing: -0.03em;
+          line-height: 1.2;
+        }
+
+        .form-card {
+          padding: 18px 14px;
+        }
+
+        .radio-pair {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-head">
+      <img src="/logo/logo.webp" alt="Logo" class="site-logo" />
+      <a class="back-link" href="/feedback">← Feedback / वापस</a>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <h1>Feedback for Branch Incharge</h1>
+      </div>
+
+      <form class="card form-card" id="feedbackForm" novalidate>
+        <div class="grid">
+          <div class="grid">
+            <div class="field">
+              <label for="name">
+                <span class="label-en">Name *</span>
+                <span class="label-hi">नाम *</span>
+              </label>
+              <input id="name" name="name" type="text" autocomplete="name" required />
+            </div>
+
+            <div class="field">
+              <label for="phone">
+                <span class="label-en">Phone number *</span>
+                <span class="label-hi">फोन नंबर *</span>
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                autocomplete="tel"
+                inputmode="numeric"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                placeholder="10 digit mobile number"
+                required
+              />
+            </div>
+
+            <div class="field zone-search-wrap">
+              <label for="zoneSearch">
+                <span class="label-en">Zone number *</span>
+                <span class="label-hi">ज़ोन नंबर *</span>
+              </label>
+              <input
+                id="zoneSearch"
+                name="zoneSearch"
+                type="search"
+                placeholder="Type zone number or area name"
+                autocomplete="off"
+                required
+              />
+              <p class="hint">Search by zone number, zone name, or both.</p>
+              <div class="zone-suggestions" id="zoneSuggestions" role="listbox" aria-label="Zone suggestions"></div>
+              <div class="field hidden" id="sectorWrap" style="margin-top: 4px">
+                <label for="sectorSelect">
+                  <span class="label-en">Sector *</span>
+                  <span class="label-hi">सेक्टर *</span>
+                </label>
+                <select id="sectorSelect" name="sectorSelect">
+                  <option value="">Select sector / सेक्टर चुनें</option>
+                </select>
+              </div>
+              <div class="status" id="zoneStatus" role="status" aria-live="polite" style="margin-top: 4px">
+                Enter a zone number to automatically load the area and incharge details.
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="zoneName">
+                <span class="label-en">Area name</span>
+                <span class="label-hi">क्षेत्र नाम</span>
+              </label>
+              <input id="zoneName" name="zoneName" type="text" class="read-only" readonly />
+            </div>
+
+            <div class="field">
+              <label for="pracharakName">
+                <span class="label-en">Pracharak Mahatma name *</span>
+                <span class="label-hi">प्रचारक महात्मा का नाम *</span>
+              </label>
+              <input id="pracharakName" name="pracharakName" type="text" placeholder="Name of the Pracharak Mahatma" required />
+            </div>
+          </div>
+
+          <div class="section-block">
+            <div class="field">
+              <label>
+                <span class="label-en">1. Arrival Time of Pracharak Saint *</span>
+                <span class="label-hi">1. प्रचारक संत का आगमन समय *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="arrivalTime" id="arrivalOnTime" value="on-time" required />
+                  <label for="arrivalOnTime">On time - समय पर</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="arrivalTime" id="arrivalLate" value="late" />
+                  <label for="arrivalLate">Late - देर से</label>
+                </div>
+              </div>
+              <div class="field hidden" id="arrivalLateWrap">
+                <label for="arrivalTimeActual">
+                  <span class="label-en">At what time did the Pracharak Saint arrive? *</span>
+                  <span class="label-hi">प्रचारक संत कितने बजे पहुंचे? *</span>
+                </label>
+                <input id="arrivalTimeActual" name="arrivalTimeActual" type="time" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="content">
+                <span class="label-en">2. Content of Pracharak Saint *</span>
+                <span class="label-hi">2. प्रचारक संत की सामग्री (विचार) *</span>
+              </label>
+              <textarea id="content" name="content" placeholder="Share your views on the content / सामग्री पर अपने विचार साझा करें" required></textarea>
+            </div>
+
+            <div class="field">
+              <label>
+                <span class="label-en">3. How was the conduct of Pracharak Saint? *</span>
+                <span class="label-hi">3. प्रचारक संत का आचरण कैसा था? *</span>
+              </label>
+              <div class="radio-grid">
+                <div class="radio-card">
+                  <input type="radio" name="conduct" id="conductExcellent" value="excellent" required />
+                  <label for="conductExcellent">Excellent - उत्कृष्ट</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="conduct" id="conductVeryGood" value="very-good" />
+                  <label for="conductVeryGood">Very Good - बहुत अच्छा</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="conduct" id="conductGood" value="good" />
+                  <label for="conductGood">Good - अच्छा</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="conduct" id="conductAverage" value="average" />
+                  <label for="conductAverage">Average - औसत</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="conduct" id="conductPoor" value="poor" />
+                  <label for="conductPoor">Poor - खराब</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="improvements">
+                <span class="label-en">4. Other than this, is there any scope of improvements needed for the sewa performed by Pracharak Saint?</span>
+                <span class="label-hi">4. इसके अलावा, प्रचारक संत द्वारा की गई सेवा में सुधार की कोई गुंजाइश है?</span>
+              </label>
+              <textarea id="improvements" name="improvements" placeholder="Any suggestions for improvement / सुधार के लिए कोई सुझाव"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Submit feedback</button>
+        </div>
+
+        <div class="result" id="resultPanel" aria-live="polite">
+          <pre id="resultJson"></pre>
+        </div>
+      </form>
+    </main>
+
+    <div class="zone-picker" id="zonePicker" aria-hidden="true">
+      <div class="zone-picker-backdrop" data-picker-close></div>
+      <div class="zone-picker-sheet" role="dialog" aria-label="Select zone">
+        <div class="zone-picker-handle"></div>
+        <div class="zone-picker-header">
+          <div class="zone-picker-title">Select Zone / ज़ोन चुनें</div>
+          <button class="zone-picker-close" type="button" data-picker-close aria-label="Close">✕</button>
+        </div>
+        <div class="zone-picker-search">
+          <input
+            id="zonePickerSearch"
+            type="search"
+            placeholder="Search zone number or area name"
+            autocomplete="off"
+            enterkeyhint="done"
+          />
+        </div>
+        <div class="zone-picker-list" id="zonePickerList"></div>
+      </div>
+    </div>
+
+    <script src="/zones-data.js"></script>
+    <script>
+      const form = document.getElementById("feedbackForm");
+      const zoneSearch = document.getElementById("zoneSearch");
+      const zoneSuggestions = document.getElementById("zoneSuggestions");
+      const zoneName = document.getElementById("zoneName");
+      const sectorWrap = document.getElementById("sectorWrap");
+      const sectorSelect = document.getElementById("sectorSelect");
+      const zoneStatus = document.getElementById("zoneStatus");
+      const arrivalLateWrap = document.getElementById("arrivalLateWrap");
+      const arrivalTimeActual = document.getElementById("arrivalTimeActual");
+      const resultPanel = document.getElementById("resultPanel");
+      const resultJson = document.getElementById("resultJson");
+      const zonePicker = document.getElementById("zonePicker");
+      const zonePickerSearch = document.getElementById("zonePickerSearch");
+      const zonePickerList = document.getElementById("zonePickerList");
+
+      const isMobile = window.matchMedia("(max-width: 760px)").matches;
+
+      const zoneData = window.ZONE_DATA || { generalZones: [], specialZones: [] };
+      const generalZones = zoneData.generalZones || [];
+      const specialZones = zoneData.specialZones || [];
+      const allZones = [
+        ...generalZones.map((zone) => ({
+          ...zone,
+          kind: "general",
+          zoneKey: zoneKey(zone.zoneNo),
+          searchLabel: `${zone.zoneNo} - ${zone.zoneName}`,
+        })),
+        ...specialZones.map((zone) => ({
+          ...zone,
+          kind: "special",
+          zoneKey: zoneKey(zone.zoneNo),
+          searchLabel: `${zone.zoneNo} - ${zone.zoneName}`,
+        })),
+      ];
+
+      let activeZone = null;
+
+      function escapeText(value) {
+        return String(value || "").replace(/\s+/g, " ").trim();
+      }
+
+      function normalize(value) {
+        return escapeText(value)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function zoneKey(value) {
+        return escapeText(value).toUpperCase().replace(/^0+(?=\d)/, "");
+      }
+
+      function clearZoneDetails() {
+        activeZone = null;
+        zoneName.value = "";
+        sectorWrap.classList.add("hidden");
+        sectorSelect.required = false;
+        sectorSelect.disabled = true;
+        sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
+        zoneStatus.textContent = "Enter a zone number to automatically load the area and incharge details.";
+      }
+
+      function validateZoneInput() {
+        if (!zoneSearch.value.trim()) {
+          zoneSearch.setCustomValidity("");
+          return true;
+        }
+        zoneSearch.setCustomValidity(activeZone ? "" : "Please select a valid zone from the list.");
+        return !!activeZone;
+      }
+
+      function syncSectorField(zone) {
+        if (!zone || zone.kind !== "special") {
+          sectorWrap.classList.add("hidden");
+          sectorSelect.required = false;
+          sectorSelect.disabled = true;
+          sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
+          return;
+        }
+
+        sectorWrap.classList.remove("hidden");
+        sectorSelect.disabled = false;
+        sectorSelect.required = true;
+        sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
+        zone.sectors.forEach((sector) => {
+          const option = document.createElement("option");
+          option.value = sector.sectorNo;
+          option.textContent = `${sector.sectorNo} - ${escapeText(sector.sectorName)}`;
+          option.dataset.incharge = sector.sectorInchargeName;
+          sectorSelect.appendChild(option);
+        });
+      }
+
+      function updateZoneDetails(zone) {
+        if (!zone) {
+          clearZoneDetails();
+          return;
+        }
+
+        const isSameZone =
+          activeZone !== null &&
+          activeZone.kind === zone.kind &&
+          zoneKey(activeZone.zoneNo) === zoneKey(zone.zoneNo) &&
+          zoneKey(activeZone.zoneName) === zoneKey(zone.zoneName);
+
+        activeZone = zone;
+        zoneName.value = escapeText(zone.zoneName);
+        if (!isSameZone) syncSectorField(zone);
+
+        if (zone.kind === "special") {
+          zoneStatus.textContent = `Zone ${zone.zoneNo} requires a sector selection. Choose a sector to auto-fill the sector incharge name.`;
+        } else {
+          zoneStatus.textContent = `Loaded ${zone.zoneNo}. Area and zonal incharge details are filled automatically.`;
+        }
+      }
+
+      function getZoneMatches(raw) {
+        const compact = normalize(raw);
+        const key = zoneKey(raw);
+        const digitsOnly = /^[0-9]+$/.test(raw);
+
+        return allZones
+          .filter((zone) => {
+            if (!raw) return false;
+            if (digitsOnly) {
+              return zone.zoneKey === key || zone.zoneNo.startsWith(key) || zone.zoneNo.startsWith(raw);
+            }
+            return (
+              normalize(zone.zoneNo).startsWith(compact) ||
+              normalize(zone.zoneName).includes(compact) ||
+              normalize(zone.searchLabel).includes(compact)
+            );
+          })
+          .slice(0, 8);
+      }
+
+      function findZoneMatch(input) {
+        const raw = escapeText(input);
+        if (!raw) return null;
+        const compact = normalize(raw);
+        const key = zoneKey(raw);
+
+        const direct = allZones.find((zone) => zone.zoneKey === key || normalize(zone.zoneNo) === compact);
+        if (direct) return direct;
+
+        const exactLabel = allZones.find((zone) => normalize(zone.searchLabel) === compact);
+        if (exactLabel) return exactLabel;
+
+        const startsWithNumber = allZones.find((zone) => normalize(zone.searchLabel).startsWith(compact));
+        if (startsWithNumber) return startsWithNumber;
+
+        return allZones.find(
+          (zone) =>
+            normalize(zone.zoneNo).startsWith(compact) ||
+            normalize(zone.zoneName).includes(compact) ||
+            normalize(zone.searchLabel).includes(compact)
+        );
+      }
+
+      function setSuggestionsOpen(open) {
+        zoneSuggestions.classList.toggle("open", open);
+      }
+
+      function showZoneSuggestions(query) {
+        const matches = getZoneMatches(escapeText(query));
+
+        zoneSuggestions.innerHTML = "";
+        if (!matches.length) {
+          setSuggestionsOpen(false);
+          return;
+        }
+
+        matches.forEach((zone) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "zone-suggestion";
+          button.setAttribute("role", "option");
+          button.innerHTML = `
+            <strong>${zone.zoneNo}</strong>
+            <span>${escapeText(zone.zoneName)}</span>
+          `;
+          button.addEventListener("click", () => pickZone(zone));
+          zoneSuggestions.appendChild(button);
+        });
+
+        setSuggestionsOpen(true);
+      }
+
+      function pickZone(zone) {
+        zoneSearch.value = zone.zoneNo;
+        updateZoneDetails(zone);
+        validateZoneInput();
+        closeZonePicker();
+        setSuggestionsOpen(false);
+      }
+
+      function openZonePicker() {
+        zonePicker.classList.add("open");
+        zonePicker.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        zonePickerSearch.value = zoneSearch.value;
+        renderPickerResults(zonePickerSearch.value);
+        zonePickerSearch.focus();
+      }
+
+      function closeZonePicker() {
+        zonePicker.classList.remove("open");
+        zonePicker.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        zonePickerSearch.blur();
+      }
+
+      function renderPickerResults(query) {
+        const raw = escapeText(query);
+        const matches = raw ? getZoneMatches(raw) : allZones.slice(0, 8);
+
+        zonePickerList.innerHTML = "";
+        if (!matches.length) {
+          const empty = document.createElement("p");
+          empty.className = "zone-picker-empty";
+          empty.textContent = "No zones found / कोई ज़ोन नहीं मिला";
+          zonePickerList.appendChild(empty);
+          return;
+        }
+
+        matches.forEach((zone) => {
+          const item = document.createElement("button");
+          item.type = "button";
+          item.className = "zone-picker-item";
+          item.innerHTML = `
+            <strong>${zone.zoneNo}</strong>
+            <span>${escapeText(zone.zoneName)}</span>
+          `;
+          item.addEventListener("click", () => pickZone(zone));
+          zonePickerList.appendChild(item);
+        });
+      }
+
+      function buildPayload() {
+        const payload = {};
+        const data = new FormData(form);
+        for (const [key, value] of data.entries()) {
+          if (payload[key] === undefined) payload[key] = value;
+          else if (Array.isArray(payload[key])) payload[key].push(value);
+          else payload[key] = [payload[key], value];
+        }
+
+        payload.zoneNumber = escapeText(zoneSearch.value);
+        payload.zoneName = escapeText(zoneName.value);
+        payload.zoneType = activeZone ? activeZone.kind : "";
+        payload.zoneNo = activeZone ? activeZone.zoneNo : "";
+        payload.category = "branch-incharge";
+
+        if (activeZone && activeZone.kind === "special") {
+          const selected = sectorSelect.selectedOptions[0];
+          if (selected && selected.value) {
+            payload.sectorNo = selected.value;
+            payload.sectorName = escapeText(selected.textContent).replace(/^[0-9]+\s*-\s*/, "");
+            payload.sectorInchargeName = escapeText(selected.dataset.incharge || "");
+          }
+        } else if (activeZone) {
+          payload.zonalInchargeName = escapeText(activeZone.zonalInchargeName || "");
+        }
+
+        delete payload.zoneSearch;
+        delete payload.sectorSelect;
+        return payload;
+      }
+
+      function requiredMessage(field) {
+        const label = field.querySelector("label");
+        const en = label?.querySelector(".label-en")?.textContent?.replace(/\*/g, "").trim() || "This field";
+        const hi = label?.querySelector(".label-hi")?.textContent?.replace(/\*/g, "").trim() || "यह फ़ील्ड";
+        return `Please fill ${en} / कृपया ${hi} भरें।`;
+      }
+
+      function validateField(field) {
+        const inputs = field.querySelectorAll("input, select, textarea");
+        if (!inputs.length) return true;
+
+        const radios = [...inputs].filter((el) => el.type === "radio");
+        if (radios.length) {
+          if (radios.every((radio) => radio.disabled)) return true;
+          const isRequired = radios.some((radio) => radio.required);
+          if (!isRequired) return true;
+          const checked = radios.some((el) => el.checked);
+          radios.forEach((radio) => radio.setCustomValidity(""));
+          if (!checked) {
+            radios[0].setCustomValidity(requiredMessage(field));
+            return false;
+          }
+          return true;
+        }
+
+        const control = inputs[0];
+        control.setCustomValidity("");
+
+        if (control.disabled) return true;
+
+        const value = String(control.value || "").trim();
+        if (control.required && !value) {
+          control.setCustomValidity(requiredMessage(field));
+          return false;
+        }
+
+        if (control.id === "phone") {
+          const digits = value.replace(/\D/g, "");
+          if (!/^\d{10}$/.test(digits)) {
+            control.setCustomValidity(
+              "Phone number must be exactly 10 digits / फोन नंबर ठीक 10 अंकों का होना चाहिए।"
+            );
+            return false;
+          }
+        }
+
+        if (control.id === "zoneSearch" && !activeZone) {
+          control.setCustomValidity("Please select a valid zone / कृपया सही ज़ोन चुनें।");
+          return false;
+        }
+
+        return true;
+      }
+
+      function validateVisibleForm() {
+        let ok = true;
+        form.querySelectorAll(".field").forEach((field) => {
+          if (field.classList.contains("hidden")) return;
+          if (!validateField(field)) ok = false;
+        });
+        if (!validateZoneInput()) ok = false;
+        return ok;
+      }
+
+      function clearFieldValidity(target) {
+        if (!target) return;
+        if (target.name === "zoneSearch") {
+          target.setCustomValidity("");
+          validateZoneInput();
+          return;
+        }
+        if (target.type === "radio") {
+          form.querySelectorAll(`input[name="${target.name}"]`).forEach((radio) => radio.setCustomValidity(""));
+          return;
+        }
+        target.setCustomValidity("");
+      }
+
+      clearZoneDetails();
+
+      zoneSearch.addEventListener("blur", () => {
+        setTimeout(() => {
+          if (!zoneSuggestions.contains(document.activeElement)) {
+            setSuggestionsOpen(false);
+          }
+        }, 120);
+        validateZoneInput();
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!zoneSuggestions.contains(event.target) && event.target !== zoneSearch) {
+          setSuggestionsOpen(false);
+        }
+      });
+
+      zoneSearch.addEventListener("input", () => {
+        zoneSearch.value = zoneSearch.value.trim();
+        const match = findZoneMatch(zoneSearch.value);
+        updateZoneDetails(match);
+        validateZoneInput();
+        if (!isMobile) {
+          showZoneSuggestions(zoneSearch.value);
+        }
+      });
+
+      zoneSearch.addEventListener("change", () => {
+        zoneSearch.value = zoneSearch.value.trim();
+        const match = findZoneMatch(zoneSearch.value);
+        updateZoneDetails(match);
+        validateZoneInput();
+        if (!isMobile) {
+          showZoneSuggestions(zoneSearch.value);
+        }
+      });
+
+      zoneSearch.addEventListener("focus", () => {
+        if (isMobile) {
+          zoneSearch.blur();
+          openZonePicker();
+          return;
+        }
+        if (zoneSearch.value.trim()) showZoneSuggestions(zoneSearch.value);
+      });
+
+      zonePicker.addEventListener("click", (event) => {
+        if (event.target.closest("[data-picker-close]")) {
+          closeZonePicker();
+        }
+      });
+
+      zonePickerSearch.addEventListener("input", () => {
+        renderPickerResults(zonePickerSearch.value);
+      });
+
+      zonePickerSearch.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeZonePicker();
+      });
+
+      sectorSelect.addEventListener("change", () => {
+        const selected = sectorSelect.selectedOptions[0];
+        if (selected && selected.value) {
+          zoneStatus.textContent = `Loaded zone ${activeZone.zoneNo}, sector ${selected.value}. Sector incharge is locked from the workbook.`;
+        }
+      });
+
+      function syncArrivalLate() {
+        const late = form.querySelector('input[name="arrivalTime"]:checked');
+        const isLate = !!late && late.value === "late";
+        arrivalLateWrap.classList.toggle("hidden", !isLate);
+        arrivalTimeActual.required = isLate;
+        arrivalTimeActual.disabled = !isLate;
+        if (!isLate) arrivalTimeActual.value = "";
+      }
+
+      form.querySelectorAll('input[name="arrivalTime"]').forEach((radio) =>
+        radio.addEventListener("change", syncArrivalLate)
+      );
+      syncArrivalLate();
+
+      form.addEventListener("invalid", (event) => {
+        const control = event.target;
+        const field = control.closest(".field");
+        if (!field) return;
+        if (control.type === "radio") {
+          const radios = form.querySelectorAll(`input[name="${control.name}"]`);
+          radios.forEach((radio) => radio.setCustomValidity(""));
+          radios[0]?.setCustomValidity(requiredMessage(field));
+          return;
+        }
+        if (control.id === "phone") {
+          const digits = String(control.value || "").replace(/\D/g, "");
+          control.setCustomValidity(
+            !digits
+              ? requiredMessage(field)
+              : "Phone number must be exactly 10 digits / फोन नंबर ठीक 10 अंकों का होना चाहिए।"
+          );
+          return;
+        }
+        if (control.id === "zoneSearch") {
+          validateZoneInput();
+          return;
+        }
+        control.setCustomValidity(requiredMessage(field));
+      }, true);
+
+      form.addEventListener("input", (event) => {
+        clearFieldValidity(event.target);
+        if (event.target && event.target.id === "phone") {
+          event.target.value = event.target.value.replace(/\D/g, "").slice(0, 10);
+        }
+      });
+
+      form.addEventListener("change", (event) => {
+        clearFieldValidity(event.target);
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        validateZoneInput();
+        if (!validateVisibleForm() || !form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        const payload = buildPayload();
+        resultPanel.classList.add("open");
+        resultJson.textContent = "Submitting... / जमा हो रहा है...";
+
+        try {
+          const res = await fetch("/api/submissions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            resultJson.textContent = "Thank you! Your feedback has been submitted.\n\nधन्यवाद! आपकी प्रतिक्रिया जमा कर दी गई है।\n\nID: " + data.id;
+          } else {
+            resultJson.textContent = "Error: " + (data.error || "Submission failed") + "\nत्रुटि: जमा करने में विफल।";
+          }
+        } catch {
+          resultJson.textContent = "Network error. Please try again.\nनेटवर्क त्रुख। कृपया पुनः प्रयास करें।";
+        }
+
+        resultPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    </script>
+  </body>
+</html>

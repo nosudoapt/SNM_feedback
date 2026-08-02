@@ -1,0 +1,1990 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pracharak Mahatma Feedback</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f7fafd;
+        --card: rgba(255, 255, 255, 0.9);
+        --card-strong: #ffffff;
+        --text: #3d556e;
+        --muted: #7d93aa;
+        --border: #d9e5f1;
+        --primary: #6ba2d6;
+        --primary-2: #91c7e6;
+        --accent: #79b8c9;
+        --danger: #dc2626;
+        --shadow: 0 24px 70px rgba(96, 136, 172, 0.16);
+        --radius-xl: 28px;
+        --radius-lg: 20px;
+        --radius-md: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 18px;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(107, 162, 214, 0.16), transparent 34%),
+          radial-gradient(circle at 90% 12%, rgba(145, 199, 230, 0.14), transparent 24%),
+          linear-gradient(180deg, #fbfdff 0%, #f2f8fd 100%);
+        min-height: 100vh;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .wrap {
+        width: min(1060px, 100%);
+        margin: 0 auto;
+        padding: 24px 16px 40px;
+      }
+
+      .site-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 14px 24px;
+        margin-bottom: 26px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--border);
+        transition: color 160ms ease;
+        white-space: nowrap;
+      }
+
+      .back-link:hover {
+        color: var(--primary);
+      }
+
+      .site-logo {
+        width: auto;
+        height: 52px;
+        object-fit: contain;
+        opacity: 0.92;
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        width: fit-content;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(107, 162, 214, 0.08);
+        color: var(--primary);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+
+      .eyebrow span {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--primary);
+        box-shadow: 0 0 0 6px rgba(107, 162, 214, 0.12);
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        letter-spacing: -0.04em;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3.6rem);
+        line-height: 1;
+      }
+
+      .lead {
+        margin: 0;
+        max-width: 70ch;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 1.03rem;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(244, 201, 210, 0.92);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .form-card {
+        padding: 22px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .grid.two,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .field {
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+
+      .field > label {
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-weight: 700;
+      }
+
+      .label-en {
+        display: block;
+        font-size: 1.02rem;
+        line-height: 1.45;
+      }
+
+      .label-hi {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.96rem;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      .control,
+      textarea,
+      select,
+      input[type="text"],
+      input[type="tel"],
+      input[type="number"],
+      input[type="search"] {
+        width: 100%;
+        min-height: 54px;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+        color: var(--text);
+      }
+
+      textarea {
+        min-height: 128px;
+        resize: vertical;
+      }
+
+      .control::placeholder,
+      textarea::placeholder,
+      input::placeholder {
+        color: #b47b8f;
+      }
+
+      .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .section-block {
+        display: grid;
+        gap: 22px;
+        margin-top: 22px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .radio-row {
+        display: grid;
+        gap: 12px;
+      }
+
+      .radio-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .radio-card {
+        position: relative;
+      }
+
+      .radio-card input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+
+      .radio-card label {
+        display: block;
+        min-height: 58px;
+        padding: 16px 18px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+        cursor: pointer;
+        line-height: 1.5;
+        transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+      }
+
+      .radio-card input:checked + label {
+        border-color: rgba(107, 162, 214, 0.45);
+        background: rgba(107, 162, 214, 0.08);
+        color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .radio-pair {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .subtle-panel {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(244, 201, 210, 0.92);
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      .inline-stack {
+        display: grid;
+        gap: 10px;
+      }
+
+      .status {
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(107, 162, 214, 0.07);
+        border: 1px solid rgba(107, 162, 214, 0.16);
+        color: #21438b;
+        line-height: 1.5;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .btn {
+        min-height: 54px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 999px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        color: white;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        box-shadow: 0 16px 34px rgba(107, 162, 214, 0.28);
+      }
+
+      .btn-secondary {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid var(--border);
+      }
+
+      .result {
+        margin-top: 18px;
+        display: none;
+      }
+
+      .result.open {
+        display: block;
+      }
+
+      .result pre {
+        margin: 0;
+        padding: 16px;
+        border-radius: 18px;
+        background: #0f172a;
+        color: #e2e8f0;
+        overflow: auto;
+        font-size: 0.92rem;
+      }
+
+      .read-only {
+        background: #fbfbfc;
+      }
+
+      .field-note {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .zone-search-wrap {
+        position: relative;
+      }
+
+      .zone-suggestions {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 6px);
+        z-index: 12;
+        max-height: 260px;
+        overflow: auto;
+        border-radius: 16px;
+        border: 1px solid rgba(244, 201, 210, 0.96);
+        background: #fff;
+        box-shadow: 0 18px 36px rgba(96, 136, 172, 0.14);
+        display: none;
+      }
+
+      .zone-suggestions.open {
+        display: block;
+      }
+
+      .zone-suggestion {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        text-align: left;
+        padding: 14px 16px;
+        color: var(--text);
+        border-bottom: 1px solid rgba(244, 201, 210, 0.6);
+      }
+
+      .zone-suggestion:last-child {
+        border-bottom: 0;
+      }
+
+      .zone-suggestion strong {
+        display: block;
+        font-size: 1rem;
+      }
+
+      .zone-suggestion span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 760px) {
+        .wrap {
+          padding: 34px 14px 30px;
+        }
+
+        .hero {
+          text-align: center;
+          margin-bottom: 22px;
+        }
+
+        .site-head {
+          padding: 12px 16px;
+          margin-bottom: 22px;
+        }
+
+        .site-logo {
+          height: 44px;
+        }
+
+        .hero h1 {
+          font-size: clamp(1.3rem, 5.8vw, 1.7rem);
+          letter-spacing: -0.03em;
+          line-height: 1.2;
+        }
+
+        .form-card {
+          padding: 18px 14px;
+        }
+
+        .grid.two,
+        .grid.three,
+        .radio-pair {
+          grid-template-columns: 1fr;
+        }
+
+        .grid {
+          gap: 14px;
+        }
+
+        .field {
+          gap: 10px;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+      }
+
+      @media (min-width: 761px) {
+        .hero {
+          text-align: center;
+          margin-bottom: 26px;
+        }
+
+        .hero h1 {
+          max-width: 18ch;
+          margin: 0 auto;
+        }
+
+        .form-card {
+          padding: 32px;
+        }
+
+        .grid {
+          gap: 24px;
+        }
+      }
+
+      .zone-picker {
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .zone-picker.open {
+        display: flex;
+      }
+
+      .zone-picker-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(24, 4, 12, 0.55);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        animation: zoneFadeIn 200ms ease;
+      }
+
+      .zone-picker-sheet {
+        position: relative;
+        width: 100%;
+        max-height: 74vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border-radius: 28px 28px 0 0;
+        background: rgba(255, 249, 250, 0.82);
+        -webkit-backdrop-filter: blur(30px) saturate(180%);
+        backdrop-filter: blur(30px) saturate(180%);
+        border-top: 1px solid rgba(255, 255, 255, 0.65);
+        box-shadow: 0 -18px 60px rgba(40, 4, 16, 0.28);
+        animation: zoneSheetUp 300ms cubic-bezier(0.32, 0.72, 0, 1);
+      }
+
+      .zone-picker-handle {
+        width: 40px;
+        height: 5px;
+        border-radius: 999px;
+        background: rgba(107, 162, 214, 0.3);
+        margin: 12px auto 6px;
+        flex-shrink: 0;
+      }
+
+      .zone-picker-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 18px 10px;
+      }
+
+      .zone-picker-title {
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 1.04rem;
+        color: var(--text);
+      }
+
+      .zone-picker-close {
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(107, 162, 214, 0.12);
+        color: var(--primary);
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+
+      .zone-picker-search {
+        padding: 4px 18px 12px;
+      }
+
+      .zone-picker-search input {
+        width: 100%;
+        min-height: 50px;
+        padding: 12px 16px;
+        border: 1px solid rgba(244, 201, 210, 0.9);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.85);
+        color: var(--text);
+        font-size: 1rem;
+      }
+
+      .zone-picker-search input:focus {
+        outline: none;
+        border-color: rgba(107, 162, 214, 0.55);
+        box-shadow: 0 0 0 4px rgba(107, 162, 214, 0.1);
+      }
+
+      .zone-picker-list {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0 10px 24px;
+      }
+
+      .zone-picker-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        border: 0;
+        background: transparent;
+        padding: 15px 12px;
+        border-radius: 14px;
+        color: var(--text);
+        cursor: pointer;
+        text-align: left;
+        font-size: 0.98rem;
+      }
+
+      .zone-picker-item:active {
+        background: rgba(107, 162, 214, 0.08);
+      }
+
+      .zone-picker-item strong {
+        min-width: 46px;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(216, 27, 96, 0.1);
+        color: var(--primary);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      .zone-picker-item span {
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .zone-picker-empty {
+        text-align: center;
+        color: var(--muted);
+        padding: 28px 0;
+      }
+
+      @keyframes zoneFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes zoneSheetUp {
+        from {
+          transform: translateY(48px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-head">
+      <img src="/logo/logo.webp" alt="Logo" class="site-logo" />
+      <a class="back-link" href="/feedback">← Feedback / वापस</a>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <h1>Feedback Form for Pracharak Mahatma</h1>
+      </div>
+
+      <form class="card form-card" id="feedbackForm" novalidate>
+        <div class="grid two">
+          <div class="field">
+            <label for="name">
+              <span class="label-en">Name *</span>
+              <span class="label-hi">नाम *</span>
+            </label>
+            <input id="name" name="name" type="text" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="phone">
+              <span class="label-en">Phone number *</span>
+              <span class="label-hi">फोन नंबर *</span>
+            </label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              inputmode="numeric"
+              pattern="[0-9]{10}"
+              maxlength="10"
+              placeholder="10 digit mobile number"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="grid two" style="margin-top: 16px">
+          <div class="field zone-search-wrap">
+            <label for="zoneSearch">
+              <span class="label-en">Zone number *</span>
+              <span class="label-hi">ज़ोन नंबर *</span>
+            </label>
+            <input
+              id="zoneSearch"
+              name="zoneSearch"
+              type="search"
+              placeholder="Type zone number or area name"
+              autocomplete="off"
+              required
+            />
+            <p class="field-note">Search by zone number, zone name, or both.</p>
+            <div class="zone-suggestions" id="zoneSuggestions" role="listbox" aria-label="Zone suggestions"></div>
+            <div class="field hidden" id="sectorWrap" style="margin-top: 14px">
+              <label for="sectorSelect">
+                <span class="label-en">Sector *</span>
+                <span class="label-hi">सेक्टर *</span>
+              </label>
+              <select id="sectorSelect" name="sectorSelect">
+                <option value="">Select sector / सेक्टर चुनें</option>
+              </select>
+            </div>
+            <div class="status" id="zoneStatus" role="status" aria-live="polite" style="margin-top: 14px">
+              Enter a zone number to automatically load the area and incharge details.
+            </div>
+          </div>
+          <div class="field">
+            <label for="zoneName">
+              <span class="label-en">Area name</span>
+              <span class="label-hi">क्षेत्र नाम</span>
+            </label>
+            <input id="zoneName" name="zoneName" type="text" class="read-only" readonly />
+          </div>
+        </div>
+
+        <div class="grid two" style="margin-top: 16px">
+          <div class="field">
+            <label for="inchargeName" id="inchargeLabel">
+              <span class="label-en">Zonal incharge name</span>
+              <span class="label-hi">ज़ोनल इंचार्ज नाम</span>
+            </label>
+            <input id="inchargeName" name="inchargeName" type="text" class="read-only" readonly />
+          </div>
+          <div class="field">
+            <label for="category">
+              <span class="label-en">Samagam category *</span>
+              <span class="label-hi">समागम श्रेणी *</span>
+            </label>
+            <select id="category" name="category" required>
+              <option value="" selected>Select category / श्रेणी चुनें</option>
+              <option value="mahila">Mahila Samagam / महिला समागम</option>
+              <option value="bal">Bal Samagam / बाल समागम</option>
+              <option value="ems">EMS - English Medium Samagam</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-block hidden" id="mahilaPanel">
+          <div class="field">
+            <label>
+              <span class="label-en">Which age group(s) participated in the Satsang program? *</span>
+              <span class="label-hi">सत्संग कार्यक्रम में किस आयु वर्ग ने भाग लिया? *</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="radio" name="mahilaAge" id="mahilaAge1" value="only-youth" required />
+                <label for="mahilaAge1">Only Youth - केवल युवा</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="mahilaAge" id="mahilaAge2" value="youth-kids" />
+                <label for="mahilaAge2">Youth and Kids - युवा और बच्चे</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="mahilaAge" id="mahilaAge3" value="youth-adults" />
+                <label for="mahilaAge3">Youth and Adults - युवा और वयस्क</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="mahilaAge" id="mahilaAge4" value="mixed" />
+                <label for="mahilaAge4">Mixed (Kids, Youth, and Adults) - मिश्रित (बच्चे, युवा और वयस्क)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Where was the Satsang arranged? *</span>
+                <span class="label-hi">सत्संग कहाँ आयोजित किया गया था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaLocation" id="mahilaIndoor" value="indoor" required />
+                  <label for="mahilaIndoor">Indoor - अंदर</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaLocation" id="mahilaOutdoor" value="outdoor" />
+                  <label for="mahilaOutdoor">Outdoor - बाहर</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="mahilaSaints">
+                <span class="label-en">How many Saints were present? *</span>
+                <span class="label-hi">कितने संत उपस्थित थे? *</span>
+              </label>
+              <input id="mahilaSaints" name="mahilaSaints" type="number" min="0" step="1" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">What was the ratio of Geet, Vichar, Skit, Dance and Kavita in the program? *</span>
+              <span class="label-hi">सत्संग कार्यक्रम में गीत, विचार, स्किट, नृत्य और कविता का अनुपात क्या था? *</span>
+            </label>
+            <p class="field-note">Use 5 for the highest emphasis and 1 for the lowest.</p>
+            <div class="grid two">
+              <div class="field">
+                <label for="mahilaRatioGeet">Geet / गीत</label>
+                <select id="mahilaRatioGeet" name="mahilaRatioGeet" required></select>
+              </div>
+              <div class="field">
+                <label for="mahilaRatioVichar">Vichar / विचार</label>
+                <select id="mahilaRatioVichar" name="mahilaRatioVichar" required></select>
+              </div>
+              <div class="field">
+                <label for="mahilaRatioSkit">Skit / स्किट</label>
+                <select id="mahilaRatioSkit" name="mahilaRatioSkit" required></select>
+              </div>
+              <div class="field">
+                <label for="mahilaRatioDance">Dance / नृत्य</label>
+                <select id="mahilaRatioDance" name="mahilaRatioDance" required></select>
+              </div>
+              <div class="field">
+                <label for="mahilaRatioKavita">Kavita / कविता</label>
+                <select id="mahilaRatioKavita" name="mahilaRatioKavita" required></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Were the speakers able to convey the message effectively as intended? *</span>
+                <span class="label-hi">क्या वक्ता निर्धारित संदेश को प्रभावी रूप से पहुँचाने में सफल रहे? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaSpeaker" id="mahilaSpeakerYes" value="yes" required />
+                  <label for="mahilaSpeakerYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaSpeaker" id="mahilaSpeakerOther" value="other" />
+                  <label for="mahilaSpeakerOther">Other</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="mahilaSpeakerReasonWrap">
+              <label for="mahilaSpeakerReason">
+                <span class="label-en">If other, please share more elaborately ji</span>
+                <span class="label-hi">यदि अन्य है, तो कृपया अधिक विस्तार से बताइए जी</span>
+              </label>
+              <input id="mahilaSpeakerReason" name="mahilaSpeakerReason" type="text" required />
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">How many saints performed the Manch Sanchalan (stage anchoring) sewa? *</span>
+                <span class="label-hi">मंच संचालन सेवा में कितने सेवादार थे? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaAnchoring" id="mahilaAnchor1" value="1" required />
+                  <label for="mahilaAnchor1">1</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaAnchoring" id="mahilaAnchor2" value="2" />
+                  <label for="mahilaAnchor2">2</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="mahilaTime">
+                <span class="label-en">How much time was allotted for your discourse? *</span>
+                <span class="label-hi">आपके विचार (डिस्कोर्स) के लिए आपको कितना समय दिया गया था? *</span>
+              </label>
+              <select id="mahilaTime" name="mahilaTime" required>
+                <option value="">Select / चुनें</option>
+                <option value="30">30 min / 30 मिनट</option>
+                <option value="25">25 min / 25 मिनट</option>
+                <option value="lt25">Less than 25 min / 25 मिनट से कम</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field hidden" id="mahilaActualTimeWrap">
+            <label for="mahilaActualTime">
+              <span class="label-en">If less than 25 minutes, please share actual time (min)</span>
+              <span class="label-hi">यदि 25 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
+            </label>
+            <input id="mahilaActualTime" name="mahilaActualTime" type="text" required />
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Did the Samagam start and conclude at the scheduled time? *</span>
+                <span class="label-hi">क्या समागम निर्धारित समय पर शुरू और समाप्त हुआ था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaSchedule" id="mahilaScheduleYes" value="yes" required />
+                  <label for="mahilaScheduleYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaSchedule" id="mahilaScheduleNo" value="no" />
+                  <label for="mahilaScheduleNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="mahilaScheduleReasonWrap">
+              <label for="mahilaScheduleReason">
+                <span class="label-en">If no, please state the reason</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए</span>
+              </label>
+              <textarea id="mahilaScheduleReason" name="mahilaScheduleReason" required></textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="mahilaFeedback">
+              <span class="label-en">Feedback for Mahila Samagam *</span>
+              <span class="label-hi">महिला समागम के लिए प्रतिक्रिया *</span>
+            </label>
+            <textarea id="mahilaFeedback" name="mahilaFeedback" required></textarea>
+          </div>
+        </div>
+
+        <div class="section-block hidden" id="balPanel">
+          <div class="field">
+            <label>
+              <span class="label-en">Where was the Satsang arranged? *</span>
+              <span class="label-hi">सत्संग कहाँ आयोजित किया गया था? *</span>
+            </label>
+            <div class="radio-pair">
+              <div class="radio-card">
+                <input type="radio" name="balLocation" id="balIndoor" value="indoor" required />
+                <label for="balIndoor">Indoor - अंदर</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="balLocation" id="balOutdoor" value="outdoor" />
+                <label for="balOutdoor">Outdoor - बाहर</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">Which age group(s) participated in the Satsang program? *</span>
+              <span class="label-hi">सत्संग कार्यक्रम में किस आयु वर्ग ने भाग लिया? *</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="radio" name="balAge" id="balAge1" value="only-kids" required />
+                <label for="balAge1">Only Kids - केवल बच्चे</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="balAge" id="balAge2" value="only-youth" />
+                <label for="balAge2">Only Youth - केवल युवा</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="balAge" id="balAge3" value="youth-kids" />
+                <label for="balAge3">Youth and Kids - युवा और बच्चे</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="balAge" id="balAge4" value="mixed" />
+                <label for="balAge4">Mixed (Kids, Youth) - मिश्रित (बच्चे, युवा)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label for="balSaints">
+                <span class="label-en">How many Saints were present? *</span>
+                <span class="label-hi">कितने संत उपस्थित थे? *</span>
+              </label>
+              <input id="balSaints" name="balSaints" type="number" min="0" step="1" required />
+            </div>
+
+            <div class="field">
+              <label>
+                <span class="label-en">How many saints performed the Manch Sanchalan (stage anchoring) sewa? *</span>
+                <span class="label-hi">मंच संचालन सेवा में कितने सेवादार थे? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="balAnchoring" id="balAnchor1" value="1" required />
+                  <label for="balAnchor1">1</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balAnchoring" id="balAnchor2" value="2" />
+                  <label for="balAnchor2">2</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">What was the ratio of Geet, Vichar, Skit, Dance and Kavita in the Satsang program? *</span>
+              <span class="label-hi">सत्संग कार्यक्रम में गीत, विचार, स्किट, नृत्य और कविता का अनुपात क्या था? *</span>
+            </label>
+            <p class="field-note">Use 5 for the highest emphasis and 1 for the lowest.</p>
+            <div class="grid two">
+              <div class="field">
+                <label for="balRatioGeet">Geet / गीत</label>
+                <select id="balRatioGeet" name="balRatioGeet" required></select>
+              </div>
+              <div class="field">
+                <label for="balRatioVichar">Vichar / विचार</label>
+                <select id="balRatioVichar" name="balRatioVichar" required></select>
+              </div>
+              <div class="field">
+                <label for="balRatioSkit">Skit / स्किट</label>
+                <select id="balRatioSkit" name="balRatioSkit" required></select>
+              </div>
+              <div class="field">
+                <label for="balRatioDance">Dance / नृत्य</label>
+                <select id="balRatioDance" name="balRatioDance" required></select>
+              </div>
+              <div class="field">
+                <label for="balRatioKavita">Kavita / कविता</label>
+                <select id="balRatioKavita" name="balRatioKavita" required></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label for="balTime">
+                <span class="label-en">How much time was allotted for your discourse? *</span>
+                <span class="label-hi">आपके विचार (डिस्कोर्स) के लिए आपको कितना समय दिया गया था? *</span>
+              </label>
+              <select id="balTime" name="balTime" required>
+                <option value="">Select / चुनें</option>
+                <option value="30">30 min / 30 मिनट</option>
+                <option value="25">25 min / 25 मिनट</option>
+                <option value="lt25">Less than 25 min / 25 मिनट से कम</option>
+              </select>
+            </div>
+
+            <div class="field hidden" id="balActualTimeWrap">
+              <label for="balActualTime">
+                <span class="label-en">If less than 25 minutes, please share actual time (min)</span>
+                <span class="label-hi">यदि 25 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
+              </label>
+              <input id="balActualTime" name="balActualTime" type="text" required />
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Were the speakers able to convey the message effectively as intended? *</span>
+                <span class="label-hi">क्या वक्ता निर्धारित संदेश को प्रभावी रूप से पहुँचाने में सफल रहे? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="balSpeaker" id="balSpeakerYes" value="yes" required />
+                  <label for="balSpeakerYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balSpeaker" id="balSpeakerOther" value="other" />
+                  <label for="balSpeakerOther">Other</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="balSpeakerReasonWrap">
+              <label for="balSpeakerReason">
+                <span class="label-en">If other, please share more elaborately ji</span>
+                <span class="label-hi">यदि अन्य है, तो कृपया अधिक विस्तार से बताइए जी</span>
+              </label>
+              <input id="balSpeakerReason" name="balSpeakerReason" type="text" required />
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Did the Samagam start and conclude at the scheduled time? *</span>
+                <span class="label-hi">क्या समागम निर्धारित समय पर शुरू और समाप्त हुआ था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="balSchedule" id="balScheduleYes" value="yes" required />
+                  <label for="balScheduleYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balSchedule" id="balScheduleNo" value="no" />
+                  <label for="balScheduleNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="balScheduleReasonWrap">
+              <label for="balScheduleReason">
+                <span class="label-en">If no, please state the reason</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए</span>
+              </label>
+              <textarea id="balScheduleReason" name="balScheduleReason" required></textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="balFeedback">
+              <span class="label-en">Feedback for Bal Satsang *</span>
+              <span class="label-hi">बाल सत्संग के लिए प्रतिक्रिया *</span>
+            </label>
+            <textarea id="balFeedback" name="balFeedback" required></textarea>
+          </div>
+        </div>
+
+        <div class="section-block hidden" id="emsPanel">
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Where was the Satsang arranged? *</span>
+                <span class="label-hi">सत्संग कहाँ आयोजित किया गया था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsLocation" id="emsIndoor" value="indoor" required />
+                  <label for="emsIndoor">Indoor - अंदर</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsLocation" id="emsOutdoor" value="outdoor" />
+                  <label for="emsOutdoor">Outdoor - बाहर</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="emsSaints">
+                <span class="label-en">How many Saints were present? *</span>
+                <span class="label-hi">कितने संत उपस्थित थे? *</span>
+              </label>
+              <input id="emsSaints" name="emsSaints" type="number" min="0" step="1" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">Which age group(s) participated in the Satsang program? *</span>
+              <span class="label-hi">सत्संग कार्यक्रम में किस आयु वर्ग ने भाग लिया? *</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="radio" name="emsAge" id="emsAge1" value="only-youth" required />
+                <label for="emsAge1">Only Youth - केवल युवा</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="emsAge" id="emsAge2" value="youth-kids" />
+                <label for="emsAge2">Youth and Kids - युवा और बच्चे</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="emsAge" id="emsAge3" value="youth-adults" />
+                <label for="emsAge3">Youth and Adults - युवा और वयस्क</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="emsAge" id="emsAge4" value="mixed" />
+                <label for="emsAge4">Mixed (Kids, Youth, and Adults) - मिश्रित (बच्चे, युवा और वयस्क)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="emsLanguage">
+              <span class="label-en">Which language(s) were used during the Satsang program? *</span>
+              <span class="label-hi">सत्संग कार्यक्रम में किस भाषा का उपयोग किया गया? *</span>
+            </label>
+            <div class="radio-pair">
+              <div class="radio-card">
+                <input type="radio" name="emsLanguage" id="emsLang1" value="hindi" required />
+                <label for="emsLang1">Hindi - हिंदी</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="emsLanguage" id="emsLang2" value="english" />
+                <label for="emsLang2">English - अंग्रेज़ी</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="emsLanguage" id="emsLang3" value="mixed" />
+                <label for="emsLang3">Mixed (Hindi and English) - मिश्रित (हिंदी और अंग्रेज़ी)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">What was the ratio of Geet, Vichar, Skit, Dance and Kavita in the program? *</span>
+              <span class="label-hi">सत्संग कार्यक्रम में गीत, विचार, स्किट, नृत्य और कविता का अनुपात क्या था? *</span>
+            </label>
+            <p class="field-note">Use 5 for the highest emphasis and 1 for the lowest.</p>
+            <div class="grid two">
+              <div class="field">
+                <label for="emsRatioGeet">Geet / गीत</label>
+                <select id="emsRatioGeet" name="emsRatioGeet" required></select>
+              </div>
+              <div class="field">
+                <label for="emsRatioVichar">Vichar / विचार</label>
+                <select id="emsRatioVichar" name="emsRatioVichar" required></select>
+              </div>
+              <div class="field">
+                <label for="emsRatioSkit">Skit / स्किट</label>
+                <select id="emsRatioSkit" name="emsRatioSkit" required></select>
+              </div>
+              <div class="field">
+                <label for="emsRatioDance">Dance / नृत्य</label>
+                <select id="emsRatioDance" name="emsRatioDance" required></select>
+              </div>
+              <div class="field">
+                <label for="emsRatioKavita">Kavita / कविता</label>
+                <select id="emsRatioKavita" name="emsRatioKavita" required></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Were the speakers able to convey the message effectively as intended? *</span>
+                <span class="label-hi">क्या वक्ता निर्धारित संदेश को प्रभावी रूप से पहुँचाने में सफल रहे? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsSpeaker" id="emsSpeakerYes" value="yes" required />
+                  <label for="emsSpeakerYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsSpeaker" id="emsSpeakerOther" value="other" />
+                  <label for="emsSpeakerOther">Other</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="emsSpeakerReasonWrap">
+              <label for="emsSpeakerReason">
+                <span class="label-en">If other, please share more elaborately ji</span>
+                <span class="label-hi">यदि अन्य है, तो कृपया अधिक विस्तार से बताइए जी</span>
+              </label>
+              <input id="emsSpeakerReason" name="emsSpeakerReason" type="text" required />
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">How many saints performed the Manch Sanchalan (stage anchoring) sewa? *</span>
+                <span class="label-hi">मंच संचालन सेवा में कितने सेवादार थे? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsAnchoring" id="emsAnchor1" value="1" required />
+                  <label for="emsAnchor1">1</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsAnchoring" id="emsAnchor2" value="2" />
+                  <label for="emsAnchor2">2</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="emsTime">
+                <span class="label-en">How much time was allotted for your discourse? *</span>
+                <span class="label-hi">आपके विचार (डिस्कोर्स) के लिए आपको कितना समय दिया गया था? *</span>
+              </label>
+              <select id="emsTime" name="emsTime" required>
+                <option value="">Select / चुनें</option>
+                <option value="30">30 min / 30 मिनट</option>
+                <option value="25">25 min / 25 मिनट</option>
+                <option value="lt25">Less than 25 min / 25 मिनट से कम</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field hidden" id="emsActualTimeWrap">
+            <label for="emsActualTime">
+              <span class="label-en">If less than 25 minutes, please share actual time (min)</span>
+              <span class="label-hi">यदि 25 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
+            </label>
+            <input id="emsActualTime" name="emsActualTime" type="text" required />
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Did the Samagam start and conclude at the scheduled time? *</span>
+                <span class="label-hi">क्या समागम निर्धारित समय पर शुरू और समाप्त हुआ था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsSchedule" id="emsScheduleYes" value="yes" required />
+                  <label for="emsScheduleYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsSchedule" id="emsScheduleNo" value="no" />
+                  <label for="emsScheduleNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="emsScheduleReasonWrap">
+              <label for="emsScheduleReason">
+                <span class="label-en">If no, please state the reason</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए</span>
+              </label>
+              <textarea id="emsScheduleReason" name="emsScheduleReason" required></textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="emsFeedback">
+              <span class="label-en">Feedback for EMS *</span>
+              <span class="label-hi">EMS के लिए प्रतिक्रिया *</span>
+            </label>
+            <textarea id="emsFeedback" name="emsFeedback" required></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">Submit feedback</button>
+        </div>
+
+        <div class="result" id="resultPanel" aria-live="polite">
+          <pre id="resultJson"></pre>
+        </div>
+      </form>
+    </main>
+
+    <div class="zone-picker" id="zonePicker" aria-hidden="true">
+      <div class="zone-picker-backdrop" data-picker-close></div>
+      <div class="zone-picker-sheet" role="dialog" aria-label="Select zone">
+        <div class="zone-picker-handle"></div>
+        <div class="zone-picker-header">
+          <div class="zone-picker-title">Select Zone / ज़ोन चुनें</div>
+          <button class="zone-picker-close" type="button" data-picker-close aria-label="Close">✕</button>
+        </div>
+        <div class="zone-picker-search">
+          <input
+            id="zonePickerSearch"
+            type="search"
+            placeholder="Search zone number or area name"
+            autocomplete="off"
+            enterkeyhint="done"
+          />
+        </div>
+        <div class="zone-picker-list" id="zonePickerList"></div>
+      </div>
+    </div>
+
+    <script src="/zones-data.js"></script>
+    <script>
+      const form = document.getElementById("feedbackForm");
+      const category = document.getElementById("category");
+      const zoneSearch = document.getElementById("zoneSearch");
+      const zoneSuggestions = document.getElementById("zoneSuggestions");
+      const zoneName = document.getElementById("zoneName");
+      const inchargeName = document.getElementById("inchargeName");
+      const inchargeLabel = document.getElementById("inchargeLabel");
+      const sectorWrap = document.getElementById("sectorWrap");
+      const sectorSelect = document.getElementById("sectorSelect");
+      const zoneStatus = document.getElementById("zoneStatus");
+      const resultPanel = document.getElementById("resultPanel");
+      const resultJson = document.getElementById("resultJson");
+      const zonePicker = document.getElementById("zonePicker");
+      const zonePickerSearch = document.getElementById("zonePickerSearch");
+      const zonePickerList = document.getElementById("zonePickerList");
+
+      const isMobile = window.matchMedia("(max-width: 760px)").matches;
+
+      const panels = {
+        mahila: document.getElementById("mahilaPanel"),
+        bal: document.getElementById("balPanel"),
+        ems: document.getElementById("emsPanel"),
+      };
+
+      const ratioSelectIds = [
+        "mahilaRatioGeet",
+        "mahilaRatioVichar",
+        "mahilaRatioSkit",
+        "mahilaRatioDance",
+        "mahilaRatioKavita",
+        "balRatioGeet",
+        "balRatioVichar",
+        "balRatioSkit",
+        "balRatioDance",
+        "balRatioKavita",
+        "emsRatioGeet",
+        "emsRatioVichar",
+        "emsRatioSkit",
+        "emsRatioDance",
+        "emsRatioKavita",
+      ];
+
+      const zoneData = window.ZONE_DATA || { generalZones: [], specialZones: [] };
+      const generalZones = zoneData.generalZones || [];
+      const specialZones = zoneData.specialZones || [];
+      const allZones = [
+        ...generalZones.map((zone) => ({
+          ...zone,
+          kind: "general",
+          zoneKey: zoneKey(zone.zoneNo),
+          searchLabel: `${zone.zoneNo} - ${zone.zoneName}`,
+        })),
+        ...specialZones.map((zone) => ({
+          ...zone,
+          kind: "special",
+          zoneKey: zoneKey(zone.zoneNo),
+          searchLabel: `${zone.zoneNo} - ${zone.zoneName}`,
+        })),
+      ];
+
+      let activeZone = null;
+
+      function escapeText(value) {
+        return String(value || "").replace(/\s+/g, " ").trim();
+      }
+
+      function normalize(value) {
+        return escapeText(value)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function zoneKey(value) {
+        return escapeText(value).toUpperCase().replace(/^0+(?=\d)/, "");
+      }
+
+      function populateRatioSelects() {
+        ratioSelectIds.forEach((id) => {
+          const select = document.getElementById(id);
+          select.innerHTML = '<option value="">Select / चुनें</option>';
+          for (let i = 5; i >= 1; i -= 1) {
+            const option = document.createElement("option");
+            option.value = String(i);
+            option.textContent = String(i);
+            select.appendChild(option);
+          }
+        });
+      }
+
+      function clearZoneDetails() {
+        activeZone = null;
+        zoneName.value = "";
+        inchargeName.value = "";
+        inchargeLabel.innerHTML = `
+          <span class="label-en">Zonal incharge name</span>
+          <span class="label-hi">ज़ोनल इंचार्ज नाम</span>
+        `;
+        sectorWrap.classList.add("hidden");
+        sectorSelect.required = false;
+        sectorSelect.disabled = true;
+        sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
+        zoneStatus.textContent = "Enter a zone number to automatically load the area and incharge details.";
+      }
+
+      function validateZoneInput() {
+        if (!zoneSearch.value.trim()) {
+          zoneSearch.setCustomValidity("");
+          return true;
+        }
+        zoneSearch.setCustomValidity(activeZone ? "" : "Please select a valid zone from the list.");
+        return !!activeZone;
+      }
+
+      function getFieldLabelParts(field) {
+        const label = field.querySelector("label");
+        const en = label?.querySelector(".label-en")?.textContent?.replace(/\*/g, "").trim() || "This field";
+        const hi = label?.querySelector(".label-hi")?.textContent?.replace(/\*/g, "").trim() || "यह फ़ील्ड";
+        return { en, hi };
+      }
+
+      function requiredMessage(field) {
+        const { en, hi } = getFieldLabelParts(field);
+        return `Please fill ${en} / कृपया ${hi} भरें।`;
+      }
+
+      function validateField(field) {
+        const inputs = field.querySelectorAll("input, select, textarea");
+        if (!inputs.length) return true;
+
+        const radios = [...inputs].filter((el) => el.type === "radio");
+        if (radios.length) {
+          if (radios.every((radio) => radio.disabled)) return true;
+          const isRequired = radios.some((radio) => radio.required);
+          if (!isRequired) return true;
+          const checked = radios.some((el) => el.checked);
+          radios.forEach((radio) => radio.setCustomValidity(""));
+          if (!checked) {
+            radios[0].setCustomValidity(requiredMessage(field));
+            return false;
+          }
+          return true;
+        }
+
+        const control = inputs[0];
+        control.setCustomValidity("");
+
+        if (control.disabled) return true;
+
+        const value = String(control.value || "").trim();
+        if (control.required && !value) {
+          control.setCustomValidity(requiredMessage(field));
+          return false;
+        }
+
+        if (control.id === "phone") {
+          const digits = value.replace(/\D/g, "");
+          if (!/^\d{10}$/.test(digits)) {
+            control.setCustomValidity(
+              "Phone number must be exactly 10 digits / फोन नंबर ठीक 10 अंकों का होना चाहिए।"
+            );
+            return false;
+          }
+        }
+
+        if (control.id === "zoneSearch" && !activeZone) {
+          control.setCustomValidity("Please select a valid zone / कृपया सही ज़ोन चुनें।");
+          return false;
+        }
+
+        return true;
+      }
+
+      function validateVisibleForm() {
+        let ok = true;
+        form.querySelectorAll(".field").forEach((field) => {
+          if (field.classList.contains("hidden")) return;
+          if (!validateField(field)) ok = false;
+        });
+        if (!validateZoneInput()) ok = false;
+        return ok;
+      }
+
+      function clearFieldValidity(target) {
+        if (!target) return;
+        if (target.name === "zoneSearch") {
+          target.setCustomValidity("");
+          validateZoneInput();
+          return;
+        }
+        if (target.type === "radio") {
+          form.querySelectorAll(`input[name="${target.name}"]`).forEach((radio) => radio.setCustomValidity(""));
+          return;
+        }
+        target.setCustomValidity("");
+      }
+
+      function setSuggestionsOpen(open) {
+        zoneSuggestions.classList.toggle("open", open);
+      }
+
+      zoneSearch.addEventListener("blur", () => {
+        setTimeout(() => {
+          if (!zoneSuggestions.contains(document.activeElement)) {
+            setSuggestionsOpen(false);
+          }
+        }, 120);
+        validateZoneInput();
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!zoneSuggestions.contains(event.target) && event.target !== zoneSearch) {
+          setSuggestionsOpen(false);
+        }
+      });
+
+      function getZoneMatches(raw) {
+        const compact = normalize(raw);
+        const key = zoneKey(raw);
+        const digitsOnly = /^[0-9]+$/.test(raw);
+
+        return allZones
+          .filter((zone) => {
+            if (!raw) return false;
+            if (digitsOnly) {
+              return zone.zoneKey === key || zone.zoneNo.startsWith(key) || zone.zoneNo.startsWith(raw);
+            }
+            return (
+              normalize(zone.zoneNo).startsWith(compact) ||
+              normalize(zone.zoneName).includes(compact) ||
+              normalize(zone.searchLabel).includes(compact)
+            );
+          })
+          .slice(0, 8);
+      }
+
+      function showZoneSuggestions(query) {
+        const matches = getZoneMatches(escapeText(query));
+
+        zoneSuggestions.innerHTML = "";
+        if (!matches.length) {
+          setSuggestionsOpen(false);
+          return;
+        }
+
+        matches.forEach((zone) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "zone-suggestion";
+          button.setAttribute("role", "option");
+          button.innerHTML = `
+            <strong>${zone.zoneNo}</strong>
+            <span>${escapeText(zone.zoneName)}</span>
+          `;
+          button.addEventListener("click", () => {
+            pickZone(zone);
+          });
+          zoneSuggestions.appendChild(button);
+        });
+
+        setSuggestionsOpen(true);
+      }
+
+      function pickZone(zone) {
+        zoneSearch.value = zone.zoneNo;
+        updateZoneDetails(zone);
+        validateZoneInput();
+        updateSectorIncharge();
+        closeZonePicker();
+        setSuggestionsOpen(false);
+      }
+
+      function openZonePicker() {
+        zonePicker.classList.add("open");
+        zonePicker.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        zonePickerSearch.value = zoneSearch.value;
+        renderPickerResults(zonePickerSearch.value);
+        zonePickerSearch.focus();
+      }
+
+      function closeZonePicker() {
+        zonePicker.classList.remove("open");
+        zonePicker.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        zonePickerSearch.blur();
+      }
+
+      function renderPickerResults(query) {
+        const raw = escapeText(query);
+        const matches = raw ? getZoneMatches(raw) : allZones.slice(0, 8);
+
+        zonePickerList.innerHTML = "";
+        if (!matches.length) {
+          const empty = document.createElement("p");
+          empty.className = "zone-picker-empty";
+          empty.textContent = "No zones found / कोई ज़ोन नहीं मिला";
+          zonePickerList.appendChild(empty);
+          return;
+        }
+
+        matches.forEach((zone) => {
+          const item = document.createElement("button");
+          item.type = "button";
+          item.className = "zone-picker-item";
+          item.innerHTML = `
+            <strong>${zone.zoneNo}</strong>
+            <span>${escapeText(zone.zoneName)}</span>
+          `;
+          item.addEventListener("click", () => {
+            pickZone(zone);
+          });
+          zonePickerList.appendChild(item);
+        });
+      }
+
+      function findZoneMatch(input) {
+        const raw = escapeText(input);
+        if (!raw) return null;
+        const compact = normalize(raw);
+        const key = zoneKey(raw);
+
+        const direct = allZones.find((zone) => zone.zoneKey === key || normalize(zone.zoneNo) === compact);
+        if (direct) return direct;
+
+        const exactLabel = allZones.find((zone) => normalize(zone.searchLabel) === compact);
+        if (exactLabel) return exactLabel;
+
+        const startsWithNumber = allZones.find((zone) => normalize(zone.searchLabel).startsWith(compact));
+        if (startsWithNumber) return startsWithNumber;
+
+        return allZones.find(
+          (zone) =>
+            normalize(zone.zoneNo).startsWith(compact) ||
+            normalize(zone.zoneName).includes(compact) ||
+            normalize(zone.searchLabel).includes(compact)
+        );
+      }
+
+      function syncSectorField(zone) {
+        if (!zone || zone.kind !== "special") {
+          sectorWrap.classList.add("hidden");
+          sectorSelect.required = false;
+          sectorSelect.disabled = true;
+          sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
+          return;
+        }
+
+        sectorWrap.classList.remove("hidden");
+        sectorSelect.disabled = false;
+        sectorSelect.required = true;
+        sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
+        zone.sectors.forEach((sector) => {
+          const option = document.createElement("option");
+          option.value = sector.sectorNo;
+          option.textContent = `${sector.sectorNo} - ${escapeText(sector.sectorName)}`;
+          option.dataset.incharge = sector.sectorInchargeName;
+          sectorSelect.appendChild(option);
+        });
+      }
+
+      function updateZoneDetails(zone) {
+        if (!zone) {
+          clearZoneDetails();
+          return;
+        }
+
+        const isSameZone =
+          activeZone !== null &&
+          activeZone.kind === zone.kind &&
+          zoneKey(activeZone.zoneNo) === zoneKey(zone.zoneNo) &&
+          zoneKey(activeZone.zoneName) === zoneKey(zone.zoneName);
+
+        activeZone = zone;
+        zoneName.value = escapeText(zone.zoneName);
+        if (!isSameZone) syncSectorField(zone);
+
+        if (zone.kind === "special") {
+          inchargeLabel.innerHTML = `
+            <span class="label-en">Sector incharge name</span>
+            <span class="label-hi">सेक्टर इंचार्ज नाम</span>
+          `;
+          inchargeName.value = "";
+          zoneStatus.textContent = `Zone ${zone.zoneNo} requires a sector selection. Choose a sector to auto-fill the sector incharge name.`;
+        } else {
+          inchargeLabel.innerHTML = `
+            <span class="label-en">Zonal incharge name</span>
+            <span class="label-hi">ज़ोनल इंचार्ज नाम</span>
+          `;
+          inchargeName.value = escapeText(zone.zonalInchargeName);
+          zoneStatus.textContent = `Loaded ${zone.zoneNo}. Area and zonal incharge details are filled automatically.`;
+        }
+      }
+
+      function updateSectorIncharge() {
+        if (!activeZone || activeZone.kind !== "special") return;
+        const selected = sectorSelect.selectedOptions[0];
+        if (!selected || !selected.value) {
+          inchargeName.value = "";
+          zoneStatus.textContent = `Zone ${activeZone.zoneNo} requires a sector selection.`;
+          return;
+        }
+        inchargeName.value = escapeText(selected.dataset.incharge);
+        zoneStatus.textContent = `Loaded zone ${activeZone.zoneNo}, sector ${selected.value}. Sector incharge is locked from the workbook.`;
+      }
+
+      function showPanel(categoryValue) {
+        Object.entries(panels).forEach(([key, panel]) => {
+          const show = key === categoryValue;
+          panel.classList.toggle("hidden", !show);
+          panel.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.disabled = !show;
+          });
+        });
+      }
+
+      function syncConditionals() {
+        const visiblePanel = panels[category.value];
+        if (!visiblePanel) return;
+
+        const setHidden = (wrapId, enabled) => {
+          const wrap = document.getElementById(wrapId);
+          if (!wrap) return;
+          wrap.classList.toggle("hidden", !enabled);
+          wrap.querySelectorAll("input, select, textarea").forEach((field) => {
+            field.disabled = !enabled;
+          });
+        };
+
+        const getChecked = (name) => form.querySelector(`input[name="${name}"]:checked`)?.value || "";
+        const getValue = (id) => document.getElementById(id)?.value || "";
+
+        setHidden("mahilaSpeakerReasonWrap", getChecked("mahilaSpeaker") === "other");
+        setHidden("mahilaScheduleReasonWrap", getChecked("mahilaSchedule") === "no");
+        setHidden("mahilaActualTimeWrap", getValue("mahilaTime") === "lt25");
+
+        setHidden("balSpeakerReasonWrap", getChecked("balSpeaker") === "other");
+        setHidden("balScheduleReasonWrap", getChecked("balSchedule") === "no");
+        setHidden("balActualTimeWrap", getValue("balTime") === "lt25");
+
+        setHidden("emsSpeakerReasonWrap", getChecked("emsSpeaker") === "other");
+        setHidden("emsScheduleReasonWrap", getChecked("emsSchedule") === "no");
+        setHidden("emsActualTimeWrap", getValue("emsTime") === "lt25");
+      }
+
+      function setCategoryState() {
+        const value = category.value;
+        showPanel(value);
+        syncConditionals();
+      }
+
+      function buildPayload() {
+        const payload = {};
+        const data = new FormData(form);
+        for (const [key, value] of data.entries()) {
+          if (payload[key] === undefined) payload[key] = value;
+          else if (Array.isArray(payload[key])) payload[key].push(value);
+          else payload[key] = [payload[key], value];
+        }
+
+        payload.zoneNumber = escapeText(zoneSearch.value);
+        payload.zoneName = escapeText(zoneName.value);
+        payload.zoneType = activeZone ? activeZone.kind : "";
+        payload.zoneNo = activeZone ? activeZone.zoneNo : "";
+
+        if (activeZone && activeZone.kind === "special") {
+          const selected = sectorSelect.selectedOptions[0];
+          if (selected && selected.value) {
+            payload.sectorNo = selected.value;
+            payload.sectorName = escapeText(selected.textContent).replace(/^[0-9]+\s*-\s*/, "");
+            payload.sectorInchargeName = escapeText(selected.dataset.incharge || inchargeName.value);
+          }
+        } else {
+          payload.zonalInchargeName = escapeText(inchargeName.value);
+        }
+
+        delete payload.zoneSearch;
+        delete payload.sectorSelect;
+        delete payload.inchargeName;
+        return payload;
+      }
+
+      populateRatioSelects();
+      clearZoneDetails();
+      setCategoryState();
+
+      zoneSearch.addEventListener("input", () => {
+        zoneSearch.value = zoneSearch.value.trim();
+        const match = findZoneMatch(zoneSearch.value);
+        updateZoneDetails(match);
+        if (activeZone && activeZone.kind === "special") {
+          updateSectorIncharge();
+        }
+        validateZoneInput();
+        if (!isMobile) {
+          showZoneSuggestions(zoneSearch.value);
+        }
+      });
+
+      zoneSearch.addEventListener("change", () => {
+        zoneSearch.value = zoneSearch.value.trim();
+        const match = findZoneMatch(zoneSearch.value);
+        updateZoneDetails(match);
+        if (activeZone && activeZone.kind === "special") {
+          updateSectorIncharge();
+        }
+        validateZoneInput();
+        if (!isMobile) {
+          showZoneSuggestions(zoneSearch.value);
+        }
+      });
+
+      zoneSearch.addEventListener("focus", () => {
+        if (isMobile) {
+          zoneSearch.blur();
+          openZonePicker();
+          return;
+        }
+        if (zoneSearch.value.trim()) showZoneSuggestions(zoneSearch.value);
+      });
+
+      zonePicker.addEventListener("click", (event) => {
+        if (event.target.closest("[data-picker-close]")) {
+          closeZonePicker();
+        }
+      });
+
+      zonePickerSearch.addEventListener("input", () => {
+        renderPickerResults(zonePickerSearch.value);
+      });
+
+      zonePickerSearch.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeZonePicker();
+      });
+
+      sectorSelect.addEventListener("change", updateSectorIncharge);
+      category.addEventListener("change", setCategoryState);
+
+      form.addEventListener("invalid", (event) => {
+        const control = event.target;
+        const field = control.closest(".field");
+        if (!field) return;
+        if (control.type === "radio") {
+          const radios = form.querySelectorAll(`input[name="${control.name}"]`);
+          radios.forEach((radio) => radio.setCustomValidity(""));
+          radios[0]?.setCustomValidity(requiredMessage(field));
+          return;
+        }
+        if (control.id === "phone") {
+          const digits = String(control.value || "").replace(/\D/g, "");
+          control.setCustomValidity(
+            !digits
+              ? requiredMessage(field)
+              : "Phone number must be exactly 10 digits / फोन नंबर ठीक 10 अंकों का होना चाहिए।"
+          );
+          return;
+        }
+        if (control.id === "zoneSearch") {
+          validateZoneInput();
+          return;
+        }
+        control.setCustomValidity(requiredMessage(field));
+      }, true);
+
+      form.addEventListener("input", (event) => {
+        clearFieldValidity(event.target);
+        if (event.target && event.target.id === "phone") {
+          event.target.value = event.target.value.replace(/\D/g, "").slice(0, 10);
+        }
+        syncConditionals();
+      });
+
+      form.addEventListener("change", (event) => {
+        clearFieldValidity(event.target);
+        syncConditionals();
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        syncConditionals();
+        validateZoneInput();
+        if (!validateVisibleForm() || !form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        const payload = buildPayload();
+        resultPanel.classList.add("open");
+        resultJson.textContent = "Submitting... / जमा हो रहा है...";
+
+        try {
+          const res = await fetch("/api/submissions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            resultJson.textContent = "Thank you! Your feedback has been submitted.\n\nधन्यवाद! आपकी प्रतिक्रिया जमा कर दी गई है।\n\nID: " + data.id;
+          } else {
+            resultJson.textContent = "Error: " + (data.error || "Submission failed") + "\nत्रुटि: जमा करने में विफल।";
+          }
+        } catch {
+          resultJson.textContent = "Network error. Please try again.\nनेटवर्क त्रुख। कृपया पुनः प्रयास करें।";
+        }
+
+        resultPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    </script>
+  </body>
+</html>

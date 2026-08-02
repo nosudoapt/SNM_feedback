@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback | PRACHAR VIBHAG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f7fafd;
+        --card: rgba(255, 255, 255, 0.9);
+        --text: #3d556e;
+        --muted: #7d93aa;
+        --border: #d9e5f1;
+        --primary: #6ba2d6;
+        --primary-2: #91c7e6;
+        --accent: #79b8c9;
+        --shadow: 0 24px 70px rgba(96, 136, 172, 0.16);
+        --radius-xl: 28px;
+        --radius-lg: 20px;
+        --radius-md: 16px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 18px;
+        color: var(--text);
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(107, 162, 214, 0.16), transparent 34%),
+          radial-gradient(circle at 90% 12%, rgba(145, 199, 230, 0.14), transparent 24%),
+          linear-gradient(180deg, #fbfdff 0%, #f2f8fd 100%);
+        background-attachment: fixed;
+      }
+
+      .wrap {
+        width: min(1060px, 100%);
+        margin: 0 auto;
+        padding: 26px 16px 60px;
+      }
+
+      .site-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 14px 24px;
+        margin-bottom: 30px;
+      }
+
+      .site-logo {
+        width: auto;
+        height: 52px;
+        object-fit: contain;
+        opacity: 0.95;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--border);
+        transition: color 160ms ease;
+      }
+
+      .back-link:hover {
+        color: var(--primary);
+      }
+
+      .intro {
+        text-align: center;
+        margin-bottom: 36px;
+      }
+
+      .intro h1 {
+        margin: 0;
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-size: clamp(1.6rem, 4vw, 2.5rem);
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+
+      .intro .sub {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .choices {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .choice {
+        border-radius: 26px;
+        padding: 32px 26px;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        text-decoration: none;
+        transition: transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .choice h2 {
+        margin: 0 0 10px;
+        font-family: "Space Grotesk", "Inter", sans-serif;
+        font-size: 1.25rem;
+        letter-spacing: -0.01em;
+        line-height: 1.25;
+      }
+
+      .choice p {
+        margin: 0;
+        font-size: 0.98rem;
+      }
+
+      .choice .open {
+        margin-top: 20px;
+        font-weight: 700;
+        font-size: 0.92rem;
+      }
+
+      .choice .soon {
+        margin-top: 20px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(125, 147, 170, 0.14);
+        color: #8fa3b8;
+      }
+
+      .choice.enabled {
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #ffffff;
+        box-shadow: 0 18px 44px rgba(107, 162, 214, 0.32);
+      }
+
+      .choice.enabled p {
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .choice.enabled:hover {
+        transform: translateY(-3px);
+      }
+
+      .choice.disabled {
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px dashed var(--border);
+        color: var(--muted);
+        cursor: not-allowed;
+      }
+
+      .choice.disabled h2 {
+        color: #a5b6c8;
+      }
+
+      @media (max-width: 640px) {
+        .choices {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        .choice {
+          padding: 24px 18px;
+        }
+
+        .site-logo {
+          height: 44px;
+        }
+
+        .site-head {
+          padding: 12px 16px;
+          margin-bottom: 24px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-head">
+      <img src="/logo/logo.webp" alt="Logo" class="site-logo" />
+      <a class="back-link" href="/">← Home / होम</a>
+    </header>
+
+    <main class="wrap">
+      <section class="intro">
+        <h1>Feedback Submission</h1>
+        <p class="sub">प्रतिक्रिया जमा करें — अपना फीडबैक चुनें</p>
+      </section>
+
+      <section class="choices">
+        <a class="choice enabled" href="/feedback/pracharak-mahatma">
+          <h2>Feedback for Pracharak Mahatma</h2>
+          <p>प्रचारक महात्मा के लिए प्रतिक्रिया</p>
+          <span class="open">Open / खोलें →</span>
+        </a>
+
+        <a class="choice enabled" href="/feedback/branch-incharge">
+          <h2>Feedback for Branch Incharge</h2>
+          <p>ब्रांच इंचार्ज के लिए प्रतिक्रिया</p>
+          <span class="open">Open / खोलें →</span>
+        </a>
+
+        <div class="choice disabled">
+          <h2>Feedback for Recent Tour Experience</h2>
+          <p>हाल के दौरे के अनुभव के लिए प्रतिक्रिया</p>
+          <span class="soon">Coming Soon / जल्द आ रहा है</span>
+        </div>
+
+        <div class="choice disabled">
+          <h2>Feedback for Weekly Duty</h2>
+          <p>साप्ताहिक ड्यूटी के लिए प्रतिक्रिया</p>
+          <span class="soon">Coming Soon / जल्द आ रहा है</span>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
