@@ -577,16 +577,16 @@
           <div class="grid">
             <div class="field">
               <label for="name">
-                <span class="label-en">Name *</span>
-                <span class="label-hi">नाम *</span>
+                <span class="label-en">Your Name *</span>
+                <span class="label-hi">आपका नाम *</span>
               </label>
               <input id="name" name="name" type="text" autocomplete="name" required />
             </div>
 
             <div class="field">
               <label for="phone">
-                <span class="label-en">Phone number *</span>
-                <span class="label-hi">फोन नंबर *</span>
+                <span class="label-en">Your Phone Number *</span>
+                <span class="label-hi">आपका फोन नंबर *</span>
               </label>
               <input
                 id="phone"
@@ -603,8 +603,8 @@
 
             <div class="field zone-search-wrap">
               <label for="zoneSearch">
-                <span class="label-en">Zone number *</span>
-                <span class="label-hi">ज़ोन नंबर *</span>
+                <span class="label-en">Your Zone Number *</span>
+                <span class="label-hi">आपका ज़ोन नंबर *</span>
               </label>
               <input
                 id="zoneSearch"
@@ -618,8 +618,8 @@
               <div class="zone-suggestions" id="zoneSuggestions" role="listbox" aria-label="Zone suggestions"></div>
               <div class="field hidden" id="sectorWrap" style="margin-top: 4px">
                 <label for="sectorSelect">
-                  <span class="label-en">Sector *</span>
-                  <span class="label-hi">सेक्टर *</span>
+                  <span class="label-en">Your Sector *</span>
+                  <span class="label-hi">आपका सेक्टर *</span>
                 </label>
                 <select id="sectorSelect" name="sectorSelect">
                   <option value="">Select sector / सेक्टर चुनें</option>
@@ -639,9 +639,22 @@
             </div>
 
             <div class="field">
+              <label for="samagamType">
+                <span class="label-en">Type of Samagam held at your branch *</span>
+                <span class="label-hi">आपकी शाखा में आयोजित समागम का प्रकार *</span>
+              </label>
+              <select id="samagamType" name="samagamType" required>
+                <option value="">Select type / प्रकार चुनें</option>
+                <option value="ems">EMS</option>
+                <option value="bal">Bal</option>
+                <option value="mahila">Mahila</option>
+              </select>
+            </div>
+
+            <div class="field">
               <label for="pracharakName">
-                <span class="label-en">Pracharak Mahatma name *</span>
-                <span class="label-hi">प्रचारक महात्मा का नाम *</span>
+                <span class="label-en">Pracharak Mahatma Name who visited your sector *</span>
+                <span class="label-hi">आपके सेक्टर में आए प्रचारक महात्मा का नाम *</span>
               </label>
               <input id="pracharakName" name="pracharakName" type="text" placeholder="Name of the Pracharak Mahatma" required />
             </div>
