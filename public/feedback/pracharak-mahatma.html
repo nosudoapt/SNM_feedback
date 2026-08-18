@@ -1042,14 +1042,6 @@
                 </div>
               </div>
             </div>
-
-            <div class="field hidden" id="mahilaScheduleReasonWrap">
-              <label for="mahilaScheduleReason">
-                <span class="label-en">If no, please state the reason</span>
-                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए</span>
-              </label>
-              <textarea id="mahilaScheduleReason" name="mahilaScheduleReason" required></textarea>
-            </div>
           </div>
 
           <div class="field hidden" id="mahilaProgramIssuesWrap">
@@ -1380,14 +1372,6 @@
                   <label for="balScheduleNo">No - नहीं</label>
                 </div>
               </div>
-            </div>
-
-            <div class="field hidden" id="balScheduleReasonWrap">
-              <label for="balScheduleReason">
-                <span class="label-en">If no, please state the reason</span>
-                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए</span>
-              </label>
-              <textarea id="balScheduleReason" name="balScheduleReason" required></textarea>
             </div>
           </div>
 
@@ -1766,14 +1750,6 @@
                   <label for="emsScheduleNo">No - नहीं</label>
                 </div>
               </div>
-            </div>
-
-            <div class="field hidden" id="emsScheduleReasonWrap">
-              <label for="emsScheduleReason">
-                <span class="label-en">If no, please state the reason</span>
-                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए</span>
-              </label>
-              <textarea id="emsScheduleReason" name="emsScheduleReason" required></textarea>
             </div>
           </div>
 
@@ -2317,19 +2293,16 @@
         const getChecked = (name) => form.querySelector(`input[name="${name}"]:checked`)?.value || "";
         const getValue = (id) => document.getElementById(id)?.value || "";
 
-        setHidden("mahilaScheduleReasonWrap", getChecked("mahilaSchedule") === "no");
         setHidden("mahilaProgramIssuesWrap", getChecked("mahilaSchedule") === "no");
         setHidden("mahilaActualTimeWrap", getValue("mahilaTime") === "lt20");
         setHidden("mahilaMessageClarityReasonsWrap", getChecked("mahilaMessageClarity") === "no");
         setHidden("mahilaContentAptReasonsWrap", getChecked("mahilaContentApt") === "no");
 
-        setHidden("balScheduleReasonWrap", getChecked("balSchedule") === "no");
         setHidden("balProgramIssuesWrap", getChecked("balSchedule") === "no");
         setHidden("balActualTimeWrap", getValue("balTime") === "lt20");
         setHidden("balMessageClarityReasonsWrap", getChecked("balMessageClarity") === "no");
         setHidden("balContentAptReasonsWrap", getChecked("balContentApt") === "no");
 
-        setHidden("emsScheduleReasonWrap", getChecked("emsSchedule") === "no");
         setHidden("emsProgramIssuesWrap", getChecked("emsSchedule") === "no");
         setHidden("emsActualTimeWrap", getValue("emsTime") === "lt20");
         setHidden("emsMessageClarityReasonsWrap", getChecked("emsMessageClarity") === "no");

@@ -23,7 +23,6 @@ const PRACHARAK_COLUMNS = [
   { question: "Time allotted for discourse", keys: ["mahilaTime", "balTime", "emsTime"] },
   { question: "Actual time (min)", keys: ["mahilaActualTime", "balActualTime", "emsActualTime"] },
   { question: "Did the Samagam start and conclude on schedule?", keys: ["mahilaSchedule", "balSchedule", "emsSchedule"] },
-  { question: "If no, reason", keys: ["mahilaScheduleReason", "balScheduleReason", "emsScheduleReason"] },
   { question: "Language(s) used", keys: ["emsLanguage"] },
   { question: "Program issues", keys: ["mahilaProgramIssues", "balProgramIssues", "emsProgramIssues"] },
   { question: "Overall rating", keys: ["mahilaOverall", "balOverall", "emsOverall"] },
