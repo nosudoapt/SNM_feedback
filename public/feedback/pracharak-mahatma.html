@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
     <title>Pracharak Mahatma Feedback</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -668,7 +669,6 @@
   <body>
     <header class="site-head">
       <img src="/logo/logo.webp" alt="Logo" class="site-logo" />
-      <a class="back-link" href="/feedback">← Feedback / वापस</a>
     </header>
 
     <main class="wrap">
@@ -766,6 +766,82 @@
         </div>
 
         <div class="section-block hidden" id="mahilaPanel">
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was the sound and mic quality good? *</span>
+                <span class="label-hi">क्या ध्वनि और माइक की गुणवत्ता अच्छी थी? *</span>
+              </label>
+              <div class="radio-grid">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaSound" id="mahilaSoundGood" value="good" required />
+                  <label for="mahilaSoundGood">Good - अच्छी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaSound" id="mahilaSoundAvg" value="average" />
+                  <label for="mahilaSoundAvg">Average - औसत</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaSound" id="mahilaSoundPoor" value="poor" />
+                  <label for="mahilaSoundPoor">Poor - खराब</label>
+                </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was any scripture used by the speakers? *</span>
+                <span class="label-hi">क्या वक्ताओं ने कोई शास्त्र/ग्रंथ का उपयोग किया? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaScripture" id="mahilaScriptureYes" value="yes" required />
+                  <label for="mahilaScriptureYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaScripture" id="mahilaScriptureNo" value="no" />
+                  <label for="mahilaScriptureNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                <span class="label-en">Was the concept/topic of the discourse clear? *</span>
+                <span class="label-hi">क्या विचार का विषय/कॉन्सेप्ट स्पष्ट था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaConcept" id="mahilaConceptYes" value="yes" required />
+                  <label for="mahilaConceptYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaConcept" id="mahilaConceptNo" value="no" />
+                  <label for="mahilaConceptNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">Which age group(s) participated in the Satsang program? *</span>
+              <span class="label-hi">सत्संग कार्यक्रम में किस आयु वर्ग ने भाग लिया? *</span>
+            </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaBanner" id="mahilaBannerYes" value="yes" required />
+                  <label for="mahilaBannerYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaBanner" id="mahilaBannerNo" value="no" />
+                  <label for="mahilaBannerNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="field">
             <label>
               <span class="label-en">Which age group(s) participated in the Satsang program? *</span>
@@ -773,20 +849,20 @@
             </label>
             <div class="radio-grid">
               <div class="radio-card">
-                <input type="radio" name="mahilaAge" id="mahilaAge1" value="only-youth" required />
-                <label for="mahilaAge1">Only Youth - केवल युवा</label>
+                <input type="radio" name="mahilaAge" id="mahilaAge1" value="baachiyaan" required />
+                <label for="mahilaAge1">बच्चियाँ / Baachiyaan (Girls)</label>
               </div>
               <div class="radio-card">
-                <input type="radio" name="mahilaAge" id="mahilaAge2" value="youth-kids" />
-                <label for="mahilaAge2">Youth and Kids - युवा और बच्चे</label>
+                <input type="radio" name="mahilaAge" id="mahilaAge2" value="yuva-behne" />
+                <label for="mahilaAge2">युवा बहनें / Yuva Behne (Youth)</label>
               </div>
               <div class="radio-card">
-                <input type="radio" name="mahilaAge" id="mahilaAge3" value="youth-adults" />
-                <label for="mahilaAge3">Youth and Adults - युवा और वयस्क</label>
+                <input type="radio" name="mahilaAge" id="mahilaAge3" value="keval-yuva-behne" />
+                <label for="mahilaAge3">केवल युवा बहनें / Keval Yuva Behne (Only Youth)</label>
               </div>
               <div class="radio-card">
-                <input type="radio" name="mahilaAge" id="mahilaAge4" value="mixed" />
-                <label for="mahilaAge4">Mixed (Kids, Youth, and Adults) - मिश्रित (बच्चे, युवा और वयस्क)</label>
+                <input type="radio" name="mahilaAge" id="mahilaAge4" value="matured" />
+                <label for="mahilaAge4">मैच्योर्ड / Matured</label>
               </div>
             </div>
           </div>
@@ -851,27 +927,77 @@
           <div class="grid two">
             <div class="field">
               <label>
-                <span class="label-en">Were the speakers able to convey the message effectively as intended? *</span>
-                <span class="label-hi">क्या वक्ता निर्धारित संदेश को प्रभावी रूप से पहुँचाने में सफल रहे? *</span>
+                <span class="label-en">Were the speakers able to put the divine message clearly? *</span>
+                <span class="label-hi">क्या वक्ता दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
-                  <input type="radio" name="mahilaSpeaker" id="mahilaSpeakerYes" value="yes" required />
-                  <label for="mahilaSpeakerYes">Yes - हाँ</label>
+                  <input type="radio" name="mahilaMessageClarity" id="mahilaMessageClarityYes" value="yes" required />
+                  <label for="mahilaMessageClarityYes">Yes - हाँ</label>
                 </div>
                 <div class="radio-card">
-                  <input type="radio" name="mahilaSpeaker" id="mahilaSpeakerOther" value="other" />
-                  <label for="mahilaSpeakerOther">Other</label>
+                  <input type="radio" name="mahilaMessageClarity" id="mahilaMessageClarityNo" value="no" />
+                  <label for="mahilaMessageClarityNo">No - नहीं</label>
                 </div>
               </div>
             </div>
 
-            <div class="field hidden" id="mahilaSpeakerReasonWrap">
-              <label for="mahilaSpeakerReason">
-                <span class="label-en">If other, please share more elaborately ji</span>
-                <span class="label-hi">यदि अन्य है, तो कृपया अधिक विस्तार से बताइए जी</span>
+            <div class="field hidden" id="mahilaMessageClarityReasonsWrap">
+              <label>
+                <span class="label-en">If no, why? *</span>
+                <span class="label-hi">यदि नहीं, तो क्यों? *</span>
               </label>
-              <input id="mahilaSpeakerReason" name="mahilaSpeakerReason" type="text" required />
+              <div class="radio-grid">
+                <div class="radio-card">
+                <input type="checkbox" name="mahilaMessageClarityReasons" id="mahilaMessageClarityReasons1" value="lack-of-clarity" required />
+                <label for="mahilaMessageClarityReasons1">Lack of clarity - स्पष्टता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="mahilaMessageClarityReasons" id="mahilaMessageClarityReasons2" value="lack-of-mission-ideology" />
+                  <label for="mahilaMessageClarityReasons2">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was the message/topic clear and appropriate as per the samagam? *</span>
+                <span class="label-hi">क्या वक्ताओं का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaContentApt" id="mahilaContentAptYes" value="yes" required />
+                  <label for="mahilaContentAptYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaContentApt" id="mahilaContentAptNo" value="no" />
+                  <label for="mahilaContentAptNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="mahilaContentAptReasonsWrap">
+              <label>
+                <span class="label-en">If no, please specify the reason *</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए *</span>
+              </label>
+              <div class="radio-grid">
+                <div class="radio-card">
+<input type="checkbox" name="mahilaContentAptReasons" id="mahilaContentAptReason1" value="lack-of-authenticity" required />
+                <label for="mahilaContentAptReason1">Lack of authenticity - प्रामाणिकता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="mahilaContentAptReasons" id="mahilaContentAptReason2" value="lack-of-clarity" />
+                  <label for="mahilaContentAptReason2">Lack of clarity - स्पष्टता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="mahilaContentAptReasons" id="mahilaContentAptReason3" value="lack-of-mission-ideology" />
+                  <label for="mahilaContentAptReason3">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                </div>
+              </div>
+              <textarea id="mahilaContentAptRemarks" name="mahilaContentAptRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
             </div>
           </div>
 
@@ -902,15 +1028,16 @@
                 <option value="">Select / चुनें</option>
                 <option value="30">30 min / 30 मिनट</option>
                 <option value="25">25 min / 25 मिनट</option>
-                <option value="lt25">Less than 25 min / 25 मिनट से कम</option>
+                <option value="20">20 min / 20 मिनट</option>
+                <option value="lt20">Less than 20 min / 20 मिनट से कम</option>
               </select>
             </div>
           </div>
 
           <div class="field hidden" id="mahilaActualTimeWrap">
             <label for="mahilaActualTime">
-              <span class="label-en">If less than 25 minutes, please share actual time (min)</span>
-              <span class="label-hi">यदि 25 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
+              <span class="label-en">If less than 20 minutes, please share actual time (min)</span>
+              <span class="label-hi">यदि 20 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
             </label>
             <input id="mahilaActualTime" name="mahilaActualTime" type="text" required />
           </div>
@@ -943,6 +1070,61 @@
           </div>
 
           <div class="field">
+            <label>
+              <span class="label-en">Program issues (select all that apply)</span>
+              <span class="label-hi">कार्यक्रम से जुड़ी समस्याएं (जो लागू हों चुनें)</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaProgramIssues" id="mahilaIssue1" value="speaker-list-exceeded" />
+                <label for="mahilaIssue1">The speaker list was exceeded (performances were left) - वक्ताओं की सूची से अधिक (कुछ प्रस्तुतियाँ छूट गईं)</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaProgramIssues" id="mahilaIssue2" value="more-than-2-incharges-vote-of-thanks" />
+                <label for="mahilaIssue2">More than 2 branch incharges (Mukhi, Sanyojak) gave vote of thanks - 2 से अधिक शाखा प्रभारियों (मुखी, संयोजक) ने धन्यवाद ज्ञापन दिया</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaProgramIssues" id="mahilaIssue3" value="last-speech-over-10-min" />
+                <label for="mahilaIssue3">Last speech by ZI / Sanyojak took more than 10 minutes - अंतिम भाषण (ZI/संयोजक) 10 मिनट से अधिक का था</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaProgramIssues" id="mahilaIssue4" value="program-started-late" />
+                <label for="mahilaIssue4">The program started late - कार्यक्रम देर से शुरू हुआ</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">Overall rating (select all that apply) *</span>
+              <span class="label-hi">समग्र रेटिंग (जो लागू हों चुनें) *</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaOverall" id="mahilaOverall1" value="overall-very-good" required />
+                <label for="mahilaOverall1">Overall very good - समग्र रूप से बहुत अच्छा</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaOverall" id="mahilaOverall2" value="well-organised-coordinated" />
+                <label for="mahilaOverall2">Well organised & coordinated - अच्छी तरह से आयोजित और समन्वित</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaOverall" id="mahilaOverall3" value="good-efforts" />
+                <label for="mahilaOverall3">Good efforts - अच्छे प्रयास</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaOverall" id="mahilaOverall4" value="scope-of-improvement" />
+                <label for="mahilaOverall4">Scope of improvement - सुधार की गुंजाइश</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="mahilaOverall" id="mahilaOverall5" value="no-zeal-in-satsang" />
+                <label for="mahilaOverall5">No zeal in satsang - सत्संग में उत्साह की कमी</label>
+              </div>
+            </div>
+            <textarea id="mahilaOverallRemarks" name="mahilaOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
+          </div>
+
+          <div class="field">
             <label for="mahilaFeedback">
               <span class="label-en">Feedback for Mahila Samagam *</span>
               <span class="label-hi">महिला समागम के लिए प्रतिक्रिया *</span>
@@ -952,6 +1134,82 @@
         </div>
 
         <div class="section-block hidden" id="balPanel">
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was the sound and mic quality good? *</span>
+                <span class="label-hi">क्या ध्वनि और माइक की गुणवत्ता अच्छी थी? *</span>
+              </label>
+              <div class="radio-grid">
+                <div class="radio-card">
+                  <input type="radio" name="balSound" id="balSoundGood" value="good" required />
+                  <label for="balSoundGood">Good - अच्छी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balSound" id="balSoundAvg" value="average" />
+                  <label for="balSoundAvg">Average - औसत</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balSound" id="balSoundPoor" value="poor" />
+                  <label for="balSoundPoor">Poor - खराब</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                <span class="label-en">Was the particular banner/backdrop installed? *</span>
+                <span class="label-hi">क्या विशेष बैनर/बैकड्रॉप लगाया गया था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="balBanner" id="balBannerYes" value="yes" required />
+                  <label for="balBannerYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balBanner" id="balBannerNo" value="no" />
+                  <label for="balBannerNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was any scripture used by the speakers? *</span>
+                <span class="label-hi">क्या वक्ताओं ने कोई शास्त्र/ग्रंथ का उपयोग किया? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="balScripture" id="balScriptureYes" value="yes" required />
+                  <label for="balScriptureYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balScripture" id="balScriptureNo" value="no" />
+                  <label for="balScriptureNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                <span class="label-en">Was the concept/topic of the discourse clear? *</span>
+                <span class="label-hi">क्या विचार का विषय/कॉन्सेप्ट स्पष्ट था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="balConcept" id="balConceptYes" value="yes" required />
+                  <label for="balConceptYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balConcept" id="balConceptNo" value="no" />
+                  <label for="balConceptNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="field">
             <label>
               <span class="label-en">Where was the Satsang arranged? *</span>
@@ -976,20 +1234,16 @@
             </label>
             <div class="radio-grid">
               <div class="radio-card">
-                <input type="radio" name="balAge" id="balAge1" value="only-kids" required />
-                <label for="balAge1">Only Kids - केवल बच्चे</label>
+                <input type="radio" name="balAge" id="balAge1" value="below-10" required />
+                <label for="balAge1">Below 10 yrs - 10 वर्ष से कम</label>
               </div>
               <div class="radio-card">
-                <input type="radio" name="balAge" id="balAge2" value="only-youth" />
-                <label for="balAge2">Only Youth - केवल युवा</label>
+                <input type="radio" name="balAge" id="balAge2" value="above-10" />
+                <label for="balAge2">Above 10 yrs - 10 वर्ष और उससे अधिक</label>
               </div>
               <div class="radio-card">
-                <input type="radio" name="balAge" id="balAge3" value="youth-kids" />
-                <label for="balAge3">Youth and Kids - युवा और बच्चे</label>
-              </div>
-              <div class="radio-card">
-                <input type="radio" name="balAge" id="balAge4" value="mixed" />
-                <label for="balAge4">Mixed (Kids, Youth) - मिश्रित (बच्चे, युवा)</label>
+                <input type="radio" name="balAge" id="balAge3" value="mix" />
+                <label for="balAge3">Mix (Below & Above 10) - मिश्रित (10 से कम और 10 से अधिक)</label>
               </div>
             </div>
           </div>
@@ -1005,25 +1259,25 @@
 
             <div class="field">
               <label>
-                <span class="label-en">How many saints performed the Manch Sanchalan (stage anchoring) sewa? *</span>
-                <span class="label-hi">मंच संचालन सेवा में कितने सेवादार थे? *</span>
+                <span class="label-en">Was the Manch Sanchalan (stage anchoring) roaming or settled down? *</span>
+                <span class="label-hi">मंच संचालन घूमते हुए (roaming) था या स्थिर (settled)? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
-                  <input type="radio" name="balAnchoring" id="balAnchor1" value="1" required />
-                  <label for="balAnchor1">1</label>
+                  <input type="radio" name="balAnchoring" id="balAnchorRoaming" value="roaming" required />
+                  <label for="balAnchorRoaming">Roaming - घूमते हुए</label>
                 </div>
                 <div class="radio-card">
-                  <input type="radio" name="balAnchoring" id="balAnchor2" value="2" />
-                  <label for="balAnchor2">2</label>
+                  <input type="radio" name="balAnchoring" id="balAnchorSettled" value="settled" />
+                  <label for="balAnchorSettled">Settled down - स्थिर</label>
                 </div>
               </div>
             </div>
-          </div>
+</div>
 
           <div class="field">
             <label>
-              <span class="label-en">What was the ratio of Geet, Vichar, Skit, Dance and Kavita in the Satsang program? *</span>
+              <span class="label-en">What was the ratio of Geet, Vichar, Skit, Dance and Kavita in the program? *</span>
               <span class="label-hi">सत्संग कार्यक्रम में गीत, विचार, स्किट, नृत्य और कविता का अनुपात क्या था? *</span>
             </label>
             <p class="field-note">Use 5 for the highest emphasis and 1 for the lowest.</p>
@@ -1061,14 +1315,15 @@
                 <option value="">Select / चुनें</option>
                 <option value="30">30 min / 30 मिनट</option>
                 <option value="25">25 min / 25 मिनट</option>
-                <option value="lt25">Less than 25 min / 25 मिनट से कम</option>
+                <option value="20">20 min / 20 मिनट</option>
+                <option value="lt20">Less than 20 min / 20 मिनट से कम</option>
               </select>
             </div>
 
             <div class="field hidden" id="balActualTimeWrap">
               <label for="balActualTime">
-                <span class="label-en">If less than 25 minutes, please share actual time (min)</span>
-                <span class="label-hi">यदि 25 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
+                <span class="label-en">If less than 20 minutes, please share actual time (min)</span>
+                <span class="label-hi">यदि 20 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
               </label>
               <input id="balActualTime" name="balActualTime" type="text" required />
             </div>
@@ -1077,27 +1332,77 @@
           <div class="grid two">
             <div class="field">
               <label>
-                <span class="label-en">Were the speakers able to convey the message effectively as intended? *</span>
-                <span class="label-hi">क्या वक्ता निर्धारित संदेश को प्रभावी रूप से पहुँचाने में सफल रहे? *</span>
+                <span class="label-en">Were the speakers able to put the divine message clearly? *</span>
+                <span class="label-hi">क्या वक्ता दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
-                  <input type="radio" name="balSpeaker" id="balSpeakerYes" value="yes" required />
-                  <label for="balSpeakerYes">Yes - हाँ</label>
+                  <input type="radio" name="balMessageClarity" id="balMessageClarityYes" value="yes" required />
+                  <label for="balMessageClarityYes">Yes - हाँ</label>
                 </div>
                 <div class="radio-card">
-                  <input type="radio" name="balSpeaker" id="balSpeakerOther" value="other" />
-                  <label for="balSpeakerOther">Other</label>
+                  <input type="radio" name="balMessageClarity" id="balMessageClarityNo" value="no" />
+                  <label for="balMessageClarityNo">No - नहीं</label>
                 </div>
               </div>
             </div>
 
-            <div class="field hidden" id="balSpeakerReasonWrap">
-              <label for="balSpeakerReason">
-                <span class="label-en">If other, please share more elaborately ji</span>
-                <span class="label-hi">यदि अन्य है, तो कृपया अधिक विस्तार से बताइए जी</span>
+            <div class="field hidden" id="balMessageClarityReasonsWrap">
+              <label>
+                <span class="label-en">If no, why? *</span>
+                <span class="label-hi">यदि नहीं, तो क्यों? *</span>
               </label>
-              <input id="balSpeakerReason" name="balSpeakerReason" type="text" required />
+              <div class="radio-grid">
+                <div class="radio-card">
+<input type="checkbox" name="balMessageClarityReasons" id="balMessageClarityReasons1" value="lack-of-clarity" required />
+                <label for="balMessageClarityReasons1">Lack of clarity - स्पष्टता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="balMessageClarityReasons" id="balMessageClarityReasons2" value="lack-of-mission-ideology" />
+                  <label for="balMessageClarityReasons2">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was the message/topic clear and appropriate as per the samagam? *</span>
+                <span class="label-hi">क्या वक्ताओं का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="balContentApt" id="balContentAptYes" value="yes" required />
+                  <label for="balContentAptYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balContentApt" id="balContentAptNo" value="no" />
+                  <label for="balContentAptNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="balContentAptReasonsWrap">
+              <label>
+                <span class="label-en">If no, please specify the reason *</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए *</span>
+              </label>
+              <div class="radio-grid">
+                <div class="radio-card">
+<input type="checkbox" name="balContentAptReasons" id="balContentAptReason1" value="lack-of-authenticity" required />
+                <label for="balContentAptReason1">Lack of authenticity - प्रामाणिकता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="balContentAptReasons" id="balContentAptReason2" value="lack-of-clarity" />
+                  <label for="balContentAptReason2">Lack of clarity - स्पष्टता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="balContentAptReasons" id="balContentAptReason3" value="lack-of-mission-ideology" />
+                  <label for="balContentAptReason3">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                </div>
+              </div>
+              <textarea id="balContentAptRemarks" name="balContentAptRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
             </div>
           </div>
 
@@ -1129,6 +1434,61 @@
           </div>
 
           <div class="field">
+            <label>
+              <span class="label-en">Program issues (select all that apply)</span>
+              <span class="label-hi">कार्यक्रम से जुड़ी समस्याएं (जो लागू हों चुनें)</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="checkbox" name="balProgramIssues" id="balIssue1" value="speaker-list-exceeded" />
+                <label for="balIssue1">The speaker list was exceeded (performances were left) - वक्ताओं की सूची से अधिक (कुछ प्रस्तुतियाँ छूट गईं)</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="balProgramIssues" id="balIssue2" value="more-than-2-incharges-vote-of-thanks" />
+                <label for="balIssue2">More than 2 branch incharges (Mukhi, Sanyojak) gave vote of thanks - 2 से अधिक शाखा प्रभारियों (मुखी, संयोजक) ने धन्यवाद ज्ञापन दिया</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="balProgramIssues" id="balIssue3" value="last-speech-over-10-min" />
+                <label for="balIssue3">Last speech by ZI / Sanyojak took more than 10 minutes - अंतिम भाषण (ZI/संयोजक) 10 मिनट से अधिक का था</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="balProgramIssues" id="balIssue4" value="program-started-late" />
+                <label for="balIssue4">The program started late - कार्यक्रम देर से शुरू हुआ</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">Overall rating (select all that apply) *</span>
+              <span class="label-hi">समग्र रेटिंग (जो लागू हों चुनें) *</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="checkbox" name="balOverall" id="balOverall1" value="overall-very-good" required />
+                <label for="balOverall1">Overall very good - समग्र रूप से बहुत अच्छा</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="balOverall" id="balOverall2" value="well-organised-coordinated" />
+                <label for="balOverall2">Well organised & coordinated - अच्छी तरह से आयोजित और समन्वित</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="balOverall" id="balOverall3" value="good-efforts" />
+                <label for="balOverall3">Good efforts - अच्छे प्रयास</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="balOverall" id="balOverall4" value="scope-of-improvement" />
+                <label for="balOverall4">Scope of improvement - सुधार की गुंजाइश</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="balOverall" id="balOverall5" value="no-zeal-in-satsang" />
+                <label for="balOverall5">No zeal in satsang - सत्संग में उत्साह की कमी</label>
+              </div>
+            </div>
+            <textarea id="balOverallRemarks" name="balOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
+          </div>
+
+          <div class="field">
             <label for="balFeedback">
               <span class="label-en">Feedback for Bal Satsang *</span>
               <span class="label-hi">बाल सत्संग के लिए प्रतिक्रिया *</span>
@@ -1138,6 +1498,82 @@
         </div>
 
         <div class="section-block hidden" id="emsPanel">
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was the sound and mic quality good? *</span>
+                <span class="label-hi">क्या ध्वनि और माइक की गुणवत्ता अच्छी थी? *</span>
+              </label>
+              <div class="radio-grid">
+                <div class="radio-card">
+                  <input type="radio" name="emsSound" id="emsSoundGood" value="good" required />
+                  <label for="emsSoundGood">Good - अच्छी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsSound" id="emsSoundAvg" value="average" />
+                  <label for="emsSoundAvg">Average - औसत</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsSound" id="emsSoundPoor" value="poor" />
+                  <label for="emsSoundPoor">Poor - खराब</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                <span class="label-en">Was the particular banner/backdrop installed? *</span>
+                <span class="label-hi">क्या विशेष बैनर/बैकड्रॉप लगाया गया था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsBanner" id="emsBannerYes" value="yes" required />
+                  <label for="emsBannerYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsBanner" id="emsBannerNo" value="no" />
+                  <label for="emsBannerNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was any scripture used by the speakers? *</span>
+                <span class="label-hi">क्या वक्ताओं ने कोई शास्त्र/ग्रंथ का उपयोग किया? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsScripture" id="emsScriptureYes" value="yes" required />
+                  <label for="emsScriptureYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsScripture" id="emsScriptureNo" value="no" />
+                  <label for="emsScriptureNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                <span class="label-en">Was the concept/topic of the discourse clear? *</span>
+                <span class="label-hi">क्या विचार का विषय/कॉन्सेप्ट स्पष्ट था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsConcept" id="emsConceptYes" value="yes" required />
+                  <label for="emsConceptYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsConcept" id="emsConceptNo" value="no" />
+                  <label for="emsConceptNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="grid two">
             <div class="field">
               <label>
@@ -1172,20 +1608,16 @@
             </label>
             <div class="radio-grid">
               <div class="radio-card">
-                <input type="radio" name="emsAge" id="emsAge1" value="only-youth" required />
-                <label for="emsAge1">Only Youth - केवल युवा</label>
+                <input type="radio" name="emsAge" id="emsAge1" value="below-10" required />
+                <label for="emsAge1">Below 10 yrs - 10 वर्ष से कम</label>
               </div>
               <div class="radio-card">
-                <input type="radio" name="emsAge" id="emsAge2" value="youth-kids" />
-                <label for="emsAge2">Youth and Kids - युवा और बच्चे</label>
+                <input type="radio" name="emsAge" id="emsAge2" value="above-10" />
+                <label for="emsAge2">Above 10 yrs - 10 वर्ष और उससे अधिक</label>
               </div>
               <div class="radio-card">
-                <input type="radio" name="emsAge" id="emsAge3" value="youth-adults" />
-                <label for="emsAge3">Youth and Adults - युवा और वयस्क</label>
-              </div>
-              <div class="radio-card">
-                <input type="radio" name="emsAge" id="emsAge4" value="mixed" />
-                <label for="emsAge4">Mixed (Kids, Youth, and Adults) - मिश्रित (बच्चे, युवा और वयस्क)</label>
+                <input type="radio" name="emsAge" id="emsAge3" value="mix" />
+                <label for="emsAge3">Mix (Below & Above 10) - मिश्रित (10 से कम और 10 से अधिक)</label>
               </div>
             </div>
           </div>
@@ -1207,6 +1639,32 @@
               <div class="radio-card">
                 <input type="radio" name="emsLanguage" id="emsLang3" value="mixed" />
                 <label for="emsLang3">Mixed (Hindi and English) - मिश्रित (हिंदी और अंग्रेज़ी)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">What was the ratio of the Vichar (discourse) done in English and Hindi? *</span>
+              <span class="label-hi">English और Hindi में विचार किस अनुपात में किए गए? *</span>
+            </label>
+            <p class="field-note">The preferred ratio is 70:30 — 70% English and 30% Hindi. वांछित अनुपात 70:30 है — 70% अंग्रेज़ी और 30% हिंदी।</p>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="radio" name="emsContentRatio" id="emsContentRatio7030" value="70:30-english-hindi" required />
+                <label for="emsContentRatio7030">70:30 (English : Hindi) - Preferred</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="emsContentRatio" id="emsContentRatio6040" value="60:40" />
+                <label for="emsContentRatio6040">60:40</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="emsContentRatio" id="emsContentRatio5050" value="50:50" />
+                <label for="emsContentRatio5050">50:50</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="emsContentRatio" id="emsContentRatio4060" value="40:60" />
+                <label for="emsContentRatio4060">40:60 (More Hindi than English)</label>
               </div>
             </div>
           </div>
@@ -1244,27 +1702,77 @@
           <div class="grid two">
             <div class="field">
               <label>
-                <span class="label-en">Were the speakers able to convey the message effectively as intended? *</span>
-                <span class="label-hi">क्या वक्ता निर्धारित संदेश को प्रभावी रूप से पहुँचाने में सफल रहे? *</span>
+                <span class="label-en">Were the speakers able to put the divine message clearly? *</span>
+                <span class="label-hi">क्या वक्ता दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
-                  <input type="radio" name="emsSpeaker" id="emsSpeakerYes" value="yes" required />
-                  <label for="emsSpeakerYes">Yes - हाँ</label>
+                  <input type="radio" name="emsMessageClarity" id="emsMessageClarityYes" value="yes" required />
+                  <label for="emsMessageClarityYes">Yes - हाँ</label>
                 </div>
                 <div class="radio-card">
-                  <input type="radio" name="emsSpeaker" id="emsSpeakerOther" value="other" />
-                  <label for="emsSpeakerOther">Other</label>
+                  <input type="radio" name="emsMessageClarity" id="emsMessageClarityNo" value="no" />
+                  <label for="emsMessageClarityNo">No - नहीं</label>
                 </div>
               </div>
             </div>
 
-            <div class="field hidden" id="emsSpeakerReasonWrap">
-              <label for="emsSpeakerReason">
-                <span class="label-en">If other, please share more elaborately ji</span>
-                <span class="label-hi">यदि अन्य है, तो कृपया अधिक विस्तार से बताइए जी</span>
+            <div class="field hidden" id="emsMessageClarityReasonsWrap">
+              <label>
+                <span class="label-en">If no, why? *</span>
+                <span class="label-hi">यदि नहीं, तो क्यों? *</span>
               </label>
-              <input id="emsSpeakerReason" name="emsSpeakerReason" type="text" required />
+              <div class="radio-grid">
+                <div class="radio-card">
+<input type="checkbox" name="emsMessageClarityReasons" id="emsMessageClarityReasons1" value="lack-of-clarity" required />
+                <label for="emsMessageClarityReasons1">Lack of clarity - स्पष्टता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="emsMessageClarityReasons" id="emsMessageClarityReasons2" value="lack-of-mission-ideology" />
+                  <label for="emsMessageClarityReasons2">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <div class="field">
+              <label>
+                <span class="label-en">Was the message/topic clear and appropriate as per the samagam? *</span>
+                <span class="label-hi">क्या वक्ताओं का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsContentApt" id="emsContentAptYes" value="yes" required />
+                  <label for="emsContentAptYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsContentApt" id="emsContentAptNo" value="no" />
+                  <label for="emsContentAptNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="emsContentAptReasonsWrap">
+              <label>
+                <span class="label-en">If no, please specify the reason *</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए *</span>
+              </label>
+              <div class="radio-grid">
+                <div class="radio-card">
+<input type="checkbox" name="emsContentAptReasons" id="emsContentAptReason1" value="lack-of-authenticity" required />
+                <label for="emsContentAptReason1">Lack of authenticity - प्रामाणिकता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="emsContentAptReasons" id="emsContentAptReason2" value="lack-of-clarity" />
+                  <label for="emsContentAptReason2">Lack of clarity - स्पष्टता की कमी</label>
+                </div>
+                <div class="radio-card">
+                  <input type="checkbox" name="emsContentAptReasons" id="emsContentAptReason3" value="lack-of-mission-ideology" />
+                  <label for="emsContentAptReason3">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                </div>
+              </div>
+              <textarea id="emsContentAptRemarks" name="emsContentAptRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
             </div>
           </div>
 
@@ -1295,15 +1803,16 @@
                 <option value="">Select / चुनें</option>
                 <option value="30">30 min / 30 मिनट</option>
                 <option value="25">25 min / 25 मिनट</option>
-                <option value="lt25">Less than 25 min / 25 मिनट से कम</option>
+                <option value="20">20 min / 20 मिनट</option>
+                <option value="lt20">Less than 20 min / 20 मिनट से कम</option>
               </select>
             </div>
           </div>
 
           <div class="field hidden" id="emsActualTimeWrap">
             <label for="emsActualTime">
-              <span class="label-en">If less than 25 minutes, please share actual time (min)</span>
-              <span class="label-hi">यदि 25 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
+              <span class="label-en">If less than 20 minutes, please share actual time (min)</span>
+              <span class="label-hi">यदि 20 मिनट से कम चुना है, तो कृपया वास्तविक समय (मिनट) बताइए</span>
             </label>
             <input id="emsActualTime" name="emsActualTime" type="text" required />
           </div>
@@ -1333,6 +1842,61 @@
               </label>
               <textarea id="emsScheduleReason" name="emsScheduleReason" required></textarea>
             </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">Program issues (select all that apply)</span>
+              <span class="label-hi">कार्यक्रम से जुड़ी समस्याएं (जो लागू हों चुनें)</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="checkbox" name="emsProgramIssues" id="emsIssue1" value="speaker-list-exceeded" />
+                <label for="emsIssue1">The speaker list was exceeded (performances were left) - वक्ताओं की सूची से अधिक (कुछ प्रस्तुतियाँ छूट गईं)</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="emsProgramIssues" id="emsIssue2" value="more-than-2-incharges-vote-of-thanks" />
+                <label for="emsIssue2">More than 2 branch incharges (Mukhi, Sanyojak) gave vote of thanks - 2 से अधिक शाखा प्रभारियों (मुखी, संयोजक) ने धन्यवाद ज्ञापन दिया</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="emsProgramIssues" id="emsIssue3" value="last-speech-over-10-min" />
+                <label for="emsIssue3">Last speech by ZI / Sanyojak took more than 10 minutes - अंतिम भाषण (ZI/संयोजक) 10 मिनट से अधिक का था</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="emsProgramIssues" id="emsIssue4" value="program-started-late" />
+                <label for="emsIssue4">The program started late - कार्यक्रम देर से शुरू हुआ</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">Overall rating (select all that apply) *</span>
+              <span class="label-hi">समग्र रेटिंग (जो लागू हों चुनें) *</span>
+            </label>
+            <div class="radio-grid">
+              <div class="radio-card">
+                <input type="checkbox" name="emsOverall" id="emsOverall1" value="overall-very-good" required />
+                <label for="emsOverall1">Overall very good - समग्र रूप से बहुत अच्छा</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="emsOverall" id="emsOverall2" value="well-organised-coordinated" />
+                <label for="emsOverall2">Well organised & coordinated - अच्छी तरह से आयोजित और समन्वित</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="emsOverall" id="emsOverall3" value="good-efforts" />
+                <label for="emsOverall3">Good efforts - अच्छे प्रयास</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="emsOverall" id="emsOverall4" value="scope-of-improvement" />
+                <label for="emsOverall4">Scope of improvement - सुधार की गुंजाइश</label>
+              </div>
+              <div class="radio-card">
+                <input type="checkbox" name="emsOverall" id="emsOverall5" value="no-zeal-in-satsang" />
+                <label for="emsOverall5">No zeal in satsang - सत्संग में उत्साह की कमी</label>
+              </div>
+            </div>
+            <textarea id="emsOverallRemarks" name="emsOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
           </div>
 
           <div class="field">
@@ -1522,6 +2086,20 @@
           return true;
         }
 
+        const checkboxes = [...inputs].filter((el) => el.type === "checkbox");
+        if (checkboxes.length) {
+          if (checkboxes.every((checkbox) => checkbox.disabled)) return true;
+          const isRequired = checkboxes.some((checkbox) => checkbox.required);
+          if (!isRequired) return true;
+          const checked = checkboxes.some((el) => el.checked);
+          checkboxes.forEach((checkbox) => checkbox.setCustomValidity(""));
+          if (!checked) {
+            checkboxes[0].setCustomValidity(requiredMessage(field));
+            return false;
+          }
+          return true;
+        }
+
         const control = inputs[0];
         control.setCustomValidity("");
 
@@ -1570,6 +2148,10 @@
         }
         if (target.type === "radio") {
           form.querySelectorAll(`input[name="${target.name}"]`).forEach((radio) => radio.setCustomValidity(""));
+          return;
+        }
+        if (target.type === "checkbox") {
+          form.querySelectorAll(`input[name="${target.name}"]`).forEach((checkbox) => checkbox.setCustomValidity(""));
           return;
         }
         target.setCustomValidity("");
@@ -1810,17 +2392,20 @@
         const getChecked = (name) => form.querySelector(`input[name="${name}"]:checked`)?.value || "";
         const getValue = (id) => document.getElementById(id)?.value || "";
 
-        setHidden("mahilaSpeakerReasonWrap", getChecked("mahilaSpeaker") === "other");
         setHidden("mahilaScheduleReasonWrap", getChecked("mahilaSchedule") === "no");
-        setHidden("mahilaActualTimeWrap", getValue("mahilaTime") === "lt25");
+        setHidden("mahilaActualTimeWrap", getValue("mahilaTime") === "lt20");
+        setHidden("mahilaMessageClarityReasonsWrap", getChecked("mahilaMessageClarity") === "no");
+        setHidden("mahilaContentAptReasonsWrap", getChecked("mahilaContentApt") === "no");
 
-        setHidden("balSpeakerReasonWrap", getChecked("balSpeaker") === "other");
         setHidden("balScheduleReasonWrap", getChecked("balSchedule") === "no");
-        setHidden("balActualTimeWrap", getValue("balTime") === "lt25");
+        setHidden("balActualTimeWrap", getValue("balTime") === "lt20");
+        setHidden("balMessageClarityReasonsWrap", getChecked("balMessageClarity") === "no");
+        setHidden("balContentAptReasonsWrap", getChecked("balContentApt") === "no");
 
-        setHidden("emsSpeakerReasonWrap", getChecked("emsSpeaker") === "other");
         setHidden("emsScheduleReasonWrap", getChecked("emsSchedule") === "no");
-        setHidden("emsActualTimeWrap", getValue("emsTime") === "lt25");
+        setHidden("emsActualTimeWrap", getValue("emsTime") === "lt20");
+        setHidden("emsMessageClarityReasonsWrap", getChecked("emsMessageClarity") === "no");
+        setHidden("emsContentAptReasonsWrap", getChecked("emsContentApt") === "no");
       }
 
       function setCategoryState() {
@@ -1924,6 +2509,12 @@
           const radios = form.querySelectorAll(`input[name="${control.name}"]`);
           radios.forEach((radio) => radio.setCustomValidity(""));
           radios[0]?.setCustomValidity(requiredMessage(field));
+          return;
+        }
+        if (control.type === "checkbox") {
+          const checkboxes = form.querySelectorAll(`input[name="${control.name}"]`);
+          checkboxes.forEach((checkbox) => checkbox.setCustomValidity(""));
+          checkboxes[0]?.setCustomValidity(requiredMessage(field));
           return;
         }
         if (control.id === "phone") {

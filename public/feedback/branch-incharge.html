@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
     <title>Feedback for Branch Incharge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -564,7 +565,6 @@
   <body>
     <header class="site-head">
       <img src="/logo/logo.webp" alt="Logo" class="site-logo" />
-      <a class="back-link" href="/feedback">← Feedback / वापस</a>
     </header>
 
     <main class="wrap">
@@ -599,6 +599,27 @@
                 placeholder="10 digit mobile number"
                 required
               />
+            </div>
+
+            <div class="field">
+              <label for="samagamType">
+                <span class="label-en">Type of Samagam held at your branch *</span>
+                <span class="label-hi">आपकी शाखा में आयोजित समागम का प्रकार *</span>
+              </label>
+              <select id="samagamType" name="samagamType" required>
+                <option value="">Select type / प्रकार चुनें</option>
+                <option value="ems">EMS</option>
+                <option value="bal">Bal</option>
+                <option value="mahila">Mahila</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="pracharakName">
+                <span class="label-en">Pracharak Mahatma Name who visited your sector *</span>
+                <span class="label-hi">आपके सेक्टर में आए प्रचारक महात्मा का नाम *</span>
+              </label>
+              <input id="pracharakName" name="pracharakName" type="text" placeholder="Name of the Pracharak Mahatma" required />
             </div>
 
             <div class="field zone-search-wrap">
@@ -637,34 +658,13 @@
               </label>
               <input id="zoneName" name="zoneName" type="text" class="read-only" readonly />
             </div>
-
-            <div class="field">
-              <label for="samagamType">
-                <span class="label-en">Type of Samagam held at your branch *</span>
-                <span class="label-hi">आपकी शाखा में आयोजित समागम का प्रकार *</span>
-              </label>
-              <select id="samagamType" name="samagamType" required>
-                <option value="">Select type / प्रकार चुनें</option>
-                <option value="ems">EMS</option>
-                <option value="bal">Bal</option>
-                <option value="mahila">Mahila</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="pracharakName">
-                <span class="label-en">Pracharak Mahatma Name who visited your sector *</span>
-                <span class="label-hi">आपके सेक्टर में आए प्रचारक महात्मा का नाम *</span>
-              </label>
-              <input id="pracharakName" name="pracharakName" type="text" placeholder="Name of the Pracharak Mahatma" required />
-            </div>
           </div>
 
           <div class="section-block">
             <div class="field">
               <label>
-                <span class="label-en">1. Arrival Time of Pracharak Saint *</span>
-                <span class="label-hi">1. प्रचारक संत का आगमन समय *</span>
+                <span class="label-en">Arrival Time of Pracharak Saint *</span>
+                <span class="label-hi">प्रचारक संत का आगमन समय *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -685,18 +685,78 @@
               </div>
             </div>
 
-            <div class="field">
-              <label for="content">
-                <span class="label-en">2. Content of Pracharak Saint *</span>
-                <span class="label-hi">2. प्रचारक संत की सामग्री (विचार) *</span>
+            <div class="field" id="contentGeneric">
+              <label>
+                <span class="label-en">Content of Pracharak Saint *</span>
+                <span class="label-hi">प्रचारक संत की सामग्री (विचार) *</span>
               </label>
-              <textarea id="content" name="content" placeholder="Share your views on the content / सामग्री पर अपने विचार साझा करें" required></textarea>
+              <p class="hint">Select the type of Samagam above to show the relevant content question.</p>
+            </div>
+
+            <div class="field hidden" id="contentEms">
+              <label>
+                <span class="label-en">What was the ratio of the Vichar (discourse) done in English and Hindi? *</span>
+                <span class="label-hi">English और Hindi में विचार किस अनुपात में किए गए? *</span>
+              </label>
+              <p class="hint">The preferred ratio is 70:30 — 70% English and 30% Hindi. वांछित अनुपात 70:30 है — 70% अंग्रेज़ी और 30% हिंदी।</p>
+              <div class="radio-grid">
+                <div class="radio-card">
+                  <input type="radio" name="emsContent" id="emsContent7030" value="70:30-english-hindi" />
+                  <label for="emsContent7030">70:30 (English : Hindi) - Preferred</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsContent" id="emsContent6040" value="60:40" />
+                  <label for="emsContent6040">60:40</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsContent" id="emsContent5050" value="50:50" />
+                  <label for="emsContent5050">50:50</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsContent" id="emsContent4060" value="40:60" />
+                  <label for="emsContent4060">40:60 (More Hindi than English)</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="contentBal">
+              <label>
+                <span class="label-en">Did the Pracharak Saint use child-friendly (Bal) examples and analogies to help the kids understand the discourse? *</span>
+                <span class="label-hi">क्या प्रचारक महात्मा ने बच्चों को समझाने के लिए बाल-अनुकूल उदाहरणों का उपयोग किया? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="balContent" id="balContentYes" value="yes" />
+                  <label for="balContentYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="balContent" id="balContentNo" value="no" />
+                  <label for="balContentNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="field hidden" id="contentMahila">
+              <label>
+                <span class="label-en">Did the Pracharak Saint use the broader aspects of the women's lives and relevant examples/instances of women to help them connect with the discourse? How relevant did it feel? *</span>
+                <span class="label-hi">क्या प्रचारक महात्मा ने महिलाओं के जीवन के व्यापक पहलुओं और प्रासंगिक महिला उदाहरणों का उपयोग किया? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="mahilaContent" id="mahilaContentYes" value="yes" />
+                  <label for="mahilaContentYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="mahilaContent" id="mahilaContentNo" value="no" />
+                  <label for="mahilaContentNo">No - नहीं</label>
+                </div>
+              </div>
             </div>
 
             <div class="field">
               <label>
-                <span class="label-en">3. How was the conduct of Pracharak Saint? *</span>
-                <span class="label-hi">3. प्रचारक संत का आचरण कैसा था? *</span>
+                <span class="label-en">How was the conduct of Pracharak Saint? *</span>
+                <span class="label-hi">प्रचारक संत का आचरण कैसा था? *</span>
               </label>
               <div class="radio-grid">
                 <div class="radio-card">
@@ -724,8 +784,8 @@
 
             <div class="field">
               <label for="improvements">
-                <span class="label-en">4. Other than this, is there any scope of improvements needed for the sewa performed by Pracharak Saint?</span>
-                <span class="label-hi">4. इसके अलावा, प्रचारक संत द्वारा की गई सेवा में सुधार की कोई गुंजाइश है?</span>
+                <span class="label-en">Other than this, is there any scope of improvements needed for the sewa performed by Pracharak Saint?</span>
+                <span class="label-hi">इसके अलावा, प्रचारक संत द्वारा की गई सेवा में सुधार की कोई गुंजाइश है?</span>
               </label>
               <textarea id="improvements" name="improvements" placeholder="Any suggestions for improvement / सुधार के लिए कोई सुझाव"></textarea>
             </div>
@@ -779,6 +839,11 @@
       const zonePicker = document.getElementById("zonePicker");
       const zonePickerSearch = document.getElementById("zonePickerSearch");
       const zonePickerList = document.getElementById("zonePickerList");
+      const samagamType = document.getElementById("samagamType");
+      const contentGeneric = document.getElementById("contentGeneric");
+      const contentEms = document.getElementById("contentEms");
+      const contentBal = document.getElementById("contentBal");
+      const contentMahila = document.getElementById("contentMahila");
 
       const isMobile = window.matchMedia("(max-width: 760px)").matches;
 
@@ -1113,7 +1178,29 @@
         target.setCustomValidity("");
       }
 
+      function syncContentField() {
+        const value = samagamType.value;
+        const panels = { ems: contentEms, bal: contentBal, mahila: contentMahila };
+        const hasSelection = value === "ems" || value === "bal" || value === "mahila";
+
+        contentGeneric.classList.toggle("hidden", hasSelection);
+
+        Object.entries(panels).forEach(([key, panel]) => {
+          const show = key === value;
+          panel.classList.toggle("hidden", !show);
+          panel.querySelectorAll("input[type='radio'], textarea").forEach((field) => {
+            field.required = show;
+            field.disabled = !show;
+            if (field.type === "radio") field.checked = false;
+            else field.value = "";
+          });
+        });
+      }
+
       clearZoneDetails();
+      syncContentField();
+
+      samagamType.addEventListener("change", syncContentField);
 
       zoneSearch.addEventListener("blur", () => {
         setTimeout(() => {

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
     <title>GBM-EBM Pre Registrations</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -169,8 +170,7 @@
       input[type="text"],
       input[type="tel"],
       input[type="email"],
-      input[type="search"],
-      input[type="file"] {
+      input[type="search"] {
         width: 100%;
         min-height: 54px;
         padding: 14px 16px;
@@ -178,11 +178,6 @@
         border-radius: 16px;
         background: #fff;
         color: var(--text);
-      }
-
-      input[type="file"] {
-        padding: 10px 14px;
-        line-height: 1.4;
       }
 
       input::placeholder {
@@ -207,27 +202,6 @@
         border: 1px solid rgba(107, 162, 214, 0.16);
         color: #21438b;
         line-height: 1.5;
-      }
-
-      .photo-row {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        flex-wrap: wrap;
-      }
-
-      .photo-preview {
-        width: 96px;
-        height: 96px;
-        border-radius: 18px;
-        object-fit: cover;
-        border: 1px solid var(--border);
-        background: #fff;
-        display: none;
-      }
-
-      .photo-preview.show {
-        display: block;
       }
 
       .actions {
@@ -538,7 +512,7 @@
   <body>
     <header class="site-head">
       <img src="/logo/logo.webp" alt="Logo" class="site-logo" />
-      <a class="back-link" href="/">← Home / होम</a>
+
     </header>
 
     <main class="wrap">
@@ -642,25 +616,6 @@
             <input id="mukhiName" name="mukhiName" type="text" placeholder="Mukhi Mahatma name" required />
             <p class="hint">Mukhi Mahatma list will be added soon / मुखी महात्मा की सूची जल्द ही जुड़ेगी</p>
           </div>
-
-          <div class="field">
-            <label for="photo">
-              <span class="label-en">Photo *</span>
-              <span class="label-hi">फोटो *</span>
-            </label>
-            <div class="photo-row">
-              <img id="photoPreview" class="photo-preview" alt="Photo preview" />
-              <input
-                id="photo"
-                name="photo"
-                type="file"
-                accept="image/*"
-                capture="environment"
-                required
-              />
-            </div>
-            <p class="hint">No file chosen / कोई फ़ाइल नहीं चुनी गई</p>
-          </div>
         </div>
 
         <div class="actions">
@@ -701,8 +656,6 @@
       const zoneSuggestions = document.getElementById("zoneSuggestions");
       const zoneName = document.getElementById("zoneName");
       const zoneStatus = document.getElementById("zoneStatus");
-      const photoInput = document.getElementById("photo");
-      const photoPreview = document.getElementById("photoPreview");
       const resultPanel = document.getElementById("resultPanel");
       const resultJson = document.getElementById("resultJson");
       const zonePicker = document.getElementById("zonePicker");
@@ -956,11 +909,6 @@
           }
         }
 
-        if (control.id === "photo" && !control.files.length) {
-          control.setCustomValidity(requiredMessage(field));
-          return false;
-        }
-
         if (control.id === "zoneSearch" && !activeZone) {
           control.setCustomValidity("Please select a valid zone / कृपया सही ज़ोन चुनें।");
           return false;
@@ -1049,26 +997,10 @@
         if (event.key === "Escape") closeZonePicker();
       });
 
-      photoInput.addEventListener("change", () => {
-        const file = photoInput.files[0];
-        if (!file) {
-          photoPreview.classList.remove("show");
-          return;
-        }
-        if (file.type.startsWith("image/")) {
-          photoPreview.src = URL.createObjectURL(file);
-          photoPreview.classList.add("show");
-        }
-      });
-
       form.addEventListener("invalid", (event) => {
         const control = event.target;
         const field = control.closest(".field");
         if (!field) return;
-        if (control.id === "photo" && !control.files.length) {
-          control.setCustomValidity(requiredMessage(field));
-          return;
-        }
         if (control.id === "mobile") {
           const digits = String(control.value || "").replace(/\D/g, "");
           control.setCustomValidity(

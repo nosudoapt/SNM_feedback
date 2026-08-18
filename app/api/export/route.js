@@ -5,20 +5,30 @@ import { getSubmissions, recordExportRun } from "../../../lib/db";
 const PRACHARAK_COLUMNS = [
   { question: "Age group(s) participated", keys: ["mahilaAge", "balAge", "emsAge"] },
   { question: "Where was the Satsang arranged?", keys: ["mahilaLocation", "balLocation", "emsLocation"] },
+  { question: "Was the sound and mic quality good?", keys: ["mahilaSound", "balSound", "emsSound"] },
+  { question: "Was the particular banner/backdrop installed?", keys: ["mahilaBanner", "balBanner", "emsBanner"] },
+  { question: "Was any scripture used?", keys: ["mahilaScripture", "balScripture", "emsScripture"] },
+  { question: "Was the concept/topic of the discourse clear?", keys: ["mahilaConcept", "balConcept", "emsConcept"] },
   { question: "How many Saints were present?", keys: ["mahilaSaints", "balSaints", "emsSaints"] },
   { question: "Ratio - Geet", keys: ["mahilaRatioGeet", "balRatioGeet", "emsRatioGeet"] },
   { question: "Ratio - Vichar", keys: ["mahilaRatioVichar", "balRatioVichar", "emsRatioVichar"] },
   { question: "Ratio - Skit", keys: ["mahilaRatioSkit", "balRatioSkit", "emsRatioSkit"] },
   { question: "Ratio - Dance", keys: ["mahilaRatioDance", "balRatioDance", "emsRatioDance"] },
   { question: "Ratio - Kavita", keys: ["mahilaRatioKavita", "balRatioKavita", "emsRatioKavita"] },
-  { question: "Were speakers able to convey the message effectively?", keys: ["mahilaSpeaker", "balSpeaker", "emsSpeaker"] },
-  { question: "If other, please share more elaborately ji", keys: ["mahilaSpeakerReason", "balSpeakerReason", "emsSpeakerReason"] },
-  { question: "How many saints performed Manch Sanchalan sewa?", keys: ["mahilaAnchoring", "balAnchoring", "emsAnchoring"] },
+  { question: "Were the speakers able to put the divine message clearly?", keys: ["mahilaMessageClarity", "balMessageClarity", "emsMessageClarity"] },
+  { question: "Message clarity - if no, why", keys: ["mahilaMessageClarityReasons", "balMessageClarityReasons", "emsMessageClarityReasons"] },
+  { question: "Was the message/topic clear and appropriate as per the samagam?", keys: ["mahilaContentApt", "balContentApt", "emsContentApt"] },
+  { question: "Content apt - if no, reason", keys: ["mahilaContentAptReasons", "balContentAptReasons", "emsContentAptReasons"] },
+  { question: "Content apt - remarks", keys: ["mahilaContentAptRemarks", "balContentAptRemarks", "emsContentAptRemarks"] },
+  { question: "Manch Sanchalan (Mahila/EMS count or Bal roaming/settled)", keys: ["mahilaAnchoring", "emsAnchoring", "balAnchoring"] },
   { question: "Time allotted for discourse", keys: ["mahilaTime", "balTime", "emsTime"] },
   { question: "Actual time (min)", keys: ["mahilaActualTime", "balActualTime", "emsActualTime"] },
   { question: "Did the Samagam start and conclude on schedule?", keys: ["mahilaSchedule", "balSchedule", "emsSchedule"] },
   { question: "If no, reason", keys: ["mahilaScheduleReason", "balScheduleReason", "emsScheduleReason"] },
   { question: "Language(s) used", keys: ["emsLanguage"] },
+  { question: "Program issues", keys: ["mahilaProgramIssues", "balProgramIssues", "emsProgramIssues"] },
+  { question: "Overall rating", keys: ["mahilaOverall", "balOverall", "emsOverall"] },
+  { question: "Overall rating - remarks", keys: ["mahilaOverallRemarks", "balOverallRemarks", "emsOverallRemarks"] },
   { question: "Feedback", keys: ["mahilaFeedback", "balFeedback", "emsFeedback"] },
 ];
 
@@ -65,11 +75,32 @@ const VALUE_MAP = {
   "youth-kids": "Youth and Kids",
   "youth-adults": "Youth and Adults",
   mixed: "Mixed",
-  lt25: "Less than 25 min",
+  "below-10": "Below 10 yrs",
+  "above-10": "Above 10 yrs",
+  baachiyaan: "Baachiyaan (Girls)",
+  "yuva-behne": "Yuva Behne (Youth)",
+  "keval-yuva-behne": "Keval Yuva Behne (Only Youth)",
+  matured: "Matured",
+  roaming: "Roaming",
+  settled: "Settled down",
+  "lack-of-clarity": "Lack of clarity",
+  "lack-of-mission-ideology": "Lack of ideology of the mission",
+  "lack-of-authenticity": "Lack of authenticity",
+  "speaker-list-exceeded": "Speaker list was exceeded (performances were left)",
+  "more-than-2-incharges-vote-of-thanks": "More than 2 incharges (Mukhi, Sanyojak) gave vote of thanks",
+  "last-speech-over-10-min": "Last speech by ZI/Sanyojak took more than 10 min",
+  "program-started-late": "The program started late",
+  "overall-very-good": "Overall very good",
+  "well-organised-coordinated": "Well organised & coordinated",
+  "good-efforts": "Good efforts",
+  "scope-of-improvement": "Scope of improvement",
+  "no-zeal-in-satsang": "No zeal in satsang",
+  lt20: "Less than 20 min",
   hindi: "Hindi",
   english: "English",
   "30": "30 min",
   "25": "25 min",
+  "20": "20 min",
   general: "General",
   special: "Special",
   mahila: "Mahila Samagam",
@@ -87,6 +118,9 @@ const VALUE_MAP = {
 
 function presentableValue(value) {
   if (value === null || value === undefined) return "";
+  if (Array.isArray(value)) {
+    return value.map((v) => presentableValue(v)).filter((v) => v !== "").join(", ");
+  }
   const key = String(value).trim();
   return VALUE_MAP[key] !== undefined ? VALUE_MAP[key] : String(value);
 }
