@@ -592,6 +592,21 @@
           </div>
 
           <div class="field">
+            <label for="zonalInchargeName">
+              <span class="label-en">Zonal Incharge Mahatma</span>
+              <span class="label-hi">ज़ोनल इंचार्ज महात्मा</span>
+            </label>
+            <input
+              id="zonalInchargeName"
+              name="zonalInchargeName"
+              type="text"
+              class="read-only"
+              readonly
+              placeholder="Select a zone to load automatically"
+            />
+          </div>
+
+          <div class="field">
             <label for="branch">
               <span class="label-en">Branch *</span>
               <span class="label-hi">शाखा *</span>
@@ -655,6 +670,7 @@
       const zoneSearch = document.getElementById("zoneSearch");
       const zoneSuggestions = document.getElementById("zoneSuggestions");
       const zoneName = document.getElementById("zoneName");
+      const zonalInchargeName = document.getElementById("zonalInchargeName");
       const zoneStatus = document.getElementById("zoneStatus");
       const resultPanel = document.getElementById("resultPanel");
       const resultJson = document.getElementById("resultJson");
@@ -703,6 +719,7 @@
       function clearZoneDetails() {
         activeZone = null;
         zoneName.value = "";
+        zonalInchargeName.value = "";
         zoneStatus.textContent = "Enter a zone number to automatically load the area name.";
       }
 
@@ -729,6 +746,7 @@
 
         activeZone = zone;
         zoneName.value = escapeText(zone.zoneName);
+        zonalInchargeName.value = escapeText(zone.zonalInchargeName || "");
         zoneStatus.textContent = `Zone ${zone.zoneNo} loaded. Area name filled automatically.`;
         if (isSameZone) return;
       }

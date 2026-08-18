@@ -808,27 +808,9 @@
 
             <div class="field">
               <label>
-                <span class="label-en">Was the concept/topic of the discourse clear? *</span>
-                <span class="label-hi">क्या विचार का विषय/कॉन्सेप्ट स्पष्ट था? *</span>
+                <span class="label-en">Was the particular banner/backdrop installed? *</span>
+                <span class="label-hi">क्या विशेष बैनर/बैकड्रॉप लगाया गया था? *</span>
               </label>
-              <div class="radio-pair">
-                <div class="radio-card">
-                  <input type="radio" name="mahilaConcept" id="mahilaConceptYes" value="yes" required />
-                  <label for="mahilaConceptYes">Yes - हाँ</label>
-                </div>
-                <div class="radio-card">
-                  <input type="radio" name="mahilaConcept" id="mahilaConceptNo" value="no" />
-                  <label for="mahilaConceptNo">No - नहीं</label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="field">
-            <label>
-              <span class="label-en">Which age group(s) participated in the Satsang program? *</span>
-              <span class="label-hi">सत्संग कार्यक्रम में किस आयु वर्ग ने भाग लिया? *</span>
-            </label>
               <div class="radio-pair">
                 <div class="radio-card">
                   <input type="radio" name="mahilaBanner" id="mahilaBannerYes" value="yes" required />
@@ -840,6 +822,7 @@
                 </div>
               </div>
             </div>
+          </div>
           </div>
 
           <div class="field">
@@ -1069,7 +1052,7 @@
             </div>
           </div>
 
-          <div class="field">
+          <div class="field hidden" id="mahilaProgramIssuesWrap">
             <label>
               <span class="label-en">Program issues (select all that apply)</span>
               <span class="label-hi">कार्यक्रम से जुड़ी समस्याएं (जो लागू हों चुनें)</span>
@@ -1122,14 +1105,6 @@
               </div>
             </div>
             <textarea id="mahilaOverallRemarks" name="mahilaOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="mahilaFeedback">
-              <span class="label-en">Feedback for Mahila Samagam *</span>
-              <span class="label-hi">महिला समागम के लिए प्रतिक्रिया *</span>
-            </label>
-            <textarea id="mahilaFeedback" name="mahilaFeedback" required></textarea>
           </div>
         </div>
 
@@ -1188,23 +1163,6 @@
                 <div class="radio-card">
                   <input type="radio" name="balScripture" id="balScriptureNo" value="no" />
                   <label for="balScriptureNo">No - नहीं</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="field">
-              <label>
-                <span class="label-en">Was the concept/topic of the discourse clear? *</span>
-                <span class="label-hi">क्या विचार का विषय/कॉन्सेप्ट स्पष्ट था? *</span>
-              </label>
-              <div class="radio-pair">
-                <div class="radio-card">
-                  <input type="radio" name="balConcept" id="balConceptYes" value="yes" required />
-                  <label for="balConceptYes">Yes - हाँ</label>
-                </div>
-                <div class="radio-card">
-                  <input type="radio" name="balConcept" id="balConceptNo" value="no" />
-                  <label for="balConceptNo">No - नहीं</label>
                 </div>
               </div>
             </div>
@@ -1433,7 +1391,7 @@
             </div>
           </div>
 
-          <div class="field">
+          <div class="field hidden" id="balProgramIssuesWrap">
             <label>
               <span class="label-en">Program issues (select all that apply)</span>
               <span class="label-hi">कार्यक्रम से जुड़ी समस्याएं (जो लागू हों चुनें)</span>
@@ -1486,14 +1444,6 @@
               </div>
             </div>
             <textarea id="balOverallRemarks" name="balOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="balFeedback">
-              <span class="label-en">Feedback for Bal Satsang *</span>
-              <span class="label-hi">बाल सत्संग के लिए प्रतिक्रिया *</span>
-            </label>
-            <textarea id="balFeedback" name="balFeedback" required></textarea>
           </div>
         </div>
 
@@ -1552,23 +1502,6 @@
                 <div class="radio-card">
                   <input type="radio" name="emsScripture" id="emsScriptureNo" value="no" />
                   <label for="emsScriptureNo">No - नहीं</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="field">
-              <label>
-                <span class="label-en">Was the concept/topic of the discourse clear? *</span>
-                <span class="label-hi">क्या विचार का विषय/कॉन्सेप्ट स्पष्ट था? *</span>
-              </label>
-              <div class="radio-pair">
-                <div class="radio-card">
-                  <input type="radio" name="emsConcept" id="emsConceptYes" value="yes" required />
-                  <label for="emsConceptYes">Yes - हाँ</label>
-                </div>
-                <div class="radio-card">
-                  <input type="radio" name="emsConcept" id="emsConceptNo" value="no" />
-                  <label for="emsConceptNo">No - नहीं</label>
                 </div>
               </div>
             </div>
@@ -1844,7 +1777,7 @@
             </div>
           </div>
 
-          <div class="field">
+          <div class="field hidden" id="emsProgramIssuesWrap">
             <label>
               <span class="label-en">Program issues (select all that apply)</span>
               <span class="label-hi">कार्यक्रम से जुड़ी समस्याएं (जो लागू हों चुनें)</span>
@@ -1897,14 +1830,6 @@
               </div>
             </div>
             <textarea id="emsOverallRemarks" name="emsOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="emsFeedback">
-              <span class="label-en">Feedback for EMS *</span>
-              <span class="label-hi">EMS के लिए प्रतिक्रिया *</span>
-            </label>
-            <textarea id="emsFeedback" name="emsFeedback" required></textarea>
           </div>
         </div>
 
@@ -2393,16 +2318,19 @@
         const getValue = (id) => document.getElementById(id)?.value || "";
 
         setHidden("mahilaScheduleReasonWrap", getChecked("mahilaSchedule") === "no");
+        setHidden("mahilaProgramIssuesWrap", getChecked("mahilaSchedule") === "no");
         setHidden("mahilaActualTimeWrap", getValue("mahilaTime") === "lt20");
         setHidden("mahilaMessageClarityReasonsWrap", getChecked("mahilaMessageClarity") === "no");
         setHidden("mahilaContentAptReasonsWrap", getChecked("mahilaContentApt") === "no");
 
         setHidden("balScheduleReasonWrap", getChecked("balSchedule") === "no");
+        setHidden("balProgramIssuesWrap", getChecked("balSchedule") === "no");
         setHidden("balActualTimeWrap", getValue("balTime") === "lt20");
         setHidden("balMessageClarityReasonsWrap", getChecked("balMessageClarity") === "no");
         setHidden("balContentAptReasonsWrap", getChecked("balContentApt") === "no");
 
         setHidden("emsScheduleReasonWrap", getChecked("emsSchedule") === "no");
+        setHidden("emsProgramIssuesWrap", getChecked("emsSchedule") === "no");
         setHidden("emsActualTimeWrap", getValue("emsTime") === "lt20");
         setHidden("emsMessageClarityReasonsWrap", getChecked("emsMessageClarity") === "no");
         setHidden("emsContentAptReasonsWrap", getChecked("emsContentApt") === "no");

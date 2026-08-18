@@ -623,6 +623,34 @@
             </div>
 
             <div class="field zone-search-wrap">
+              <label for="pracharakZoneSearch">
+                <span class="label-en">Area / Zone of the Pracharak Mahatma *</span>
+                <span class="label-hi">प्रचारक महात्मा का क्षेत्र / ज़ोन *</span>
+              </label>
+              <input
+                id="pracharakZoneSearch"
+                name="pracharakZoneSearch"
+                type="search"
+                placeholder="Type area or zone number from the list"
+                autocomplete="off"
+                required
+              />
+              <p class="hint">Search the area or zone of the Pracharak from the list.</p>
+              <div class="zone-suggestions" id="pracharakZoneSuggestions" role="listbox" aria-label="Pracharak area suggestions"></div>
+              <div class="status" id="pracharakZoneStatus" role="status" aria-live="polite" style="margin-top: 4px">
+                Enter an area or zone number from the list to auto-load the Pracharak's area.
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="pracharakZoneName">
+                <span class="label-en">Pracharak area / zone name</span>
+                <span class="label-hi">प्रचारक का क्षेत्र / ज़ोन नाम</span>
+              </label>
+              <input id="pracharakZoneName" name="pracharakZoneName" type="text" class="read-only" readonly />
+            </div>
+
+            <div class="field zone-search-wrap">
               <label for="zoneSearch">
                 <span class="label-en">Your Zone Number *</span>
                 <span class="label-hi">आपका ज़ोन नंबर *</span>
@@ -829,6 +857,10 @@
       const zoneSearch = document.getElementById("zoneSearch");
       const zoneSuggestions = document.getElementById("zoneSuggestions");
       const zoneName = document.getElementById("zoneName");
+      const pracharakZoneSearch = document.getElementById("pracharakZoneSearch");
+      const pracharakZoneSuggestions = document.getElementById("pracharakZoneSuggestions");
+      const pracharakZoneName = document.getElementById("pracharakZoneName");
+      const pracharakZoneStatus = document.getElementById("pracharakZoneStatus");
       const sectorWrap = document.getElementById("sectorWrap");
       const sectorSelect = document.getElementById("sectorSelect");
       const zoneStatus = document.getElementById("zoneStatus");
@@ -866,6 +898,7 @@
       ];
 
       let activeZone = null;
+      let activePracharakZone = null;
 
       function escapeText(value) {
         return String(value || "").replace(/\s+/g, " ").trim();
@@ -990,6 +1023,63 @@
         );
       }
 
+      function clearPracharakZone() {
+        activePracharakZone = null;
+        pracharakZoneName.value = "";
+        pracharakZoneStatus.textContent = "Enter an area or zone number from the list to auto-load the Pracharak's area.";
+      }
+
+      function validatePracharakZoneInput() {
+        if (!pracharakZoneSearch.value.trim()) {
+          pracharakZoneSearch.setCustomValidity("");
+          return true;
+        }
+        pracharakZoneSearch.setCustomValidity(activePracharakZone ? "" : "Please select a valid area/zone from the list.");
+        return !!activePracharakZone;
+      }
+
+      function updatePracharakZone(zone) {
+        if (!zone) {
+          clearPracharakZone();
+          return;
+        }
+        activePracharakZone = zone;
+        pracharakZoneName.value = escapeText(zone.zoneName);
+        pracharakZoneStatus.textContent = `Area ${zone.zoneNo} loaded. Pracharak's zone name filled automatically.`;
+      }
+
+      function showPracharakZoneSuggestions(query) {
+        const matches = getZoneMatches(escapeText(query));
+
+        pracharakZoneSuggestions.innerHTML = "";
+        if (!matches.length) {
+          pracharakZoneSuggestions.classList.remove("open");
+          return;
+        }
+
+        matches.forEach((zone) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "zone-suggestion";
+          button.setAttribute("role", "option");
+          button.innerHTML = `
+            <strong>${zone.zoneNo}</strong>
+            <span>${escapeText(zone.zoneName)}</span>
+          `;
+          button.addEventListener("click", () => pickPracharakZone(zone));
+          pracharakZoneSuggestions.appendChild(button);
+        });
+
+        pracharakZoneSuggestions.classList.add("open");
+      }
+
+      function pickPracharakZone(zone) {
+        pracharakZoneSearch.value = zone.zoneNo;
+        updatePracharakZone(zone);
+        validatePracharakZoneInput();
+        pracharakZoneSuggestions.classList.remove("open");
+      }
+
       function setSuggestionsOpen(open) {
         zoneSuggestions.classList.toggle("open", open);
       }
@@ -1083,6 +1173,8 @@
         payload.zoneType = activeZone ? activeZone.kind : "";
         payload.zoneNo = activeZone ? activeZone.zoneNo : "";
         payload.category = "branch-incharge";
+        payload.pracharakZoneNo = activePracharakZone ? escapeText(activePracharakZone.zoneNo) : "";
+        payload.pracharakZoneName = escapeText(pracharakZoneName.value);
 
         if (activeZone && activeZone.kind === "special") {
           const selected = sectorSelect.selectedOptions[0];
@@ -1097,6 +1189,7 @@
 
         delete payload.zoneSearch;
         delete payload.sectorSelect;
+        delete payload.pracharakZoneSearch;
         return payload;
       }
 
@@ -1151,6 +1244,11 @@
           return false;
         }
 
+        if (control.id === "pracharakZoneSearch" && !activePracharakZone) {
+          control.setCustomValidity("Please select a valid area/zone from the list / कृपया सूची से सही क्षेत्र/ज़ोन चुनें।");
+          return false;
+        }
+
         return true;
       }
 
@@ -1161,6 +1259,7 @@
           if (!validateField(field)) ok = false;
         });
         if (!validateZoneInput()) ok = false;
+        if (!validatePracharakZoneInput()) ok = false;
         return ok;
       }
 
@@ -1246,6 +1345,39 @@
         if (zoneSearch.value.trim()) showZoneSuggestions(zoneSearch.value);
       });
 
+      clearPracharakZone();
+
+      pracharakZoneSearch.addEventListener("blur", () => {
+        setTimeout(() => {
+          if (!pracharakZoneSuggestions.contains(document.activeElement)) {
+            pracharakZoneSuggestions.classList.remove("open");
+          }
+        }, 120);
+        validatePracharakZoneInput();
+      });
+
+      pracharakZoneSearch.addEventListener("input", () => {
+        pracharakZoneSearch.value = pracharakZoneSearch.value.trim();
+        const match = findZoneMatch(pracharakZoneSearch.value);
+        updatePracharakZone(match);
+        validatePracharakZoneInput();
+        showPracharakZoneSuggestions(pracharakZoneSearch.value);
+      });
+
+      pracharakZoneSearch.addEventListener("change", () => {
+        pracharakZoneSearch.value = pracharakZoneSearch.value.trim();
+        const match = findZoneMatch(pracharakZoneSearch.value);
+        updatePracharakZone(match);
+        validatePracharakZoneInput();
+        showPracharakZoneSuggestions(pracharakZoneSearch.value);
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!pracharakZoneSuggestions.contains(event.target) && event.target !== pracharakZoneSearch) {
+          pracharakZoneSuggestions.classList.remove("open");
+        }
+      });
+
       zonePicker.addEventListener("click", (event) => {
         if (event.target.closest("[data-picker-close]")) {
           closeZonePicker();
@@ -1304,6 +1436,10 @@
           validateZoneInput();
           return;
         }
+        if (control.id === "pracharakZoneSearch") {
+          validatePracharakZoneInput();
+          return;
+        }
         control.setCustomValidity(requiredMessage(field));
       }, true);
 
@@ -1321,6 +1457,7 @@
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         validateZoneInput();
+        validatePracharakZoneInput();
         if (!validateVisibleForm() || !form.checkValidity()) {
           form.reportValidity();
           return;

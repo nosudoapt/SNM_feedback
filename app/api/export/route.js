@@ -8,7 +8,6 @@ const PRACHARAK_COLUMNS = [
   { question: "Was the sound and mic quality good?", keys: ["mahilaSound", "balSound", "emsSound"] },
   { question: "Was the particular banner/backdrop installed?", keys: ["mahilaBanner", "balBanner", "emsBanner"] },
   { question: "Was any scripture used?", keys: ["mahilaScripture", "balScripture", "emsScripture"] },
-  { question: "Was the concept/topic of the discourse clear?", keys: ["mahilaConcept", "balConcept", "emsConcept"] },
   { question: "How many Saints were present?", keys: ["mahilaSaints", "balSaints", "emsSaints"] },
   { question: "Ratio - Geet", keys: ["mahilaRatioGeet", "balRatioGeet", "emsRatioGeet"] },
   { question: "Ratio - Vichar", keys: ["mahilaRatioVichar", "balRatioVichar", "emsRatioVichar"] },
@@ -29,11 +28,12 @@ const PRACHARAK_COLUMNS = [
   { question: "Program issues", keys: ["mahilaProgramIssues", "balProgramIssues", "emsProgramIssues"] },
   { question: "Overall rating", keys: ["mahilaOverall", "balOverall", "emsOverall"] },
   { question: "Overall rating - remarks", keys: ["mahilaOverallRemarks", "balOverallRemarks", "emsOverallRemarks"] },
-  { question: "Feedback", keys: ["mahilaFeedback", "balFeedback", "emsFeedback"] },
 ];
 
 const BRANCH_INCHARGE_COLUMNS = [
   { question: "Pracharak Mahatma name", keys: ["pracharakName"] },
+  { question: "Pracharak area/zone number", keys: ["pracharakZoneNo"] },
+  { question: "Pracharak area/zone name", keys: ["pracharakZoneName"] },
   { question: "Arrival Time of Pracharak Saint", keys: ["arrivalTime"] },
   { question: "If late, at what time did they arrive?", keys: ["arrivalTimeActual"] },
   { question: "Content of Pracharak Saint", keys: ["content"] },
