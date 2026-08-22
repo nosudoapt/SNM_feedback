@@ -578,6 +578,15 @@
             />
             <p class="hint">Search by zone number, zone name, or both.</p>
             <div class="zone-suggestions" id="zoneSuggestions" role="listbox" aria-label="Zone suggestions"></div>
+            <div class="field hidden" id="sectorWrap" style="margin-top: 4px">
+              <label for="sectorSelect">
+                <span class="label-en">Your Sector *</span>
+                <span class="label-hi">आपका सेक्टर *</span>
+              </label>
+              <select id="sectorSelect" name="sectorSelect">
+                <option value="">Select sector / सेक्टर चुनें</option>
+              </select>
+            </div>
             <div class="status" id="zoneStatus" role="status" aria-live="polite" style="margin-top: 4px">
               Enter a zone number to automatically load the area name.
             </div>
@@ -667,6 +676,8 @@
       const zoneSuggestions = document.getElementById("zoneSuggestions");
       const zoneName = document.getElementById("zoneName");
       const zonalInchargeName = document.getElementById("zonalInchargeName");
+      const sectorWrap = document.getElementById("sectorWrap");
+      const sectorSelect = document.getElementById("sectorSelect");
       const zoneStatus = document.getElementById("zoneStatus");
       const resultPanel = document.getElementById("resultPanel");
       const resultJson = document.getElementById("resultJson");
@@ -716,6 +727,10 @@
         activeZone = null;
         zoneName.value = "";
         zonalInchargeName.value = "";
+        sectorWrap.classList.add("hidden");
+        sectorSelect.required = false;
+        sectorSelect.disabled = true;
+        sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
         zoneStatus.textContent = "Enter a zone number to automatically load the area name.";
       }
 
@@ -726,6 +741,28 @@
         }
         zoneSearch.setCustomValidity(activeZone ? "" : "Please select a valid zone from the list.");
         return !!activeZone;
+      }
+
+      function syncSectorField(zone) {
+        if (!zone || zone.kind !== "special") {
+          sectorWrap.classList.add("hidden");
+          sectorSelect.required = false;
+          sectorSelect.disabled = true;
+          sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
+          return;
+        }
+
+        sectorWrap.classList.remove("hidden");
+        sectorSelect.disabled = false;
+        sectorSelect.required = true;
+        sectorSelect.innerHTML = '<option value="">Select sector / सेक्टर चुनें</option>';
+        zone.sectors.forEach((sector) => {
+          const option = document.createElement("option");
+          option.value = sector.sectorNo;
+          option.textContent = `${sector.sectorNo} - ${escapeText(sector.sectorName)}`;
+          option.dataset.incharge = sector.sectorInchargeName;
+          sectorSelect.appendChild(option);
+        });
       }
 
       function updateZoneDetails(zone) {
@@ -743,8 +780,13 @@
         activeZone = zone;
         zoneName.value = escapeText(zone.zoneName);
         zonalInchargeName.value = escapeText(zone.zonalInchargeName || "");
-        zoneStatus.textContent = `Zone ${zone.zoneNo} loaded. Area name filled automatically.`;
-        if (isSameZone) return;
+        if (!isSameZone) syncSectorField(zone);
+
+        if (zone.kind === "special") {
+          zoneStatus.textContent = `Zone ${zone.zoneNo} requires a sector selection. Choose a sector to auto-fill the sector incharge name.`;
+        } else {
+          zoneStatus.textContent = `Zone ${zone.zoneNo} loaded. Area name filled automatically.`;
+        }
       }
 
       function getZoneMatches(raw) {
