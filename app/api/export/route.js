@@ -40,6 +40,12 @@ const BRANCH_INCHARGE_COLUMNS = [
   { question: "Other - scope of improvements", keys: ["improvements"] },
 ];
 
+const GBM_EBM_COLUMNS = [
+  { question: "Email", keys: ["email"] },
+  { question: "Branch", keys: ["branch"] },
+  { question: "Sewa / Category", keys: ["sewa"] },
+];
+
 const FORM_TYPES = {
   all: {
     label: "All types",
@@ -49,6 +55,7 @@ const FORM_TYPES = {
         (col) => !BRANCH_INCHARGE_COLUMNS.some((b) => b.question === col.question)
       ),
       ...BRANCH_INCHARGE_COLUMNS,
+      ...GBM_EBM_COLUMNS,
     ],
   },
   "pracharak-mahatma": {
@@ -60,6 +67,11 @@ const FORM_TYPES = {
     label: "Branch Incharge",
     categories: ["branch-incharge"],
     columns: BRANCH_INCHARGE_COLUMNS,
+  },
+  "gbm-ebm": {
+    label: "GBM / EBM Registration",
+    categories: ["gbm-ebm"],
+    columns: GBM_EBM_COLUMNS,
   },
 };
 

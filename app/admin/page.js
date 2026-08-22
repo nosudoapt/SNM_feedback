@@ -8,6 +8,7 @@ const CATEGORY_LABELS = {
   bal: "Bal Samagam",
   ems: "EMS",
   "branch-incharge": "Branch Incharge",
+  "gbm-ebm": "GBM / EBM Registration",
 };
 
 const FIELD_LABELS = {
@@ -83,6 +84,11 @@ const FIELD_LABELS = {
   pracharakZoneNo: "Pracharak area/zone number",
   pracharakZoneName: "Pracharak area/zone name",
   samagamType: "Type of Samagam held at your branch",
+  fullName: "Full name",
+  mobile: "Mobile number",
+  email: "Email",
+  branch: "Branch",
+  sewa: "Sewa / Category",
   emsContent: "Ratio of English & Hindi in the Vichar (Branch)",
   balContent: "Used child-friendly (Bal) examples for kids",
   mahilaContent: "Used broader aspects & relevant women examples",
@@ -519,6 +525,7 @@ export default function AdminDashboard() {
               <option value="all">All feedback types</option>
               <option value="pracharak-mahatma">Pracharak Mahatma</option>
               <option value="branch-incharge">Branch Incharge</option>
+              <option value="gbm-ebm">GBM / EBM Registration</option>
             </select>
             <select value={exportRange} onChange={(e) => setExportRange(e.target.value)} style={s.select}>
               <option value="all">All submissions</option>
@@ -547,6 +554,7 @@ export default function AdminDashboard() {
               <option value="bal">Bal Samagam</option>
               <option value="ems">EMS</option>
               <option value="branch-incharge">Branch Incharge</option>
+              <option value="gbm-ebm">GBM / EBM Registration</option>
             </select>
             <select value={zoneType} onChange={(e) => setZoneType(e.target.value)} style={s.select} aria-label="Filter by zone type">
               <option value="all">All zone types</option>

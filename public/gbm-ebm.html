@@ -815,6 +815,42 @@
         zoneStatus.textContent = `Loaded zone ${activeZone.zoneNo}, sector ${selected.value}. Sector incharge is locked from the workbook.`;
       }
 
+      function buildPayload() {
+        const payload = {};
+        new FormData(form).forEach((value, key) => {
+          if (payload[key] === undefined) payload[key] = value;
+          else if (Array.isArray(payload[key])) payload[key].push(value);
+          else payload[key] = [payload[key], value];
+        });
+
+        payload.name = escapeText(document.getElementById("fullName").value);
+        payload.phone = escapeText(document.getElementById("mobile").value);
+        payload.email = escapeText(document.getElementById("email").value);
+        payload.branch = escapeText(document.getElementById("branch").value);
+        payload.sewa = document.getElementById("sewa").value;
+        payload.zoneNumber = escapeText(zoneSearch.value);
+        payload.zoneName = escapeText(zoneName.value);
+        payload.zoneType = activeZone ? activeZone.kind : "";
+        payload.zoneNo = activeZone ? activeZone.zoneNo : "";
+        payload.category = "gbm-ebm";
+
+        if (activeZone && activeZone.kind === "special") {
+          const selected = sectorSelect.selectedOptions[0];
+          if (selected && selected.value) {
+            payload.sectorNo = selected.value;
+            payload.sectorName = escapeText(selected.textContent).replace(/^[0-9]+\s*-\s*/, "");
+            payload.sectorInchargeName = escapeText(selected.dataset.incharge || "");
+          }
+          payload.zonalInchargeName = "";
+        } else if (activeZone) {
+          payload.zonalInchargeName = escapeText(activeZone.zonalInchargeName || "");
+        }
+
+        delete payload.zoneSearch;
+        delete payload.sectorSelect;
+        return payload;
+      }
+
       function getZoneMatches(raw) {
         const compact = normalize(raw);
         const key = zoneKey(raw);
@@ -1121,10 +1157,28 @@
           form.reportValidity();
           return;
         }
+        const payload = buildPayload();
         resultPanel.classList.add("open");
-        resultJson.textContent =
-          "Registration is not open yet. This form is a preview — submissions will be enabled soon.\n\n" +
-          "पंजीकरण अभी शुरू नहीं हुआ है। यह फ़ॉर्म एक पूर्वावलोकन है — जल्द ही जमा करना चालू हो जाएगा।";
+        resultJson.textContent = "Submitting... / जमा हो रहा है...";
+
+        try {
+          const res = await fetch("/api/submissions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            resultJson.textContent = "Thank you! Your registration has been submitted.\n\nधन्यवाद! आपका पंजीकरण जमा कर दिया गया है।\n\nID: " + data.id;
+            form.reset();
+            clearZoneDetails();
+          } else {
+            resultJson.textContent = "Error: " + (data.error || "Submission failed") + "\nत्रुटि: जमा करने में विफल।";
+          }
+        } catch {
+          resultJson.textContent = "Network error. Please try again.\nनेटवर्क त्रुटि। कृपया पुनः प्रयास करें।";
+        }
+
         resultPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
       });
     </script>
