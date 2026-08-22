@@ -601,7 +601,7 @@
           </div>
 
           <div class="field">
-            <label for="zonalInchargeName">
+            <label for="zonalInchargeName" id="inchargeLabel">
               <span class="label-en">Zonal Incharge Mahatma</span>
               <span class="label-hi">ज़ोनल इंचार्ज महात्मा</span>
             </label>
@@ -676,6 +676,7 @@
       const zoneSuggestions = document.getElementById("zoneSuggestions");
       const zoneName = document.getElementById("zoneName");
       const zonalInchargeName = document.getElementById("zonalInchargeName");
+      const inchargeLabel = document.getElementById("inchargeLabel");
       const sectorWrap = document.getElementById("sectorWrap");
       const sectorSelect = document.getElementById("sectorSelect");
       const zoneStatus = document.getElementById("zoneStatus");
@@ -727,6 +728,10 @@
         activeZone = null;
         zoneName.value = "";
         zonalInchargeName.value = "";
+        inchargeLabel.innerHTML = `
+          <span class="label-en">Zonal Incharge Mahatma</span>
+          <span class="label-hi">ज़ोनल इंचार्ज महात्मा</span>
+        `;
         sectorWrap.classList.add("hidden");
         sectorSelect.required = false;
         sectorSelect.disabled = true;
@@ -779,14 +784,35 @@
 
         activeZone = zone;
         zoneName.value = escapeText(zone.zoneName);
-        zonalInchargeName.value = escapeText(zone.zonalInchargeName || "");
         if (!isSameZone) syncSectorField(zone);
 
         if (zone.kind === "special") {
+          inchargeLabel.innerHTML = `
+            <span class="label-en">Branch / Sector Incharge Mahatma</span>
+            <span class="label-hi">ब्रांच / सेक्टर इंचार्ज महात्मा</span>
+          `;
+          zonalInchargeName.value = "";
           zoneStatus.textContent = `Zone ${zone.zoneNo} requires a sector selection. Choose a sector to auto-fill the sector incharge name.`;
         } else {
+          inchargeLabel.innerHTML = `
+            <span class="label-en">Zonal Incharge Mahatma</span>
+            <span class="label-hi">ज़ोनल इंचार्ज महात्मा</span>
+          `;
+          zonalInchargeName.value = escapeText(zone.zonalInchargeName || "");
           zoneStatus.textContent = `Zone ${zone.zoneNo} loaded. Area name filled automatically.`;
         }
+      }
+
+      function updateSectorIncharge() {
+        if (!activeZone || activeZone.kind !== "special") return;
+        const selected = sectorSelect.selectedOptions[0];
+        if (!selected || !selected.value) {
+          zonalInchargeName.value = "";
+          zoneStatus.textContent = `Zone ${activeZone.zoneNo} requires a sector selection.`;
+          return;
+        }
+        zonalInchargeName.value = escapeText(selected.dataset.incharge);
+        zoneStatus.textContent = `Loaded zone ${activeZone.zoneNo}, sector ${selected.value}. Sector incharge is locked from the workbook.`;
       }
 
       function getZoneMatches(raw) {
@@ -1037,6 +1063,10 @@
           return;
         }
         if (zoneSearch.value.trim()) showZoneSuggestions(zoneSearch.value);
+      });
+
+      sectorSelect.addEventListener("change", () => {
+        updateSectorIncharge();
       });
 
       zonePicker.addEventListener("click", (event) => {
