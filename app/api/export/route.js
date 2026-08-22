@@ -3,7 +3,7 @@ import { requireAdminSession } from "../../../lib/auth";
 import { getSubmissions, recordExportRun } from "../../../lib/db";
 
 const PRACHARAK_COLUMNS = [
-  { question: "Age group(s) participated", keys: ["mahilaAge", "balAge", "emsAge"] },
+  { question: "Age group(s) participated (Bal)", keys: ["balAge"] },
   { question: "Where was the Satsang arranged?", keys: ["mahilaLocation", "balLocation", "emsLocation"] },
   { question: "Was the sound and mic quality good?", keys: ["mahilaSound", "balSound", "emsSound"] },
   { question: "Was the particular banner/backdrop installed?", keys: ["mahilaBanner", "balBanner", "emsBanner"] },

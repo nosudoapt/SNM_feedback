@@ -11,9 +11,7 @@ const CATEGORY_LABELS = {
 };
 
 const FIELD_LABELS = {
-  mahilaAge: "Age group(s) participated",
-  balAge: "Age group(s) participated",
-  emsAge: "Age group(s) participated",
+  balAge: "Age group(s) participated (Bal)",
   mahilaLocation: "Where was the Satsang arranged?",
   balLocation: "Where was the Satsang arranged?",
   emsLocation: "Where was the Satsang arranged?",
