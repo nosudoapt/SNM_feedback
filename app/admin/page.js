@@ -273,6 +273,8 @@ export default function AdminDashboard() {
   const [exportRange, setExportRange] = useState("all");
   const [exportType, setExportType] = useState("all");
   const [exporting, setExporting] = useState(false);
+  const [attendanceSyncText, setAttendanceSyncText] = useState("");
+  const [syncing, setSyncing] = useState(false);
 
   const toastTimer = useRef(null);
 
@@ -385,6 +387,49 @@ export default function AdminDashboard() {
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login");
+  }
+
+  function handleAttendanceFile() {
+    window.open("/api/attendance/file", "_blank");
+  }
+
+  async function handleAttendanceSync() {
+    setSyncing(true);
+    try {
+      let marks = [];
+      try {
+        const parsed = JSON.parse(attendanceSyncText.trim());
+        if (Array.isArray(parsed)) marks = parsed;
+        else if (Array.isArray(parsed.marks)) marks = parsed.marks;
+      } catch {
+        showToast("Invalid sync code — paste the copied JSON as-is", "error");
+        return;
+      }
+      if (!marks.length) {
+        showToast("No marks found in the sync code", "error");
+        return;
+      }
+      const res = await fetch("/api/attendance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ marks }),
+      });
+      if (res.status === 401) {
+        router.push("/admin/login");
+        return;
+      }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        showToast(data.error || "Attendance sync failed", "error");
+        return;
+      }
+      showToast(`${data.updated} attendance mark${data.updated === 1 ? "" : "s"} saved`);
+      setAttendanceSyncText("");
+      fetchStats();
+      fetchRows();
+    } finally {
+      setSyncing(false);
+    }
   }
 
   async function handleExport() {
@@ -536,6 +581,22 @@ export default function AdminDashboard() {
             </select>
             <button onClick={handleExport} disabled={exporting} style={s.exportBtn}>
               {exporting ? "Downloading…" : "Download CSV"}
+            </button>
+            <button onClick={handleAttendanceFile} style={s.exportBtn} title="Offline attendance file for volunteers' phones">
+              Attendance file
+            </button>
+          </div>
+
+          <div style={{ ...s.exportRow, alignItems: "flex-start" }}>
+            <textarea
+              placeholder="Paste a volunteer's attendance sync code here (JSON) and click Sync"
+              value={attendanceSyncText}
+              onChange={(e) => setAttendanceSyncText(e.target.value)}
+              style={{ ...s.search, minHeight: 44, height: 44, paddingTop: 10, resize: "vertical", fontFamily: "monospace", fontSize: 12 }}
+              aria-label="Attendance sync code"
+            />
+            <button onClick={handleAttendanceSync} disabled={syncing || !attendanceSyncText.trim()} style={s.exportBtn}>
+              {syncing ? "Syncing…" : "Sync"}
             </button>
           </div>
 
