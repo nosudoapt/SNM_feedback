@@ -361,6 +361,38 @@
         font-size: 0.92rem;
       }
 
+      .success-box {
+        display: none;
+        margin-top: 18px;
+        padding: 28px 22px;
+        border-radius: 20px;
+        background: linear-gradient(145deg, #e8f9ec, #d4f5dd);
+        border: 2px solid #34a853;
+        text-align: center;
+      }
+
+      .success-box.open {
+        display: block;
+      }
+
+      .success-box .success-emoji {
+        font-size: 44px;
+        line-height: 1;
+      }
+
+      .success-box h2 {
+        color: #1e7e34;
+        font-size: clamp(1.2rem, 4.8vw, 1.5rem);
+        margin: 10px 0 6px;
+      }
+
+      .success-box p {
+        color: #256b32;
+        font-size: 1rem;
+        line-height: 1.55;
+        margin: 0;
+      }
+
       .read-only {
         background: #fbfbfc;
       }
@@ -1727,6 +1759,12 @@
         <div class="result" id="resultPanel" aria-live="polite">
           <pre id="resultJson"></pre>
         </div>
+
+        <div class="success-box" id="successBox" aria-live="polite">
+          <div class="success-emoji">🙏</div>
+          <h2>Dhannevaad ji! Your feedback has been submitted</h2>
+          <p>Aapke mul-tilak ke liye dhannevaad ji. Aapki pratikriya surakshit roop se jama ho gayi hai.</p>
+        </div>
       </form>
     </main>
 
@@ -1765,6 +1803,7 @@
       const zoneStatus = document.getElementById("zoneStatus");
       const resultPanel = document.getElementById("resultPanel");
       const resultJson = document.getElementById("resultJson");
+      const successBox = document.getElementById("successBox");
       const zonePicker = document.getElementById("zonePicker");
       const zonePickerSearch = document.getElementById("zonePickerSearch");
       const zonePickerList = document.getElementById("zonePickerList");
@@ -2385,7 +2424,8 @@
           });
           const data = await res.json();
           if (res.ok) {
-            resultJson.textContent = "Thank you! Your feedback has been submitted.\n\nधन्यवाद! आपकी प्रतिक्रिया जमा कर दी गई है।\n\nID: " + data.id;
+            resultPanel.classList.remove("open");
+            successBox.classList.add("open");
           } else {
             resultJson.textContent = "Error: " + (data.error || "Submission failed") + "\nत्रुटि: जमा करने में विफल।";
           }
