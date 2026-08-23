@@ -253,6 +253,11 @@
         gap: 12px;
       }
 
+      .radio-card.sub-option {
+        margin-left: 22px;
+        opacity: 0.92;
+      }
+
       .radio-card {
         position: relative;
       }
@@ -779,11 +784,11 @@
                 </div>
                 <div class="radio-card">
                   <input type="radio" name="mahilaSound" id="mahilaSoundAvg" value="average" />
-                  <label for="mahilaSoundAvg">Average - औसत</label>
+                  <label for="mahilaSoundAvg">Average - ठीक-ठाक</label>
                 </div>
                 <div class="radio-card">
                   <input type="radio" name="mahilaSound" id="mahilaSoundPoor" value="poor" />
-                  <label for="mahilaSoundPoor">Poor - खराब</label>
+                  <label for="mahilaSoundPoor">Needs improvement - सुधार की आवश्यकता</label>
                 </div>
             </div>
           </div>
@@ -792,7 +797,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Was the content of the speakers strong? *</span>
-                <span class="label-hi">क्या वक्ताओं का कंटेंट स्ट्रॉन्ग था? *</span>
+                <span class="label-hi">क्या वक्ता महात्माओं जी का कंटेंट स्ट्रॉन्ग था? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -886,7 +891,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Were the speakers able to put the divine message clearly? *</span>
-                <span class="label-hi">क्या वक्ता दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
+                <span class="label-hi">क्या वक्ता महात्मा जी दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -903,16 +908,16 @@
             <div class="field hidden" id="mahilaMessageClarityReasonsWrap">
               <label>
                 <span class="label-en">If no, why? *</span>
-                <span class="label-hi">यदि नहीं, तो क्यों? *</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए *</span>
               </label>
               <div class="radio-grid">
                 <div class="radio-card">
                 <input type="checkbox" name="mahilaMessageClarityReasons" id="mahilaMessageClarityReasons1" value="lack-of-clarity" required />
-                <label for="mahilaMessageClarityReasons1">Lack of clarity - स्पष्टता की कमी</label>
+                <label for="mahilaMessageClarityReasons1">Was there a lack of clarity - क्या विचार स्पष्ट नहीं हो पाए?</label>
                 </div>
                 <div class="radio-card">
                   <input type="checkbox" name="mahilaMessageClarityReasons" id="mahilaMessageClarityReasons2" value="lack-of-mission-ideology" />
-                  <label for="mahilaMessageClarityReasons2">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                  <label for="mahilaMessageClarityReasons2">Was the mission ideology not clear - क्या मिशन की विचारधारा स्पष्ट नहीं हो पाई?</label>
                 </div>
               </div>
             </div>
@@ -922,7 +927,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Was the message/topic clear and appropriate as per the samagam? *</span>
-                <span class="label-hi">क्या वक्ताओं का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
+                <span class="label-hi">क्या वक्ता महात्माओं जी का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -944,15 +949,15 @@
               <div class="radio-grid">
                 <div class="radio-card">
 <input type="checkbox" name="mahilaContentAptReasons" id="mahilaContentAptReason1" value="lack-of-authenticity" required />
-                <label for="mahilaContentAptReason1">Lack of authenticity - प्रामाणिकता की कमी</label>
+                <label for="mahilaContentAptReason1">Was there a lack of authenticity - क्या प्रामाणिकता की कमी थी?</label>
                 </div>
                 <div class="radio-card">
                   <input type="checkbox" name="mahilaContentAptReasons" id="mahilaContentAptReason2" value="lack-of-clarity" />
-                  <label for="mahilaContentAptReason2">Lack of clarity - स्पष्टता की कमी</label>
+                  <label for="mahilaContentAptReason2">Was there a lack of clarity - क्या विचार स्पष्ट नहीं हो पाए?</label>
                 </div>
                 <div class="radio-card">
                   <input type="checkbox" name="mahilaContentAptReasons" id="mahilaContentAptReason3" value="lack-of-mission-ideology" />
-                  <label for="mahilaContentAptReason3">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                  <label for="mahilaContentAptReason3">Was the mission ideology not clear - क्या मिशन की विचारधारा स्पष्ट नहीं हो पाई?</label>
                 </div>
               </div>
               <textarea id="mahilaContentAptRemarks" name="mahilaContentAptRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
@@ -1052,23 +1057,23 @@
             <div class="radio-grid">
               <div class="radio-card">
                 <input type="checkbox" name="mahilaOverall" id="mahilaOverall1" value="overall-very-good" required />
-                <label for="mahilaOverall1">Overall very good - समग्र रूप से बहुत अच्छा</label>
+                <label for="mahilaOverall1">(1) Overall very good - समग्र रूप से बहुत अच्छा</label>
               </div>
-              <div class="radio-card">
+              <div class="radio-card sub-option">
                 <input type="checkbox" name="mahilaOverall" id="mahilaOverall2" value="well-organised-coordinated" />
-                <label for="mahilaOverall2">Well organised & coordinated - अच्छी तरह से आयोजित और समन्वित</label>
+                <label for="mahilaOverall2">Well organised &amp; coordinated - अच्छी तरह से आयोजित और समन्वित</label>
               </div>
-              <div class="radio-card">
+              <div class="radio-card sub-option">
                 <input type="checkbox" name="mahilaOverall" id="mahilaOverall3" value="good-efforts" />
                 <label for="mahilaOverall3">Good efforts - अच्छे प्रयास</label>
               </div>
               <div class="radio-card">
                 <input type="checkbox" name="mahilaOverall" id="mahilaOverall4" value="scope-of-improvement" />
-                <label for="mahilaOverall4">Scope of improvement - सुधार की गुंजाइश</label>
+                <label for="mahilaOverall4">(2) Could be even better - और भी बेहतर किया जा सकता था</label>
               </div>
               <div class="radio-card">
                 <input type="checkbox" name="mahilaOverall" id="mahilaOverall5" value="no-zeal-in-satsang" />
-                <label for="mahilaOverall5">No zeal in satsang - सत्संग में उत्साह की कमी</label>
+                <label for="mahilaOverall5">(3) Efforts were not clearly visible - प्रयास स्पष्ट रूप से दिखाई नहीं दिए</label>
               </div>
             </div>
             <textarea id="mahilaOverallRemarks" name="mahilaOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
@@ -1089,11 +1094,11 @@
                 </div>
                 <div class="radio-card">
                   <input type="radio" name="balSound" id="balSoundAvg" value="average" />
-                  <label for="balSoundAvg">Average - औसत</label>
+                  <label for="balSoundAvg">Average - ठीक-ठाक</label>
                 </div>
                 <div class="radio-card">
                   <input type="radio" name="balSound" id="balSoundPoor" value="poor" />
-                  <label for="balSoundPoor">Poor - खराब</label>
+                  <label for="balSoundPoor">Needs improvement - सुधार की आवश्यकता</label>
                 </div>
               </div>
             </div>
@@ -1120,7 +1125,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Was the content of the speakers strong? *</span>
-                <span class="label-hi">क्या वक्ताओं का कंटेंट स्ट्रॉन्ग था? *</span>
+                <span class="label-hi">क्या वक्ता महात्माओं जी का कंटेंट स्ट्रॉन्ग था? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -1258,7 +1263,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Were the speakers able to put the divine message clearly? *</span>
-                <span class="label-hi">क्या वक्ता दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
+                <span class="label-hi">क्या वक्ता महात्मा जी दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -1275,16 +1280,16 @@
             <div class="field hidden" id="balMessageClarityReasonsWrap">
               <label>
                 <span class="label-en">If no, why? *</span>
-                <span class="label-hi">यदि नहीं, तो क्यों? *</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए *</span>
               </label>
               <div class="radio-grid">
                 <div class="radio-card">
 <input type="checkbox" name="balMessageClarityReasons" id="balMessageClarityReasons1" value="lack-of-clarity" required />
-                <label for="balMessageClarityReasons1">Lack of clarity - स्पष्टता की कमी</label>
+                <label for="balMessageClarityReasons1">Was there a lack of clarity - क्या विचार स्पष्ट नहीं हो पाए?</label>
                 </div>
                 <div class="radio-card">
                   <input type="checkbox" name="balMessageClarityReasons" id="balMessageClarityReasons2" value="lack-of-mission-ideology" />
-                  <label for="balMessageClarityReasons2">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                  <label for="balMessageClarityReasons2">Was the mission ideology not clear - क्या मिशन की विचारधारा स्पष्ट नहीं हो पाई?</label>
                 </div>
               </div>
             </div>
@@ -1294,7 +1299,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Was the message/topic clear and appropriate as per the samagam? *</span>
-                <span class="label-hi">क्या वक्ताओं का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
+                <span class="label-hi">क्या वक्ता महात्माओं जी का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -1316,15 +1321,15 @@
               <div class="radio-grid">
                 <div class="radio-card">
 <input type="checkbox" name="balContentAptReasons" id="balContentAptReason1" value="lack-of-authenticity" required />
-                <label for="balContentAptReason1">Lack of authenticity - प्रामाणिकता की कमी</label>
+                <label for="balContentAptReason1">Was there a lack of authenticity - क्या प्रामाणिकता की कमी थी?</label>
                 </div>
                 <div class="radio-card">
                   <input type="checkbox" name="balContentAptReasons" id="balContentAptReason2" value="lack-of-clarity" />
-                  <label for="balContentAptReason2">Lack of clarity - स्पष्टता की कमी</label>
+                  <label for="balContentAptReason2">Was there a lack of clarity - क्या विचार स्पष्ट नहीं हो पाए?</label>
                 </div>
                 <div class="radio-card">
                   <input type="checkbox" name="balContentAptReasons" id="balContentAptReason3" value="lack-of-mission-ideology" />
-                  <label for="balContentAptReason3">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                  <label for="balContentAptReason3">Was the mission ideology not clear - क्या मिशन की विचारधारा स्पष्ट नहीं हो पाई?</label>
                 </div>
               </div>
               <textarea id="balContentAptRemarks" name="balContentAptRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
@@ -1383,23 +1388,23 @@
             <div class="radio-grid">
               <div class="radio-card">
                 <input type="checkbox" name="balOverall" id="balOverall1" value="overall-very-good" required />
-                <label for="balOverall1">Overall very good - समग्र रूप से बहुत अच्छा</label>
+                <label for="balOverall1">(1) Overall very good - समग्र रूप से बहुत अच्छा</label>
               </div>
-              <div class="radio-card">
+              <div class="radio-card sub-option">
                 <input type="checkbox" name="balOverall" id="balOverall2" value="well-organised-coordinated" />
-                <label for="balOverall2">Well organised & coordinated - अच्छी तरह से आयोजित और समन्वित</label>
+                <label for="balOverall2">Well organised &amp; coordinated - अच्छी तरह से आयोजित और समन्वित</label>
               </div>
-              <div class="radio-card">
+              <div class="radio-card sub-option">
                 <input type="checkbox" name="balOverall" id="balOverall3" value="good-efforts" />
                 <label for="balOverall3">Good efforts - अच्छे प्रयास</label>
               </div>
               <div class="radio-card">
                 <input type="checkbox" name="balOverall" id="balOverall4" value="scope-of-improvement" />
-                <label for="balOverall4">Scope of improvement - सुधार की गुंजाइश</label>
+                <label for="balOverall4">(2) Could be even better - और भी बेहतर किया जा सकता था</label>
               </div>
               <div class="radio-card">
                 <input type="checkbox" name="balOverall" id="balOverall5" value="no-zeal-in-satsang" />
-                <label for="balOverall5">No zeal in satsang - सत्संग में उत्साह की कमी</label>
+                <label for="balOverall5">(3) Efforts were not clearly visible - प्रयास स्पष्ट रूप से दिखाई नहीं दिए</label>
               </div>
             </div>
             <textarea id="balOverallRemarks" name="balOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>
@@ -1420,11 +1425,11 @@
                 </div>
                 <div class="radio-card">
                   <input type="radio" name="emsSound" id="emsSoundAvg" value="average" />
-                  <label for="emsSoundAvg">Average - औसत</label>
+                  <label for="emsSoundAvg">Average - ठीक-ठाक</label>
                 </div>
                 <div class="radio-card">
                   <input type="radio" name="emsSound" id="emsSoundPoor" value="poor" />
-                  <label for="emsSoundPoor">Poor - खराब</label>
+                  <label for="emsSoundPoor">Needs improvement - सुधार की आवश्यकता</label>
                 </div>
               </div>
             </div>
@@ -1451,7 +1456,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Was the content of the speakers strong? *</span>
-                <span class="label-hi">क्या वक्ताओं का कंटेंट स्ट्रॉन्ग था? *</span>
+                <span class="label-hi">क्या वक्ता महात्माओं जी का कंटेंट स्ट्रॉन्ग था? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -1574,7 +1579,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Were the speakers able to put the divine message clearly? *</span>
-                <span class="label-hi">क्या वक्ता दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
+                <span class="label-hi">क्या वक्ता महात्मा जी दिव्य संदेश स्पष्ट रूप से प्रस्तुत कर पाए? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -1591,16 +1596,16 @@
             <div class="field hidden" id="emsMessageClarityReasonsWrap">
               <label>
                 <span class="label-en">If no, why? *</span>
-                <span class="label-hi">यदि नहीं, तो क्यों? *</span>
+                <span class="label-hi">यदि नहीं, तो कृपया कारण बताइए *</span>
               </label>
               <div class="radio-grid">
                 <div class="radio-card">
 <input type="checkbox" name="emsMessageClarityReasons" id="emsMessageClarityReasons1" value="lack-of-clarity" required />
-                <label for="emsMessageClarityReasons1">Lack of clarity - स्पष्टता की कमी</label>
+                <label for="emsMessageClarityReasons1">Was there a lack of clarity - क्या विचार स्पष्ट नहीं हो पाए?</label>
                 </div>
                 <div class="radio-card">
                   <input type="checkbox" name="emsMessageClarityReasons" id="emsMessageClarityReasons2" value="lack-of-mission-ideology" />
-                  <label for="emsMessageClarityReasons2">Lack of ideology of the mission - मिशन की विचारधारा की कमी</label>
+                  <label for="emsMessageClarityReasons2">Was the mission ideology not clear - क्या मिशन की विचारधारा स्पष्ट नहीं हो पाई?</label>
                 </div>
               </div>
             </div>
@@ -1610,7 +1615,7 @@
             <div class="field">
               <label>
                 <span class="label-en">Was the message/topic clear and appropriate as per the samagam? *</span>
-                <span class="label-hi">क्या वक्ताओं का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
+                <span class="label-hi">क्या वक्ता महात्माओं जी का संदेश/विषय समागम के अनुरूप स्पष्ट और उपयुक्त था? *</span>
               </label>
               <div class="radio-pair">
                 <div class="radio-card">
@@ -1716,23 +1721,23 @@
             <div class="radio-grid">
               <div class="radio-card">
                 <input type="checkbox" name="emsOverall" id="emsOverall1" value="overall-very-good" required />
-                <label for="emsOverall1">Overall very good - समग्र रूप से बहुत अच्छा</label>
+                <label for="emsOverall1">(1) Overall very good - समग्र रूप से बहुत अच्छा</label>
               </div>
-              <div class="radio-card">
+              <div class="radio-card sub-option">
                 <input type="checkbox" name="emsOverall" id="emsOverall2" value="well-organised-coordinated" />
-                <label for="emsOverall2">Well organised & coordinated - अच्छी तरह से आयोजित और समन्वित</label>
+                <label for="emsOverall2">Well organised &amp; coordinated - अच्छी तरह से आयोजित और समन्वित</label>
               </div>
-              <div class="radio-card">
+              <div class="radio-card sub-option">
                 <input type="checkbox" name="emsOverall" id="emsOverall3" value="good-efforts" />
                 <label for="emsOverall3">Good efforts - अच्छे प्रयास</label>
               </div>
               <div class="radio-card">
                 <input type="checkbox" name="emsOverall" id="emsOverall4" value="scope-of-improvement" />
-                <label for="emsOverall4">Scope of improvement - सुधार की गुंजाइश</label>
+                <label for="emsOverall4">(2) Could be even better - और भी बेहतर किया जा सकता था</label>
               </div>
               <div class="radio-card">
                 <input type="checkbox" name="emsOverall" id="emsOverall5" value="no-zeal-in-satsang" />
-                <label for="emsOverall5">No zeal in satsang - सत्संग में उत्साह की कमी</label>
+                <label for="emsOverall5">(3) Efforts were not clearly visible - प्रयास स्पष्ट रूप से दिखाई नहीं दिए</label>
               </div>
             </div>
             <textarea id="emsOverallRemarks" name="emsOverallRemarks" placeholder="Remarks if any / यदि कोई टिप्पणी हो" style="margin-top: 12px"></textarea>

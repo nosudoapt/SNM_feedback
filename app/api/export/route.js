@@ -94,9 +94,9 @@ const VALUE_MAP = {
   matured: "Matured",
   roaming: "Roaming",
   settled: "Settled down",
-  "lack-of-clarity": "Lack of clarity",
-  "lack-of-mission-ideology": "Lack of ideology of the mission",
-  "lack-of-authenticity": "Lack of authenticity",
+  "lack-of-clarity": "Was there a lack of clarity?",
+  "lack-of-mission-ideology": "Was the mission ideology not clear?",
+  "lack-of-authenticity": "Was there a lack of authenticity?",
   "speaker-list-exceeded": "Was the speaker list exceeded?",
   "more-than-2-incharges-vote-of-thanks": "Did more than 1 Mahatma give vote of thanks at the end?",
   "last-speech-over-10-min": "Did the last speaker take more than 10 min?",
@@ -104,8 +104,8 @@ const VALUE_MAP = {
   "overall-very-good": "Overall very good",
   "well-organised-coordinated": "Well organised & coordinated",
   "good-efforts": "Good efforts",
-  "scope-of-improvement": "Scope of improvement",
-  "no-zeal-in-satsang": "No zeal in satsang",
+  "scope-of-improvement": "Could be even better",
+  "no-zeal-in-satsang": "Efforts were not clearly visible",
   lt20: "Less than 20 min",
   hindi: "Hindi",
   english: "English",
@@ -124,7 +124,7 @@ const VALUE_MAP = {
   "very-good": "Very Good",
   good: "Good",
   average: "Average",
-  poor: "Poor",
+  poor: "Needs improvement",
 };
 
 function presentableValue(value) {
