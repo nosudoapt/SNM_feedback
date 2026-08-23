@@ -89,6 +89,7 @@ const FIELD_LABELS = {
   email: "Email",
   branch: "Branch",
   sewa: "Sewa / Category",
+  available79thSamagam: "Available for attending the meeting in 79th Samagam",
   emsContent: "Ratio of English & Hindi in the Vichar (Branch)",
   balContent: "Used child-friendly (Bal) examples for kids",
   mahilaContent: "Used broader aspects & relevant women examples",

@@ -188,6 +188,41 @@
         background: #fbfbfc;
       }
 
+      .radio-card {
+        position: relative;
+      }
+
+      .radio-card input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+
+      .radio-card label {
+        display: block;
+        min-height: 58px;
+        padding: 16px 18px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+        cursor: pointer;
+        line-height: 1.5;
+        transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+      }
+
+      .radio-card input:checked + label {
+        border-color: rgba(107, 162, 214, 0.45);
+        background: rgba(107, 162, 214, 0.08);
+        color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .radio-pair {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
       .hint {
         margin: 0;
         color: var(--muted);
@@ -495,6 +530,10 @@
           flex-direction: column;
         }
 
+        .radio-pair {
+          grid-template-columns: 1fr;
+        }
+
         .btn {
           width: 100%;
         }
@@ -635,6 +674,24 @@
               <option value="bal">Bal</option>
               <option value="mahila">Mahila</option>
             </select>
+          </div>
+
+          <div class="field">
+            <label>
+              <span class="label-en">Are you available for attending the meeting in the 79th Samagam? *</span>
+              <span class="label-hi">क्या आप 79वें समागम में बैठक में शामिल होने के लिए उपलब्ध हैं? *</span>
+            </label>
+            <div class="radio-pair">
+              <div class="radio-card">
+                <input type="radio" name="available79thSamagam" id="availYes" value="yes" required />
+                <label for="availYes">Yes - हाँ</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="available79thSamagam" id="availNo" value="no" />
+                <label for="availNo">No - नहीं</label>
+              </div>
+            </div>
+            <p class="hint">By clicking Yes, you are confirming that you will be attending the meeting.</p>
           </div>
         </div>
 
