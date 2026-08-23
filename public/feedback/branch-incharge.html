@@ -747,6 +747,23 @@
               </div>
             </div>
 
+            <div class="field hidden" id="contentEmsMessage">
+              <label>
+                <span class="label-en">Was the message of the Mission given strong (prabhavshaali)? *</span>
+                <span class="label-hi">क्या मिशन का संदेश प्रभावशाली रूप से दिया गया? *</span>
+              </label>
+              <div class="radio-pair">
+                <div class="radio-card">
+                  <input type="radio" name="emsMessageStrong" id="emsMsgYes" value="yes" />
+                  <label for="emsMsgYes">Yes - हाँ</label>
+                </div>
+                <div class="radio-card">
+                  <input type="radio" name="emsMessageStrong" id="emsMsgNo" value="no" />
+                  <label for="emsMsgNo">No - नहीं</label>
+                </div>
+              </div>
+            </div>
+
             <div class="field hidden" id="contentBal">
               <label>
                 <span class="label-en">Did the Pracharak Saint use child-friendly (Bal) examples and analogies to help the kids understand the discourse? *</span>
@@ -874,6 +891,7 @@
       const samagamType = document.getElementById("samagamType");
       const contentGeneric = document.getElementById("contentGeneric");
       const contentEms = document.getElementById("contentEms");
+      const contentEmsMessage = document.getElementById("contentEmsMessage");
       const contentBal = document.getElementById("contentBal");
       const contentMahila = document.getElementById("contentMahila");
 
@@ -1283,6 +1301,14 @@
         const hasSelection = value === "ems" || value === "bal" || value === "mahila";
 
         contentGeneric.classList.toggle("hidden", hasSelection);
+        contentEmsMessage.classList.toggle("hidden", value !== "ems");
+
+        const emsMsgFields = contentEmsMessage.querySelectorAll("input[type='radio']");
+        emsMsgFields.forEach((field) => {
+          field.required = value === "ems";
+          field.disabled = value !== "ems";
+          if (value !== "ems") field.checked = false;
+        });
 
         Object.entries(panels).forEach(([key, panel]) => {
           const show = key === value;

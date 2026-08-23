@@ -93,6 +93,7 @@ const FIELD_LABELS = {
   balContent: "Used child-friendly (Bal) examples for kids",
   mahilaContent: "Used broader aspects & relevant women examples",
   emsContentRatio: "Ratio of English & Hindi in the Vichar (EMS)",
+  emsMessageStrong: "Was the message of the Mission strong (prabhavshaali)?",
   arrivalTime: "Arrival time of Pracharak",
   arrivalTimeActual: "Actual arrival time (if late)",
   content: "Content of the Pracharak",
