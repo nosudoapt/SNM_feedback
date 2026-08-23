@@ -7,7 +7,7 @@ const PRACHARAK_COLUMNS = [
   { question: "Where was the Satsang arranged?", keys: ["mahilaLocation", "balLocation", "emsLocation"] },
   { question: "Was the sound and mic quality good?", keys: ["mahilaSound", "balSound", "emsSound"] },
   { question: "Was the particular banner/backdrop installed?", keys: ["mahilaBanner", "balBanner", "emsBanner"] },
-  { question: "Was any scripture used?", keys: ["mahilaScripture", "balScripture", "emsScripture"] },
+  { question: "Was the content of the speakers strong?", keys: ["mahilaScripture", "balScripture", "emsScripture"] },
   { question: "How many Saints were present?", keys: ["mahilaSaints", "balSaints", "emsSaints"] },
   { question: "Ratio - Geet", keys: ["mahilaRatioGeet", "balRatioGeet", "emsRatioGeet"] },
   { question: "Ratio - Vichar", keys: ["mahilaRatioVichar", "balRatioVichar", "emsRatioVichar"] },
