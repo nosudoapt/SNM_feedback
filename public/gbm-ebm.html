@@ -284,6 +284,53 @@
         white-space: pre-wrap;
       }
 
+      .success-box {
+        display: none;
+        margin-top: 18px;
+        padding: 28px 22px;
+        border-radius: 20px;
+        background: linear-gradient(145deg, #e8f9ec, #d4f5dd);
+        border: 2px solid #34a853;
+        text-align: center;
+      }
+
+      .success-box.open {
+        display: block;
+      }
+
+      .success-box .success-emoji {
+        font-size: 44px;
+        line-height: 1;
+      }
+
+      .success-box h2 {
+        font-family: "Comic Sans MS", "Chalkboard SE", "Segoe Print", cursive;
+        color: #1e7e34;
+        font-size: clamp(1.25rem, 5vw, 1.6rem);
+        margin: 10px 0 6px;
+      }
+
+      .success-box p {
+        font-family: "Comic Sans MS", "Chalkboard SE", "Segoe Print", cursive;
+        color: #256b32;
+        font-size: 1rem;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      .success-box .reg-no {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 10px 26px;
+        border-radius: 999px;
+        background: #34a853;
+        color: #fff;
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-weight: 800;
+        font-size: clamp(1.4rem, 6vw, 1.9rem);
+        letter-spacing: 2px;
+      }
+
       .zone-search-wrap {
         position: relative;
       }
@@ -701,6 +748,13 @@
         <div class="result" id="resultPanel" aria-live="polite">
           <pre id="resultJson"></pre>
         </div>
+
+        <div class="success-box" id="successBox" aria-live="polite">
+          <div class="success-emoji">🎉</div>
+          <h2>Badhai ho ji! Registration confirmed 🎊</h2>
+          <p>Aapki registration ho gayi hai ji. Aapka unique number niche hai — ise sambhal kar rakhein.</p>
+          <div class="reg-no" id="regNoBadge"></div>
+        </div>
       </form>
     </main>
 
@@ -738,6 +792,8 @@
       const zoneStatus = document.getElementById("zoneStatus");
       const resultPanel = document.getElementById("resultPanel");
       const resultJson = document.getElementById("resultJson");
+      const successBox = document.getElementById("successBox");
+      const regNoBadge = document.getElementById("regNoBadge");
       const zonePicker = document.getElementById("zonePicker");
       const zonePickerSearch = document.getElementById("zonePickerSearch");
       const zonePickerList = document.getElementById("zonePickerList");
@@ -1225,7 +1281,9 @@
           });
           const data = await res.json();
           if (res.ok) {
-            resultJson.textContent = "Thank you! Your registration has been submitted.\n\nधन्यवाद! आपका पंजीकरण जमा कर दिया गया है।\n\nID: " + data.id;
+            resultPanel.classList.remove("open");
+            successBox.classList.add("open");
+            regNoBadge.textContent = data.regNo || "";
             form.reset();
             clearZoneDetails();
           } else {

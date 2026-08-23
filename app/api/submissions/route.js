@@ -28,7 +28,7 @@ export async function POST(request) {
       payload: body,
     });
 
-    return NextResponse.json({ success: true, id: result.id });
+    return NextResponse.json({ success: true, id: result.id, regNo: result.regNo });
   } catch (err) {
     console.error("Submission error:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
