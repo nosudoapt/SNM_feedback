@@ -11,6 +11,28 @@ const CATEGORY_LABELS = {
   "gbm-ebm": "GBM / EBM Registration",
 };
 
+const VIEWS = [
+  { id: "dashboard", label: "Dashboard" },
+  { id: "gbm-ebm", label: "GBM Registrations" },
+  { id: "branch-incharge", label: "Branch Incharge" },
+  { id: "pracharak-mahatma", label: "Pracharak Mahatma" },
+];
+
+const NEGATIVE_FILTERS = {
+  "pracharak-mahatma": [
+    { id: "sound", label: "Sound needs improvement" },
+    { id: "clarity-no", label: "Message clarity: No" },
+    { id: "content-apt-no", label: "Content apt: No" },
+    { id: "overall-negative", label: "Negative overall rating" },
+    { id: "program-issues", label: "Program issues reported" },
+  ],
+  "branch-incharge": [
+    { id: "arrival-late", label: "Arrived late" },
+    { id: "conduct-not-good", label: "Conduct average/poor" },
+  ],
+  "gbm-ebm": [{ id: "not-available", label: "Not available for 79th Samagam" }],
+};
+
 const FIELD_LABELS = {
   balAge: "Age group(s) participated (Bal)",
   mahilaLocation: "Where was the Satsang arranged?",
@@ -277,6 +299,8 @@ export default function AdminDashboard() {
   const [exporting, setExporting] = useState(false);
   const [attendanceSyncText, setAttendanceSyncText] = useState("");
   const [syncing, setSyncing] = useState(false);
+  const [view, setView] = useState("dashboard");
+  const [negFilters, setNegFilters] = useState([]);
 
   const toastTimer = useRef(null);
 
@@ -313,15 +337,17 @@ export default function AdminDashboard() {
     setRowsLoading(true);
     setRowsError("");
     try {
+      const effectiveCategory = view === "dashboard" ? category : view;
       const params = new URLSearchParams({
         q,
-        category,
+        category: effectiveCategory,
         zoneType,
         sort,
         order,
         page: String(page),
         limit: String(limit),
       });
+      if (negFilters.length) params.set("neg", negFilters.join(","));
       const res = await fetch(`/api/admin/submissions?${params.toString()}`);
       if (res.status === 401) {
         router.push("/admin/login");
@@ -343,7 +369,7 @@ export default function AdminDashboard() {
     } finally {
       setRowsLoading(false);
     }
-  }, [q, category, zoneType, sort, order, page, limit, router]);
+  }, [q, category, view, negFilters, zoneType, sort, order, page, limit, router]);
 
   useEffect(() => {
     fetchStats();
@@ -360,7 +386,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     setPage(1);
-  }, [q, category, zoneType, limit]);
+  }, [q, category, zoneType, limit, view, negFilters]);
 
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
@@ -393,6 +419,10 @@ export default function AdminDashboard() {
 
   function handleAttendanceFile() {
     window.open("/api/attendance/file", "_blank");
+  }
+
+  function toggleNegFilter(id) {
+    setNegFilters((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   }
 
   async function handleAttendanceSync() {
@@ -434,10 +464,11 @@ export default function AdminDashboard() {
     }
   }
 
-  async function handleExport() {
+  async function handleExport(typeOverride) {
     setExporting(true);
+    const type = typeOverride || exportType;
     try {
-      const res = await fetch(`/api/export?range=${exportRange}&type=${exportType}`);
+      const res = await fetch(`/api/export?range=${exportRange}&type=${type}`);
       if (res.status === 401) {
         router.push("/admin/login");
         return;
@@ -452,7 +483,7 @@ export default function AdminDashboard() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `submissions-${exportType}-${exportRange}-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.download = `submissions-${type}-${exportRange}-${new Date().toISOString().slice(0, 10)}.csv`;
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -496,10 +527,23 @@ export default function AdminDashboard() {
       </header>
 
       <div style={s.wrap}>
+        <div style={s.tabBar}>
+          {VIEWS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setView(t.id)}
+              style={{ ...s.tabBtn, ...(view === t.id ? s.tabBtnActive : {}) }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
         {statsLoading && <p style={s.muted}>Loading…</p>}
       {error && <p style={s.error}>{error}</p>}
 
-      {stats && (
+      {view === "dashboard" && stats && (
         <>
           <div style={s.cards}>
             <StatCard label="Last 12 hours" value={stats.last12h} color="#6ba2d6" />
@@ -601,6 +645,34 @@ export default function AdminDashboard() {
               {syncing ? "Syncing…" : "Sync"}
             </button>
           </div>
+        </>
+      )}
+
+      {view !== "dashboard" && (
+        <>
+          <h2 style={s.viewTitle}>{CATEGORY_LABELS[view] || view}</h2>
+
+          {(NEGATIVE_FILTERS[view] || []).length > 0 && (
+            <div style={s.chipRow}>
+              <span style={s.chipRowLabel}>Show only negative:</span>
+              {(NEGATIVE_FILTERS[view] || []).map((f) => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => toggleNegFilter(f.id)}
+                  className="admin-chip"
+                  style={{ ...(negFilters.includes(f.id) ? s.chipActive : s.chip) }}
+                >
+                  {negFilters.includes(f.id) ? "✓ " : ""}{f.label}
+                </button>
+              ))}
+              {negFilters.length > 0 && (
+                <button type="button" onClick={() => setNegFilters([])} style={s.chipClear}>
+                  Clear ✕
+                </button>
+              )}
+            </div>
+          )}
 
           <div style={s.toolbar}>
             <input
@@ -611,14 +683,6 @@ export default function AdminDashboard() {
               style={s.search}
               aria-label="Search submissions"
             />
-            <select value={category} onChange={(e) => setCategory(e.target.value)} style={s.select} aria-label="Filter by category">
-              <option value="all">All categories</option>
-              <option value="mahila">Mahila Samagam</option>
-              <option value="bal">Bal Samagam</option>
-              <option value="ems">EMS</option>
-              <option value="branch-incharge">Branch Incharge</option>
-              <option value="gbm-ebm">GBM / EBM Registration</option>
-            </select>
             <select value={zoneType} onChange={(e) => setZoneType(e.target.value)} style={s.select} aria-label="Filter by zone type">
               <option value="all">All zone types</option>
               <option value="general">General</option>
@@ -634,64 +698,89 @@ export default function AdminDashboard() {
             </span>
           </div>
 
-          <div style={s.tableWrap}>
-            <table style={s.table}>
-              <thead>
-                <tr>
-                  <SortHeader col="created_at" label="Time" sort={sort} order={order} onSort={handleSort} />
-                  <SortHeader col="name" label="Name" sort={sort} order={order} onSort={handleSort} />
-                  <SortHeader col="phone" label="Phone" sort={sort} order={order} onSort={handleSort} />
-                  <SortHeader col="zone_no" label="Zone" sort={sort} order={order} onSort={handleSort} />
-                  <th style={s.th}>Category</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rowsLoading ? (
+          {view === "gbm-ebm" ? (
+            <div style={s.tableWrap}>
+              <table style={s.table}>
+                <thead>
                   <tr>
-                    <td colSpan={5} style={s.emptyCell}>
-                      Loading…
-                    </td>
+                    <th style={s.th}>Reg No</th>
+                    <SortHeader col="name" label="Name" sort={sort} order={order} onSort={handleSort} />
+                    <SortHeader col="phone" label="Phone" sort={sort} order={order} onSort={handleSort} />
+                    <th style={s.th}>Branch</th>
+                    <SortHeader col="zone_no" label="Zone" sort={sort} order={order} onSort={handleSort} />
+                    <th style={s.th}>Sewa</th>
+                    <th style={s.th}>79th Samagam</th>
+                    <SortHeader col="created_at" label="Time" sort={sort} order={order} onSort={handleSort} />
                   </tr>
-                ) : rowsError ? (
+                </thead>
+                <tbody>
+                  {rowsLoading ? (
+                    <tr><td colSpan={8} style={s.emptyCell}>Loading…</td></tr>
+                  ) : rowsError ? (
+                    <tr><td colSpan={8} style={s.emptyCell}><span style={s.error}>{rowsError}</span></td></tr>
+                  ) : rows.length === 0 ? (
+                    <tr><td colSpan={8} style={s.emptyCell}>No registrations match.</td></tr>
+                  ) : (
+                    rows.map((row) => (
+                      <tr key={row.id} className="admin-tr" style={s.tr} tabIndex={0}
+                        onClick={() => setSelected(row)}
+                        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(row); } }}
+                      >
+                        <td style={{ ...s.td, fontWeight: 800 }}>{row.reg_no || "—"}</td>
+                        <td style={s.td}>{row.name}</td>
+                        <td style={s.td}>{row.phone}</td>
+                        <td style={s.td}>{(row.payload && row.payload.branch) || "—"}</td>
+                        <td style={s.td}>{row.zone_no} — {row.zone_name}{row.sector_name ? ` / ${row.sector_name}` : ""}</td>
+                        <td style={s.td}>{(row.payload && row.payload.sewa) || "—"}</td>
+                        <td style={s.td}>
+                          {(row.payload && row.payload.available79thSamagam) === "no" ? (
+                            <span style={s.negBadge}>No</span>
+                          ) : (
+                            <span style={s.posBadge}>Yes</span>
+                          )}
+                        </td>
+                        <td style={s.td}>{formatDate(row.created_at)}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div style={s.tableWrap}>
+              <table style={s.table}>
+                <thead>
                   <tr>
-                    <td colSpan={5} style={s.emptyCell}>
-                      <span style={s.error}>{rowsError}</span>
-                    </td>
+                    <SortHeader col="created_at" label="Time" sort={sort} order={order} onSort={handleSort} />
+                    <SortHeader col="name" label="Name" sort={sort} order={order} onSort={handleSort} />
+                    <SortHeader col="phone" label="Phone" sort={sort} order={order} onSort={handleSort} />
+                    <SortHeader col="zone_no" label="Zone" sort={sort} order={order} onSort={handleSort} />
                   </tr>
-                ) : rows.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} style={s.emptyCell}>
-                      No submissions match. Try clearing the filters.
-                    </td>
-                  </tr>
-                ) : (
-                  rows.map((row) => (
-                    <tr
-                      key={row.id}
-                      className="admin-tr"
-                      style={s.tr}
-                      tabIndex={0}
-                      onClick={() => setSelected(row)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          setSelected(row);
-                        }
-                      }}
-                    >
-                      <td style={s.td}>{formatDate(row.created_at)}</td>
-                      <td style={s.td}>{row.name}</td>
-                      <td style={s.td}>{row.phone}</td>
-                      <td style={s.td}>
-                        {row.zone_no} — {row.zone_name}
-                      </td>
-                      <td style={s.td}>{CATEGORY_LABELS[row.category] || row.category}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {rowsLoading ? (
+                    <tr><td colSpan={4} style={s.emptyCell}>Loading…</td></tr>
+                  ) : rowsError ? (
+                    <tr><td colSpan={4} style={s.emptyCell}><span style={s.error}>{rowsError}</span></td></tr>
+                  ) : rows.length === 0 ? (
+                    <tr><td colSpan={4} style={s.emptyCell}>No submissions match.</td></tr>
+                  ) : (
+                    rows.map((row) => (
+                      <tr key={row.id} className="admin-tr" style={s.tr} tabIndex={0}
+                        onClick={() => setSelected(row)}
+                        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(row); } }}
+                      >
+                        <td style={s.td}>{formatDate(row.created_at)}</td>
+                        <td style={s.td}>{row.name}</td>
+                        <td style={s.td}>{row.phone}</td>
+                        <td style={s.td}>{row.zone_no} — {row.zone_name}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           {!rowsLoading && !rowsError && rows.length > 0 && (
             <div style={s.pager}>
@@ -708,6 +797,28 @@ export default function AdminDashboard() {
           )}
         </>
       )}
+
+      {view === "gbm-ebm" && (
+            <div style={s.exportRow}>
+              <button onClick={() => handleExport("gbm-ebm")} disabled={exporting} style={s.exportBtn}>
+                {exporting ? "Downloading…" : "Download CSV"}
+              </button>
+              <button onClick={handleAttendanceFile} style={s.exportBtn} title="Offline attendance file for volunteers' phones">
+                Attendance file
+              </button>
+              <textarea
+                placeholder="Paste attendance sync code (JSON)"
+                value={attendanceSyncText}
+                onChange={(e) => setAttendanceSyncText(e.target.value)}
+                style={{ ...s.search, height: 44, paddingTop: 10, resize: "vertical", fontFamily: "monospace", fontSize: 12, flex: "1 1 260px" }}
+                aria-label="Attendance sync code"
+              />
+              <button onClick={handleAttendanceSync} disabled={syncing || !attendanceSyncText.trim()} style={s.exportBtn}>
+                {syncing ? "Syncing…" : "Sync"}
+              </button>
+            </div>
+          )}
+
 
       {toast && (
         <div style={toast.type === "error" ? s.toastError : s.toast} role="status">
@@ -1002,4 +1113,82 @@ const s = {
   },
   answerLabel: { fontSize: "0.9rem", color: "#5f7892", fontWeight: 600, lineHeight: 1.45 },
   answerValue: { fontSize: "0.98rem", color: "#1f2d3d", lineHeight: 1.5, wordBreak: "break-word", whiteSpace: "pre-wrap" },
+  tabBar: {
+    display: "flex",
+    gap: 10,
+    flexWrap: "wrap",
+    margin: "0 0 22px",
+    padding: 6,
+    background: "rgba(107,162,214,0.08)",
+    borderRadius: 999,
+    width: "fit-content",
+  },
+  tabBtn: {
+    border: 0,
+    background: "transparent",
+    color: "#5f7892",
+    fontWeight: 700,
+    fontSize: "0.95rem",
+    padding: "10px 20px",
+    borderRadius: 999,
+    cursor: "pointer",
+    transition: "all 160ms ease",
+  },
+  tabBtnActive: {
+    background: "#45688f",
+    color: "#fff",
+    boxShadow: "0 4px 14px rgba(69,104,143,0.35)",
+  },
+  viewTitle: { margin: "0 0 14px", fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.35rem", color: "#33485e" },
+  chipRow: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 16 },
+  chipRowLabel: { fontSize: "0.82rem", fontWeight: 700, color: "#5f7892", textTransform: "uppercase", letterSpacing: "0.04em" },
+  chip: {
+    border: "1.5px solid #c4d6e8",
+    background: "#fff",
+    color: "#45688f",
+    fontWeight: 600,
+    fontSize: "0.88rem",
+    padding: "9px 16px",
+    borderRadius: 999,
+    cursor: "pointer",
+    transition: "all 150ms ease",
+  },
+  chipActive: {
+    border: "1.5px solid #b02a2a",
+    background: "linear-gradient(135deg, #fdecea, #fbdcdc)",
+    color: "#b02a2a",
+    fontWeight: 800,
+    fontSize: "0.88rem",
+    padding: "9px 16px",
+    borderRadius: 999,
+    cursor: "pointer",
+    boxShadow: "0 3px 10px rgba(176,42,42,0.18)",
+    transform: "scale(1.03)",
+    transition: "all 150ms ease",
+  },
+  chipClear: {
+    border: 0,
+    background: "transparent",
+    color: "#5f7892",
+    fontWeight: 700,
+    fontSize: "0.85rem",
+    cursor: "pointer",
+    textDecoration: "underline",
+  },
+  negBadge: {
+    background: "rgba(176,42,42,0.12)",
+    color: "#b02a2a",
+    fontWeight: 800,
+    fontSize: "0.8rem",
+    padding: "4px 12px",
+    borderRadius: 999,
+  },
+  posBadge: {
+    background: "rgba(47,158,126,0.12)",
+    color: "#1e7e34",
+    fontWeight: 800,
+    fontSize: "0.8rem",
+    padding: "4px 12px",
+    borderRadius: 999,
+  },
 };
