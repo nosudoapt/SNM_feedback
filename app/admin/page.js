@@ -12,11 +12,53 @@ const CATEGORY_LABELS = {
 };
 
 const VIEWS = [
-  { id: "dashboard", label: "Dashboard" },
-  { id: "gbm-ebm", label: "GBM Registrations" },
-  { id: "branch-incharge", label: "Branch Incharge" },
-  { id: "pracharak-mahatma", label: "Pracharak Mahatma" },
+  { id: "dashboard", label: "Dashboard", sub: "Overview of all feedback and registrations" },
+  { id: "gbm-ebm", label: "GBM Registrations", sub: "Row-wise registration data, attendance and exports" },
+  { id: "branch-incharge", label: "Branch Incharge", sub: "Review feedback and filter negative responses" },
+  { id: "pracharak-mahatma", label: "Pracharak Mahatma", sub: "Review feedback and filter negative responses" },
 ];
+
+const svgProps = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.9, strokeLinecap: "round", strokeLinejoin: "round" };
+
+const NAV_ICONS = {
+  dashboard: (
+    <svg {...svgProps}><rect x="3" y="3" width="7" height="9" rx="1.5" /><rect x="14" y="3" width="7" height="5" rx="1.5" /><rect x="14" y="12" width="7" height="9" rx="1.5" /><rect x="3" y="16" width="7" height="5" rx="1.5" /></svg>
+  ),
+  "gbm-ebm": (
+    <svg {...svgProps}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M19 8v6M22 11h-6" /></svg>
+  ),
+  "branch-incharge": (
+    <svg {...svgProps}><path d="M3 21h18" /><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" /><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2" /></svg>
+  ),
+  "pracharak-mahatma": (
+    <svg {...svgProps}><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><path d="M12 19v3" /></svg>
+  ),
+};
+
+const IconLogout = (
+  <svg {...svgProps}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="m16 17 5-5-5-5" /><path d="M21 12H9" /></svg>
+);
+
+const IconCheck = (
+  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+);
+
+const IconSearch = (
+  <svg {...svgProps}><circle cx="11" cy="11" r="7" /><path d="m21 21-4-4" /></svg>
+);
+
+const ICON_CLOCK = (
+  <svg {...svgProps}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+);
+const ICON_CAL = (
+  <svg {...svgProps}><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 11h18" /></svg>
+);
+const ICON_ALL = (
+  <svg {...svgProps}><path d="M3 12h4l3-8 4 16 3-8h4" /></svg>
+);
+const ICON_EXPORT = (
+  <svg {...svgProps}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /><path d="M12 15V3" /></svg>
+);
 
 const NEGATIVE_FILTERS = {
   "pracharak-mahatma": [
@@ -514,31 +556,44 @@ export default function AdminDashboard() {
   const totalPages = Math.max(1, Math.ceil(total / limit));
   const detail = selected ? buildDetailSections(selected.payload || {}, selected) : null;
 
-  return (
-    <>
-      <header style={s.header}>
-        <div style={s.brand}>
-          <img src="/logo/logo.webp" alt="Logo" style={s.logo} />
-        </div>
-        <h1 style={s.title}>Admin Dashboard</h1>
-        <button onClick={handleLogout} style={s.logoutBtn}>
-          Logout
-        </button>
-      </header>
+  const currentView = VIEWS.find((v) => v.id === view) || VIEWS[0];
 
-      <div style={s.wrap}>
-        <div style={s.tabBar}>
-          {VIEWS.map((t) => (
+  return (
+    <div className="admin-shell" style={s.shell}>
+      <aside className="admin-sidebar" style={s.sidebar}>
+        <div style={s.sideBrand}>
+          <img src="/logo/logo.webp" alt="Logo" style={s.logo} />
+          <span className="side-brand-text" style={s.sideBrandText}>SNM Admin</span>
+        </div>
+        <nav style={s.nav}>
+          {VIEWS.map((v) => (
             <button
-              key={t.id}
+              key={v.id}
               type="button"
-              onClick={() => setView(t.id)}
-              style={{ ...s.tabBtn, ...(view === t.id ? s.tabBtnActive : {}) }}
+              onClick={() => setView(v.id)}
+              title={v.label}
+              className="admin-nav-item" style={{ ...s.navItem, ...(view === v.id ? s.navItemActive : {}) }}
             >
-              {t.label}
+              <span style={s.navIcon}>{NAV_ICONS[v.id]}</span>
+              <span className="nav-label">{v.label}</span>
             </button>
           ))}
-        </div>
+        </nav>
+        <button type="button" className="admin-nav-item side-logout" onClick={handleLogout} style={{ ...(s.navItem), color: "#B91C1C" }}>
+          <span style={s.navIcon}>{IconLogout}</span>
+          <span className="nav-label">Logout</span>
+        </button>
+      </aside>
+
+      <main className="admin-main" style={s.mainWrap}>
+        <header style={s.topbar}>
+          <div>
+            <h1 style={s.title}>{currentView.label}</h1>
+            <p style={s.topbarSub}>{currentView.sub}</p>
+          </div>
+        </header>
+
+      <div style={s.wrap}>
 
         {statsLoading && <p style={s.muted}>Loading…</p>}
       {error && <p style={s.error}>{error}</p>}
@@ -546,14 +601,15 @@ export default function AdminDashboard() {
       {view === "dashboard" && stats && (
         <>
           <div style={s.cards}>
-            <StatCard label="Last 12 hours" value={stats.last12h} color="#6ba2d6" />
-            <StatCard label="Last 24 hours" value={stats.last24h} color="#7fb0dd" />
-            <StatCard label="Today" value={stats.today} color="#79b8c9" />
-            <StatCard label="All Submissions" value={stats.total} color="#45688f" />
+            <StatCard label="Last 12 hours" value={stats.last12h} color="#2563EB" icon={ICON_CLOCK} />
+            <StatCard label="Last 24 hours" value={stats.last24h} color="#0891B2" icon={ICON_CLOCK} />
+            <StatCard label="Today" value={stats.today} color="#7C3AED" icon={ICON_CAL} />
+            <StatCard label="All Submissions" value={stats.total} color="#1D4ED8" icon={ICON_ALL} />
             <StatCard
               label="Since Last Export"
               value={stats.sinceLastExport}
-              color="#2f9e7e"
+              color="#059669"
+              icon={ICON_EXPORT}
               highlight={stats.sinceLastExport > 0}
             />
           </div>
@@ -663,7 +719,10 @@ export default function AdminDashboard() {
                   className="admin-chip"
                   style={{ ...(negFilters.includes(f.id) ? s.chipActive : s.chip) }}
                 >
-                  {negFilters.includes(f.id) ? "✓ " : ""}{f.label}
+                  <span style={{ ...s.chipCheck, ...(negFilters.includes(f.id) ? s.chipCheckOn : {}) }}>
+                    {negFilters.includes(f.id) ? IconCheck : null}
+                  </span>
+                  {f.label}
                 </button>
               ))}
               {negFilters.length > 0 && (
@@ -675,14 +734,17 @@ export default function AdminDashboard() {
           )}
 
           <div style={s.toolbar}>
-            <input
-              type="search"
-              placeholder="Search name, phone, zone…"
-              value={qInput}
-              onChange={(e) => setQInput(e.target.value)}
-              style={s.search}
-              aria-label="Search submissions"
-            />
+            <div style={s.searchWrap}>
+              <span style={s.searchIcon}>{IconSearch}</span>
+              <input
+                type="search"
+                placeholder="Search name, phone, zone…"
+                value={qInput}
+                onChange={(e) => setQInput(e.target.value)}
+                style={s.search}
+                aria-label="Search submissions"
+              />
+            </div>
             <select value={zoneType} onChange={(e) => setZoneType(e.target.value)} style={s.select} aria-label="Filter by zone type">
               <option value="all">All zone types</option>
               <option value="general">General</option>
@@ -820,12 +882,6 @@ export default function AdminDashboard() {
           )}
 
 
-      {toast && (
-        <div style={toast.type === "error" ? s.toastError : s.toast} role="status">
-          {toast.msg}
-        </div>
-      )}
-
       {selected && detail && (
         <div style={s.drawerWrap} role="dialog" aria-modal="true" aria-label="Submission details">
           <div style={s.drawerBackdrop} onClick={() => setSelected(null)} />
@@ -860,335 +916,431 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+
+      {toast && (
+        <div style={toast.type === "error" ? s.toastError : s.toast} role="status">
+          {toast.msg}
+        </div>
+      )}
       </div>
-    </>
+    </main>
+    </div>
   );
 }
 
-function StatCard({ label, value, color, highlight }) {
+function StatCard({ label, value, color, icon, highlight }) {
   return (
     <div
+      className="stat-card"
       style={{
         ...s.card,
-        background: `linear-gradient(135deg, ${color}E6, ${color}99)`,
-        ...(highlight ? { boxShadow: "0 0 0 3px rgba(47,158,126,0.35), 0 8px 24px rgba(96,136,172,0.12)" } : {}),
+        ...(highlight
+          ? { borderColor: "rgba(47,158,126,0.5)", boxShadow: "0 6px 20px rgba(47,158,126,0.16)" }
+          : {}),
       }}
     >
-      <div style={s.cardValue}>{value}</div>
-      <div style={s.cardLabel}>{label}</div>
+      <span style={{ ...s.cardIcon, background: `${color}14`, color }}>{icon}</span>
+      <div>
+        <div style={s.cardValue}>{value}</div>
+        <div style={s.cardLabel}>{label}</div>
+      </div>
     </div>
   );
 }
 
 const s = {
-  wrap: {
-    maxWidth: 1180,
-    margin: "0 auto",
-    padding: "0 24px 60px",
-    fontFamily: '"Inter", system-ui, sans-serif',
-    color: "#33485e",
-    minHeight: "100vh",
-  },
-  header: {
-    position: "relative",
+  shell: {
     display: "flex",
-    justifyContent: "space-between",
+    minHeight: "100vh",
+    fontFamily: '"Inter", system-ui, sans-serif',
+    color: "#1f2937",
+    background: "#F8FAFC",
+  },
+
+  // ---------- Sidebar ----------
+  sidebar: {
+    width: 248,
+    flexShrink: 0,
+    position: "sticky",
+    top: 0,
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    background: "#FFFFFF",
+    borderRight: "1px solid #E5EAF1",
+    padding: "20px 14px",
+    gap: 6,
+  },
+  sideBrand: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    padding: "4px 10px 18px",
+    borderBottom: "1px solid #EEF2F7",
+    marginBottom: 12,
+  },
+  sideBrandText: { fontWeight: 800, fontSize: "1.02rem", color: "#0F172A", letterSpacing: "-0.01em" },
+  logo: { height: 34, borderRadius: 8 },
+  nav: { display: "flex", flexDirection: "column", gap: 4, flex: 1 },
+  navItem: {
+    display: "flex",
     alignItems: "center",
     gap: 12,
-    width: "100%",
-    padding: "14px 24px",
-    marginBottom: 26,
-  },
-  brand: { display: "flex", alignItems: "center", gap: 16, flex: 1 },
-  logo: { height: 52, width: "auto", objectFit: "contain", flexShrink: 0 },
-  title: {
-    margin: 0,
-    fontFamily: "'Space Grotesk', sans-serif",
-    fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
-    color: "#33485e",
-    position: "absolute",
-    left: "50%",
-    transform: "translateX(-50%)",
+    border: 0,
+    background: "transparent",
+    color: "#475569",
+    fontSize: "0.92rem",
+    fontWeight: 600,
+    fontFamily: "inherit",
+    textAlign: "left",
+    padding: "11px 14px",
+    borderRadius: 12,
+    cursor: "pointer",
+    transition: "background 150ms ease, color 150ms ease",
     whiteSpace: "nowrap",
   },
-  logoutBtn: {
-    padding: "10px 20px",
-    border: "1px solid #c7d8e8",
-    borderRadius: 999,
-    background: "white",
-    color: "#33485e",
-    fontWeight: 600,
-    cursor: "pointer",
-    fontFamily: "inherit",
-    fontSize: "0.92rem",
+  navItemActive: {
+    background: "#EEF4FF",
+    color: "#1D4ED8",
+    boxShadow: "inset 3px 0 0 #1D4ED8",
   },
-  muted: { color: "#5f7892" },
-  last: { color: "#5f7892", fontSize: "0.9rem", marginBottom: 16 },
-  error: { color: "#b91c1c", fontWeight: 600 },
-  cards: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 24 },
+  navIcon: { display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
+  sideLogout: { color: "#B91C1C" },
+
+  // ---------- Main ----------
+  mainWrap: { flex: 1, minWidth: 0, display: "flex", flexDirection: "column" },
+  topbar: {
+    position: "sticky",
+    top: 0,
+    zIndex: 20,
+    background: "rgba(248,250,252,0.88)",
+    backdropFilter: "blur(8px)",
+    borderBottom: "1px solid #E5EAF1",
+    padding: "16px 32px 14px",
+  },
+  title: { margin: 0, fontSize: "1.35rem", fontWeight: 800, color: "#0F172A", letterSpacing: "-0.02em" },
+  topbarSub: { margin: "3px 0 0", fontSize: "0.85rem", color: "#64748B" },
+  wrap: { maxWidth: 1180, width: "100%", margin: "0 auto", padding: "26px 32px 70px" },
+
+  muted: { color: "#64748B" },
+  error: { color: "#DC2626" },
+  last: { marginTop: -6, marginBottom: 18, fontSize: "0.82rem", color: "#94A3B8" },
+
+  // ---------- KPI cards ----------
+  cards: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14, marginBottom: 22 },
   card: {
-    background: "white",
-    borderRadius: 20,
-    padding: "22px 18px",
-    border: "1px solid rgba(255,255,255,0.7)",
-    boxShadow: "0 8px 24px rgba(96,136,172,0.12)",
+    display: "flex",
+    alignItems: "center",
+    gap: 14,
+    background: "#FFFFFF",
+    border: "1px solid #E5EAF1",
+    borderRadius: 16,
+    padding: "16px 18px",
+    transition: "box-shadow 180ms ease, transform 180ms ease",
   },
-  cardValue: { fontSize: "2.2rem", fontWeight: 800, lineHeight: 1.2, color: "#ffffff" },
-  cardLabel: { fontSize: "0.88rem", color: "rgba(255,255,255,0.95)", marginTop: 6, fontWeight: 600 },
-  charts: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 16, marginBottom: 24 },
+  cardIcon: {
+    width: 42,
+    height: 42,
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12,
+    fontWeight: 800,
+    fontSize: "1rem",
+  },
+  cardValue: { fontSize: "1.55rem", fontWeight: 800, color: "#0F172A", lineHeight: 1.15, fontVariantNumeric: "tabular-nums" },
+  cardLabel: { fontSize: "0.78rem", color: "#64748B", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" },
+
+  // ---------- Charts ----------
+  charts: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 14, marginBottom: 24 },
   chartCard: {
-    background: "white",
-    border: "1px solid #d9e5f1",
-    borderRadius: 20,
+    background: "#FFFFFF",
+    border: "1px solid #E5EAF1",
+    borderRadius: 16,
     padding: "18px 20px",
-    boxShadow: "0 8px 24px rgba(96,136,172,0.08)",
+    boxShadow: "0 1px 2px rgba(15,23,42,0.04)",
     minWidth: 0,
   },
-  sectionTitle: { margin: "0 0 14px", fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.02rem", color: "#33485e" },
-  bars: { display: "flex", alignItems: "flex-end", gap: 4, height: 150 },
-  barCol: { flex: "1 1 0", minWidth: 16, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", gap: 3, height: "100%" },
-  barValue: { fontSize: "0.72rem", color: "#5f7892", fontWeight: 700, lineHeight: 1 },
-  barTrack: { width: "100%", maxWidth: 30, height: 104, background: "rgba(107,162,214,0.12)", borderRadius: 8, display: "flex", alignItems: "flex-end", overflow: "hidden" },
-  barFill: { width: "100%", minHeight: 2, borderRadius: 8, background: "linear-gradient(180deg, #91c7e6, #6ba2d6)" },
-  barLabel: { fontSize: "0.66rem", color: "#5f7892", lineHeight: 1, whiteSpace: "nowrap" },
+  sectionTitle: { margin: "0 0 14px", fontSize: "0.95rem", fontWeight: 700, color: "#334155" },
+  bars: { display: "flex", alignItems: "flex-end", gap: 4, height: 140 },
+  barCol: { flex: "1 1 0", minWidth: 14, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-end", gap: 3, height: "100%" },
+  barValue: { fontSize: "0.68rem", color: "#64748B", fontWeight: 700, lineHeight: 1 },
+  barTrack: { width: "100%", maxWidth: 28, height: 96, background: "#EEF2F7", borderRadius: 7, display: "flex", alignItems: "flex-end", overflow: "hidden" },
+  barFill: { width: "100%", minHeight: 2, borderRadius: 7, background: "linear-gradient(180deg, #3B82F6, #1D4ED8)" },
+  barLabel: { fontSize: "0.62rem", color: "#94A3B8", lineHeight: 1, whiteSpace: "nowrap" },
   hRow: { display: "flex", alignItems: "center", gap: 10, marginBottom: 10 },
-  hLabel: { width: 130, flexShrink: 0, fontSize: "0.85rem", color: "#33485e", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontWeight: 600 },
-  hTrack: { flex: 1, height: 16, background: "rgba(107,162,214,0.12)", borderRadius: 8, overflow: "hidden" },
-  hFill: { height: "100%", borderRadius: 8, background: "linear-gradient(90deg, #91c7e6, #6ba2d6)" },
-  hCount: { width: 42, flexShrink: 0, textAlign: "right", fontWeight: 800, color: "#33485e", fontSize: "0.9rem" },
-  exportRow: { display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" },
-  toolbar: { display: "flex", gap: 12, marginBottom: 14, flexWrap: "wrap", alignItems: "center" },
+  hLabel: { width: 130, flexShrink: 0, fontSize: "0.83rem", color: "#334155", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontWeight: 600 },
+  hTrack: { flex: 1, height: 14, background: "#EEF2F7", borderRadius: 999, overflow: "hidden" },
+  hFill: { height: "100%", borderRadius: 999, background: "linear-gradient(90deg, #60A5FA, #2563EB)" },
+  hCount: { width: 42, flexShrink: 0, textAlign: "right", fontWeight: 800, color: "#334155", fontSize: "0.86rem", fontVariantNumeric: "tabular-nums" },
+
+  // ---------- Controls ----------
+  exportRow: { display: "flex", gap: 10, marginBottom: 18, flexWrap: "wrap", alignItems: "center" },
+  toolbar: { display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap", alignItems: "center" },
+  searchWrap: {
+    position: "relative",
+    display: "flex",
+    alignItems: "center",
+    flex: "1 1 260px",
+    minWidth: 220,
+  },
+  searchIcon: {
+    position: "absolute",
+    left: 13,
+    display: "inline-flex",
+    color: "#94A3B8",
+    pointerEvents: "none",
+  },
   search: {
-    minHeight: 46,
-    padding: "10px 14px",
-    border: "1px solid #c7d8e8",
-    borderRadius: 14,
-    background: "white",
-    fontSize: "0.95rem",
+    width: "100%",
+    minHeight: 44,
+    paddingLeft: 40,
+    paddingRight: 14,
+    border: "1px solid #DBE3EC",
+    borderRadius: 12,
+    background: "#FFFFFF",
+    fontSize: "0.92rem",
     fontFamily: "inherit",
-    color: "#33485e",
-    flex: "1 1 220px",
-    minWidth: 200,
+    color: "#1F2937",
+    outline: "none",
+    transition: "border-color 140ms ease, box-shadow 140ms ease",
   },
   select: {
-    minHeight: 46,
-    padding: "10px 14px",
-    border: "1px solid #c7d8e8",
-    borderRadius: 14,
-    background: "white",
-    fontSize: "0.95rem",
+    minHeight: 44,
+    padding: "9px 13px",
+    border: "1px solid #DBE3EC",
+    borderRadius: 12,
+    background: "#FFFFFF",
+    fontSize: "0.92rem",
     fontFamily: "inherit",
-    color: "#33485e",
-  },
-  resultCount: { marginLeft: "auto", color: "#5f7892", fontSize: "0.9rem", fontWeight: 600, whiteSpace: "nowrap" },
-  exportBtn: {
-    minHeight: 46,
-    padding: "0 24px",
-    border: 0,
-    borderRadius: 999,
-    fontWeight: 800,
+    color: "#1F2937",
     cursor: "pointer",
-    color: "white",
-    background: "linear-gradient(135deg, #6ba2d6, #91c7e6)",
-    boxShadow: "0 12px 24px rgba(107,162,214,0.22)",
-    fontFamily: "inherit",
-    fontSize: "0.95rem",
   },
-  tableWrap: { overflowX: "auto", borderRadius: 20, border: "1px solid #d9e5f1", background: "white" },
-  table: { width: "100%", borderCollapse: "collapse", fontSize: "0.92rem" },
+  resultCount: { marginLeft: "auto", color: "#64748B", fontSize: "0.86rem", fontWeight: 600, whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" },
+  exportBtn: {
+    minHeight: 44,
+    padding: "0 20px",
+    border: "1px solid transparent",
+    borderRadius: 12,
+    fontWeight: 700,
+    cursor: "pointer",
+    color: "#FFFFFF",
+    background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
+    boxShadow: "0 2px 8px rgba(29,78,216,0.28)",
+    fontFamily: "inherit",
+    fontSize: "0.9rem",
+    transition: "filter 140ms ease, transform 140ms ease",
+  },
+
+  // ---------- Filter chips (Material-style) ----------
+  viewTitle: { display: "none" },
+  chipRow: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 16 },
+  chipRowLabel: { fontSize: "0.74rem", fontWeight: 800, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.06em", marginRight: 4 },
+  chip: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 7,
+    border: "1px solid #D5DEE9",
+    background: "#FFFFFF",
+    color: "#3B4A5C",
+    fontWeight: 600,
+    fontSize: "0.86rem",
+    padding: "8px 15px",
+    borderRadius: 999,
+    cursor: "pointer",
+    fontFamily: "inherit",
+    transition: "all 160ms ease",
+    boxShadow: "0 1px 2px rgba(15,23,42,0.05)",
+  },
+  chipActive: {
+    border: "1.5px solid #1D4ED8",
+    background: "#EAF0FE",
+    color: "#1E40AF",
+    fontWeight: 700,
+    boxShadow: "0 2px 8px rgba(29,78,216,0.16)",
+    transform: "translateY(-1px)",
+  },
+  chipCheck: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 17,
+    height: 17,
+    marginLeft: -6,
+    marginRight: -4,
+    borderRadius: 999,
+    background: "#1D4ED8",
+    color: "#fff",
+  },
+  chipCheckOn: {},
+  chipClear: {
+    border: 0,
+    background: "transparent",
+    color: "#64748B",
+    fontWeight: 700,
+    fontSize: "0.82rem",
+    cursor: "pointer",
+    textDecoration: "underline",
+    fontFamily: "inherit",
+  },
+
+  // ---------- Table ----------
+  tableWrap: {
+    overflowX: "auto",
+    borderRadius: 16,
+    border: "1px solid #E5EAF1",
+    background: "#FFFFFF",
+    boxShadow: "0 1px 3px rgba(15,23,42,0.05)",
+  },
+  table: { width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" },
   th: {
     textAlign: "left",
-    padding: "14px 16px",
+    padding: "13px 16px",
     fontWeight: 700,
-    borderBottom: "1px solid #d9e5f1",
-    color: "#33485e",
+    fontSize: "0.72rem",
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
+    color: "#64748B",
+    background: "#F8FAFC",
+    borderBottom: "1px solid #E5EAF1",
     whiteSpace: "nowrap",
+    position: "sticky",
+    top: 0,
   },
   sortBtn: {
     border: 0,
     background: "transparent",
     padding: 0,
     font: "inherit",
-    fontWeight: 700,
     color: "inherit",
+    fontWeight: "inherit",
+    letterSpacing: "inherit",
+    textTransform: "inherit",
     cursor: "pointer",
-    fontSize: "0.92rem",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
   },
-  tr: {
-    borderBottom: "1px solid rgba(217,229,241,0.5)",
-    cursor: "pointer",
-    outline: "none",
-  },
-  td: { padding: "12px 16px", whiteSpace: "nowrap" },
-  emptyCell: { padding: "28px 16px", textAlign: "center", color: "#5f7892" },
-  pager: { display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginTop: 18 },
-  pageBtn: {
-    minHeight: 40,
-    padding: "0 18px",
-    border: "1px solid #c7d8e8",
-    borderRadius: 999,
-    background: "white",
-    color: "#33485e",
+  td: { padding: "13px 16px", borderBottom: "1px solid #F1F5F9", color: "#1F2937", verticalAlign: "middle" },
+  tr: { cursor: "pointer", transition: "background 120ms ease" },
+  emptyCell: { padding: "36px 18px", textAlign: "center", color: "#64748B" },
+  negBadge: {
+    display: "inline-block",
+    background: "#FEF2F2",
+    border: "1px solid #FECACA",
+    color: "#B91C1C",
     fontWeight: 700,
+    fontSize: "0.76rem",
+    padding: "3px 11px",
+    borderRadius: 999,
+  },
+  posBadge: {
+    display: "inline-block",
+    background: "#F0FDF4",
+    border: "1px solid #BBF7D0",
+    color: "#15803D",
+    fontWeight: 700,
+    fontSize: "0.76rem",
+    padding: "3px 11px",
+    borderRadius: 999,
+  },
+
+  // ---------- Pager / toast / drawer ----------
+  pager: { display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginTop: 18 },
+  pageInfo: { color: "#64748B", fontSize: "0.88rem", fontWeight: 600, fontVariantNumeric: "tabular-nums" },
+  pageBtn: {
+    minHeight: 38,
+    padding: "0 18px",
+    border: "1px solid #DBE3EC",
+    borderRadius: 10,
+    background: "#FFFFFF",
+    color: "#334155",
+    fontWeight: 700,
+    fontSize: "0.88rem",
     cursor: "pointer",
     fontFamily: "inherit",
-    fontSize: "0.9rem",
+    transition: "background 140ms ease",
   },
-  pageInfo: { color: "#5f7892", fontSize: "0.92rem", fontWeight: 600 },
   toast: {
     position: "fixed",
     bottom: 24,
     left: "50%",
     transform: "translateX(-50%)",
-    background: "#2f9e7e",
-    color: "white",
-    padding: "12px 20px",
-    borderRadius: 999,
-    fontWeight: 700,
-    fontSize: "0.95rem",
-    boxShadow: "0 12px 30px rgba(47,158,126,0.35)",
-    zIndex: 90,
+    background: "#0F172A",
+    color: "#fff",
+    padding: "12px 22px",
+    borderRadius: 12,
+    fontSize: "0.9rem",
+    fontWeight: 600,
+    zIndex: 100,
+    boxShadow: "0 10px 30px rgba(15,23,42,0.3)",
   },
   toastError: {
     position: "fixed",
     bottom: 24,
     left: "50%",
     transform: "translateX(-50%)",
-    background: "#b91c1c",
-    color: "white",
-    padding: "12px 20px",
-    borderRadius: 999,
-    fontWeight: 700,
-    fontSize: "0.95rem",
-    boxShadow: "0 12px 30px rgba(185,28,28,0.35)",
-    zIndex: 90,
+    background: "#DC2626",
+    color: "#fff",
+    padding: "12px 22px",
+    borderRadius: 12,
+    fontSize: "0.9rem",
+    fontWeight: 600,
+    zIndex: 100,
+    boxShadow: "0 10px 30px rgba(220,38,38,0.35)",
   },
-  drawerWrap: { position: "fixed", inset: 0, zIndex: 70, display: "flex", justifyContent: "flex-end" },
-  drawerBackdrop: { position: "absolute", inset: 0, background: "rgba(15,23,42,0.45)" },
+  drawerWrap: { position: "fixed", inset: 0, zIndex: 90, display: "flex", justifyContent: "flex-end" },
+  drawerBackdrop: { position: "absolute", inset: 0, background: "rgba(15,23,42,0.45)", backdropFilter: "blur(2px)" },
   drawer: {
     position: "relative",
-    width: "min(560px, 100%)",
+    width: "min(480px, 94vw)",
     height: "100%",
-    background: "#ffffff",
-    boxShadow: "-18px 0 60px rgba(15,23,42,0.2)",
+    background: "#FFFFFF",
+    boxShadow: "-18px 0 50px rgba(15,23,42,0.18)",
     display: "flex",
     flexDirection: "column",
-    overflow: "hidden",
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+    animation: "drawerIn 240ms cubic-bezier(0.22, 1, 0.36, 1)",
   },
   drawerHead: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 12,
-    padding: "18px 20px",
-    borderBottom: "1px solid #d9e5f1",
-    flexShrink: 0,
+    padding: "18px 22px",
+    borderBottom: "1px solid #EEF2F7",
   },
-  drawerTitle: { margin: 0, fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.3rem", color: "#33485e" },
+  drawerTitle: { margin: 0, fontSize: "1.12rem", fontWeight: 800, color: "#0F172A" },
   drawerClose: {
-    width: 38,
-    height: 38,
+    width: 36,
+    height: 36,
     border: 0,
     borderRadius: 999,
-    background: "rgba(107,162,214,0.12)",
-    color: "#33485e",
-    fontSize: "1.1rem",
+    background: "#F1F5F9",
+    color: "#334155",
+    fontSize: "1rem",
     fontWeight: 700,
     cursor: "pointer",
     flexShrink: 0,
+    transition: "background 140ms ease",
   },
-  drawerBody: { overflowY: "auto", padding: "20px", WebkitOverflowScrolling: "touch" },
+  drawerBody: { overflowY: "auto", padding: "20px 22px", WebkitOverflowScrolling: "touch" },
   metaGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 16px", marginBottom: 22 },
   metaItem: { display: "flex", flexDirection: "column", gap: 3 },
-  metaLabel: { fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.04em", color: "#5f7892", fontWeight: 700 },
-  metaValue: { fontSize: "0.98rem", color: "#33485e", fontWeight: 600, wordBreak: "break-word" },
-  answers: { borderTop: "1px solid #d9e5f1", paddingTop: 18 },
+  metaLabel: { fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "#94A3B8", fontWeight: 700 },
+  metaValue: { fontSize: "0.93rem", color: "#1F2937", fontWeight: 600, wordBreak: "break-word" },
+  answers: { borderTop: "1px solid #EEF2F7", paddingTop: 16 },
   answerRow: {
     display: "grid",
-    gridTemplateColumns: "minmax(140px, 40%) 1fr",
+    gridTemplateColumns: "minmax(140px, 42%) 1fr",
     gap: 12,
     padding: "10px 0",
-    borderBottom: "1px solid rgba(217,229,241,0.6)",
+    borderBottom: "1px solid #F6F8FB",
     alignItems: "start",
   },
-  answerLabel: { fontSize: "0.9rem", color: "#5f7892", fontWeight: 600, lineHeight: 1.45 },
-  answerValue: { fontSize: "0.98rem", color: "#1f2d3d", lineHeight: 1.5, wordBreak: "break-word", whiteSpace: "pre-wrap" },
-  tabBar: {
-    display: "flex",
-    gap: 10,
-    flexWrap: "wrap",
-    margin: "0 0 22px",
-    padding: 6,
-    background: "rgba(107,162,214,0.08)",
-    borderRadius: 999,
-    width: "fit-content",
-  },
-  tabBtn: {
-    border: 0,
-    background: "transparent",
-    color: "#5f7892",
-    fontWeight: 700,
-    fontSize: "0.95rem",
-    padding: "10px 20px",
-    borderRadius: 999,
-    cursor: "pointer",
-    transition: "all 160ms ease",
-  },
-  tabBtnActive: {
-    background: "#45688f",
-    color: "#fff",
-    boxShadow: "0 4px 14px rgba(69,104,143,0.35)",
-  },
-  viewTitle: { margin: "0 0 14px", fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.35rem", color: "#33485e" },
-  chipRow: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 16 },
-  chipRowLabel: { fontSize: "0.82rem", fontWeight: 700, color: "#5f7892", textTransform: "uppercase", letterSpacing: "0.04em" },
-  chip: {
-    border: "1.5px solid #c4d6e8",
-    background: "#fff",
-    color: "#45688f",
-    fontWeight: 600,
-    fontSize: "0.88rem",
-    padding: "9px 16px",
-    borderRadius: 999,
-    cursor: "pointer",
-    transition: "all 150ms ease",
-  },
-  chipActive: {
-    border: "1.5px solid #b02a2a",
-    background: "linear-gradient(135deg, #fdecea, #fbdcdc)",
-    color: "#b02a2a",
-    fontWeight: 800,
-    fontSize: "0.88rem",
-    padding: "9px 16px",
-    borderRadius: 999,
-    cursor: "pointer",
-    boxShadow: "0 3px 10px rgba(176,42,42,0.18)",
-    transform: "scale(1.03)",
-    transition: "all 150ms ease",
-  },
-  chipClear: {
-    border: 0,
-    background: "transparent",
-    color: "#5f7892",
-    fontWeight: 700,
-    fontSize: "0.85rem",
-    cursor: "pointer",
-    textDecoration: "underline",
-  },
-  negBadge: {
-    background: "rgba(176,42,42,0.12)",
-    color: "#b02a2a",
-    fontWeight: 800,
-    fontSize: "0.8rem",
-    padding: "4px 12px",
-    borderRadius: 999,
-  },
-  posBadge: {
-    background: "rgba(47,158,126,0.12)",
-    color: "#1e7e34",
-    fontWeight: 800,
-    fontSize: "0.8rem",
-    padding: "4px 12px",
-    borderRadius: 999,
-  },
+  answerLabel: { fontSize: "0.86rem", color: "#64748B", fontWeight: 600, lineHeight: 1.45 },
+  answerValue: { fontSize: "0.93rem", color: "#0F172A", lineHeight: 1.5, wordBreak: "break-word", whiteSpace: "pre-wrap" },
 };
+
+

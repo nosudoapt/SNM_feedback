@@ -12,23 +12,136 @@ body {
 }
 
 body {
-  background:
-    radial-gradient(circle at top left, rgba(107, 162, 214, 0.16), transparent 34%),
-    radial-gradient(circle at 90% 12%, rgba(145, 199, 230, 0.14), transparent 24%),
-    linear-gradient(180deg, #fbfdff 0%, #f2f8fd 100%);
-  background-attachment: fixed;
+  background: #F8FAFC;
 }
 
+/* ---------- Admin table rows ---------- */
 .admin-tr:hover td {
-  background: rgba(107, 162, 214, 0.08);
+  background: #F4F8FE;
 }
 
 .admin-tr:focus-visible {
-  outline: 2px solid #6ba2d6;
+  outline: 2px solid #2563EB;
   outline-offset: -2px;
 }
 
-.admin-page-btn:disabled {
-  opacity: 0.45;
-  cursor: default;
+.admin-page-btn:hover:not(:disabled) {
+  background: #F1F5F9;
 }
+
+/* ---------- Stat cards ---------- */
+.stat-card:hover {
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+/* ---------- Chips ---------- */
+.admin-chip:hover {
+  border-color: #93B4F5;
+  background: #F6F9FF;
+}
+
+.admin-chip:active {
+  transform: scale(0.97);
+}
+
+/* ---------- Nav / buttons ---------- */
+button {
+  touch-action: manipulation;
+}
+
+.admin-page-btn,
+.exportBtn-hover:hover {
+  filter: brightness(1.05);
+}
+
+/* ---------- Drawer animation ---------- */
+@keyframes drawerIn {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Responsive admin shell ---------- */
+@media (max-width: 900px) {
+  .admin-shell {
+    flex-direction: column !important;
+  }
+
+  .admin-sidebar {
+    position: sticky !important;
+    top: 0;
+    z-index: 40;
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: row !important;
+    align-items: center;
+    padding: 10px 12px !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid #E5EAF1;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  .admin-sidebar .side-brand,
+  .admin-sidebar > div:first-child {
+    border-bottom: 0 !important;
+    padding: 0 8px 0 2px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .admin-sidebar .side-logo,
+  .admin-sidebar img[alt="Logo"] {
+    height: 30px !important;
+  }
+
+  .admin-sidebar span.side-brand-text {
+    display: none;
+  }
+
+  /* Hide brand text node but keep logo */
+  .admin-sidebar div:first-child span {
+    display: none;
+  }
+
+  .admin-sidebar nav {
+    flex-direction: row !important;
+    flex: 1 !important;
+    gap: 2px !important;
+  }
+
+  .admin-sidebar .nav-label {
+    display: none;
+  }
+
+  .admin-nav-item,
+  .admin-sidebar button {
+    padding: 10px 13px !important;
+    border-radius: 10px !important;
+  }
+
+  .admin-sidebar button:last-child {
+    margin-left: auto;
+  }
+
+  .nav-item-active {
+    box-shadow: none !important;
+  }
+
+  .admin-main {
+    min-width: 0;
+  }
+}
+
