@@ -717,9 +717,9 @@ export default function AdminDashboard() {
                   type="button"
                   onClick={() => toggleNegFilter(f.id)}
                   className="admin-chip"
-                  style={{ ...(negFilters.includes(f.id) ? s.chipActive : s.chip) }}
+                  style={{ ...s.chip, ...(negFilters.includes(f.id) ? s.chipActive : {}) }}
                 >
-                  <span style={{ ...s.chipCheck, ...(negFilters.includes(f.id) ? s.chipCheckOn : {}) }}>
+                  <span style={negFilters.includes(f.id) ? s.chipCheckOn : s.chipCheck}>
                     {negFilters.includes(f.id) ? IconCheck : null}
                   </span>
                   {f.label}
@@ -974,13 +974,28 @@ const s = {
   sideBrand: {
     display: "flex",
     alignItems: "center",
-    gap: 10,
-    padding: "4px 10px 18px",
+    gap: 11,
+    padding: "6px 10px 16px",
     borderBottom: "1px solid #EEF2F7",
-    marginBottom: 12,
+    marginBottom: 14,
   },
-  sideBrandText: { fontWeight: 800, fontSize: "1.02rem", color: "#0F172A", letterSpacing: "-0.01em" },
-  logo: { height: 34, borderRadius: 8 },
+  sideBrandText: {
+    fontWeight: 800,
+    fontSize: "0.98rem",
+    color: "#0F172A",
+    letterSpacing: "-0.01em",
+    lineHeight: 1.2,
+    whiteSpace: "nowrap",
+  },
+  logo: {
+    height: 38,
+    width: 38,
+    objectFit: "contain",
+    borderRadius: 10,
+    background: "#F1F5F9",
+    border: "1px solid #E5EAF1",
+    padding: 3,
+  },
   nav: { display: "flex", flexDirection: "column", gap: 4, flex: 1 },
   navItem: {
     display: "flex",
@@ -1000,9 +1015,8 @@ const s = {
     whiteSpace: "nowrap",
   },
   navItemActive: {
-    background: "#EEF4FF",
+    background: "#EAF0FE",
     color: "#1D4ED8",
-    boxShadow: "inset 3px 0 0 #1D4ED8",
   },
   navIcon: { display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 },
   sideLogout: { color: "#B91C1C" },
@@ -1154,23 +1168,23 @@ const s = {
     boxShadow: "0 1px 2px rgba(15,23,42,0.05)",
   },
   chipActive: {
-    border: "1.5px solid #1D4ED8",
-    background: "#EAF0FE",
-    color: "#1E40AF",
+    background: "#1D4ED8",
+    borderColor: "#1D4ED8",
+    color: "#FFFFFF",
     fontWeight: 700,
-    boxShadow: "0 2px 8px rgba(29,78,216,0.16)",
-    transform: "translateY(-1px)",
+    boxShadow: "0 3px 10px rgba(29,78,216,0.32)",
   },
   chipCheck: {
+    display: "none",
+  },
+  chipCheckOn: {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    width: 17,
-    height: 17,
-    marginLeft: -6,
-    marginRight: -4,
+    width: 16,
+    height: 16,
     borderRadius: 999,
-    background: "#1D4ED8",
+    background: "rgba(255,255,255,0.25)",
     color: "#fff",
   },
   chipCheckOn: {},
