@@ -8,12 +8,12 @@ const CATEGORY_LABELS = {
   bal: "Bal Samagam",
   ems: "EMS",
   "branch-incharge": "Branch Incharge",
-  "gbm-ebm": "GBM / EBM Registration",
+  "gbm-ebm": "Bal-Mahila-EMS Registration",
 };
 
 const VIEWS = [
   { id: "dashboard", label: "Dashboard", sub: "Overview of all feedback and registrations" },
-  { id: "gbm-ebm", label: "GBM Registrations", sub: "Row-wise registration data, attendance and exports" },
+  { id: "gbm-ebm", label: "Bal-Mahila-EMS", sub: "Row-wise registration data, attendance and exports" },
   { id: "branch-incharge", label: "Branch Incharge", sub: "Review feedback and filter negative responses" },
   { id: "pracharak-mahatma", label: "Pracharak Mahatma", sub: "Review feedback and filter negative responses" },
 ];
@@ -653,7 +653,7 @@ export default function AdminDashboard() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14, marginBottom: 24 }}>
             {[
               { title: "Feedback Submission", sub: "प्रतिक्रिया जमा करें", href: "/feedback", color: "linear-gradient(135deg, #6ba2d6, #91c7e6)" },
-              { title: "GBM-EBM Pre Registrations", sub: "GBM-EBM पूर्व पंजीकरण", href: "/gbm-ebm", color: "linear-gradient(135deg, #6ba2d6, #91c7e6)" },
+              { title: "Bal-Mahila-EMS Pre Registrations", sub: "Bal-Mahila-EMS पूर्व पंजीकरण", href: "/gbm-ebm", color: "linear-gradient(135deg, #6ba2d6, #91c7e6)" },
               { title: "Find me Pracharak", sub: "प्रचारक खोजें", href: "/find-pracharak", color: "linear-gradient(135deg, #6ba2d6, #91c7e6)" },
             ].map((c) => (
               <a key={c.title} href={c.href} target="_blank" rel="noopener" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", textDecoration: "none", background: c.color, color: "#fff", borderRadius: 16, padding: "22px 16px", boxShadow: "0 4px 16px rgba(107,162,214,0.25)", transition: "transform 150ms" }}
@@ -739,7 +739,7 @@ export default function AdminDashboard() {
               <option value="all">All feedback types</option>
               <option value="pracharak-mahatma">Pracharak Mahatma</option>
               <option value="branch-incharge">Branch Incharge</option>
-              <option value="gbm-ebm">GBM / EBM Registration</option>
+              <option value="gbm-ebm">Bal-Mahila-EMS Registration</option>
             </select>
             <select value={exportRange} onChange={(e) => setExportRange(e.target.value)} style={s.select}>
               <option value="all">All submissions</option>
