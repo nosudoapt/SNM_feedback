@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ensureFullDutySchema } from "../../../lib/duty-db";
+import { ensureFullDutySchema } from "../../../../lib/duty-db";
 import { neon } from "@neondatabase/serverless";
 import crypto from "crypto";
 
