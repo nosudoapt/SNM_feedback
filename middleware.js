@@ -34,11 +34,15 @@ export function middleware(request) {
   return NextResponse.redirect(url);
 }
 
-// Only these paths are gated. Public routes (/, /feedback, /gbm-ebm,
-// /find-pracharak, /api/submissions, /api/zones) and the auth endpoints
-// (/api/auth/*) are deliberately NOT matched so nothing public breaks.
+// Only these paths are gated. Public routes (/gbm-ebm,
+// /feedback/pracharak-mahatma, /feedback/branch-incharge, /f/[slug],
+// /api/submissions, /api/zones) and the auth endpoints (/api/auth/*) are
+// deliberately NOT matched so nothing public breaks.
 export const config = {
   matcher: [
+    "/",
+    "/feedback",
+    "/find-pracharak",
     "/admin/:path*",
     "/api/admin/:path*",
     "/api/duty/:path*",
