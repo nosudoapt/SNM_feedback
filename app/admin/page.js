@@ -343,6 +343,7 @@ export default function AdminDashboard() {
   const [syncing, setSyncing] = useState(false);
   const [view, setView] = useState("dashboard");
   const [negFilters, setNegFilters] = useState([]);
+  const [me, setMe] = useState(null);
 
   const toastTimer = useRef(null);
 
@@ -420,6 +421,13 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchRows();
   }, [fetchRows]);
+
+  useEffect(() => {
+    fetch("/api/admin/me")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d && setMe(d))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const t = setTimeout(() => setQ(qInput.trim()), 350);
@@ -579,6 +587,39 @@ export default function AdminDashboard() {
             </button>
           ))}
         </nav>
+        <a href="/admin/duty" className="admin-nav-item" title="Duty Roster" style={{ ...s.navItem, textDecoration: "none" }}>
+          <span style={s.navIcon}>
+            <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M16 2v4M8 2v4M3 10h18" />
+              <path d="m8 15 2.5 2.5L16 12" />
+            </svg>
+          </span>
+          <span className="nav-label">Duty Roster</span>
+        </a>
+        {me && (me.role === "editor" || me.role === "super_admin") && (
+          <a href="/admin/forms" className="admin-nav-item" title="Forms" style={{ ...s.navItem, textDecoration: "none" }}>
+            <span style={s.navIcon}>
+              <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6M8 13h8M8 17h5" />
+              </svg>
+            </span>
+            <span className="nav-label">Forms</span>
+          </a>
+        )}
+        {me && me.role === "super_admin" && (
+          <a href="/admin/users" className="admin-nav-item" title="Users & Access" style={{ ...s.navItem, textDecoration: "none" }}>
+            <span style={s.navIcon}>
+              <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </span>
+            <span className="nav-label">Users &amp; Access</span>
+          </a>
+        )}
         <button type="button" className="admin-nav-item side-logout" onClick={handleLogout} style={{ ...(s.navItem), color: "#B91C1C" }}>
           <span style={s.navIcon}>{IconLogout}</span>
           <span className="nav-label">Logout</span>

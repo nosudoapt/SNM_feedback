@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pracharak Registration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Inter", system-ui, sans-serif; background: #F8FAFC; color: #1f2937; min-height: 100vh; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 20px 60px; }
+    h1 { font-size: 1.6rem; font-weight: 800; color: #0F172A; margin-bottom: 4px; }
+    .subtitle { color: #64748B; font-size: 0.92rem; margin-bottom: 24px; }
+    .card { background: #fff; border: 1px solid #E5EAF1; border-radius: 16px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); }
+    .card-title { font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 0.82rem; font-weight: 700; color: #475569; margin-bottom: 5px; }
+    .field input, .field select, .field textarea { width: 100%; min-height: 42px; padding: 9px 12px; border: 1px solid #DBE3EC; border-radius: 10px; font-size: 0.92rem; font-family: inherit; color: #1F2937; background: #fff; outline: none; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+    .chip { border: 1px solid #D5DEE9; background: #fff; color: #3B4A5C; font-weight: 600; font-size: 0.84rem; padding: 7px 14px; border-radius: 999px; cursor: pointer; font-family: inherit; transition: all 120ms; }
+    .chip.active { background: #1D4ED8; border-color: #1D4ED8; color: #fff; }
+    .hint { font-size: 0.78rem; color: #94A3B8; margin-top: 4px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px; border: none; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; font-family: inherit; width: 100%; }
+    .btn-primary { background: linear-gradient(135deg, #2563EB, #1D4ED8); color: #fff; box-shadow: 0 2px 8px rgba(29,78,216,0.28); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .success { text-align: center; padding: 40px 20px; }
+    .success h2 { font-size: 1.3rem; color: #15803D; margin-bottom: 8px; }
+    .success p { color: #64748B; }
+    .error-msg { background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; padding: 12px 16px; border-radius: 10px; font-size: 0.88rem; margin-bottom: 14px; display: none; }
+    .error-msg.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pracharak Registration</h1>
+    <p class="subtitle">Fill in your details to be included in the duty allocation database.</p>
+
+    <div id="errorMsg" class="error-msg"></div>
+
+    <form id="regForm">
+      <div class="card">
+        <div class="card-title">Basic Information</div>
+        <div class="field">
+          <label>Full Name *</label>
+          <input type="text" name="name" required placeholder="e.g. Ramesh Kumar" />
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Mobile Number *</label>
+            <input type="tel" name="contact" required placeholder="9876543210" />
+          </div>
+          <div class="field">
+            <label>City</label>
+            <input type="text" name="city" placeholder="e.g. Ghaziabad" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Current Branch/Sector</label>
+          <select name="sectorId" id="sectorSelect">
+            <option value="">-- Select --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Capability</div>
+        <div class="row">
+          <div class="field">
+            <label>Tier</label>
+            <select name="rating">
+              <option value="2">Tier 2 - Mid</option>
+              <option value="1">Tier 1 - Senior</option>
+              <option value="3">Tier 3 - Newer</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Monthly Duty Capacity</label>
+            <select name="monthlyTarget">
+              <option value="1">1 duty/month</option>
+              <option value="2" selected>2 duties/month</option>
+              <option value="3">3 duties/month</option>
+              <option value="4">4 duties/month</option>
+              <option value="5">5+ duties/month</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Specialization</div>
+        <div class="chip-group" id="specGroup">
+          <button type="button" class="chip" data-val="hindi">Hindi</button>
+          <button type="button" class="chip" data-val="punjabi">Punjabi</button>
+          <button type="button" class="chip" data-val="ramcharitmanas">Ramcharitmanas</button>
+          <button type="button" class="chip" data-val="bhagavad_gita">Bhagavad Gita</button>
+          <button type="button" class="chip" data-val="psychology">Psychology</button>
+          <button type="button" class="chip" data-val="general">General</button>
+        </div>
+        <p class="hint">Select all that apply. Leave empty if no specific specialization.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Weekly Availability</div>
+        <div class="field">
+          <label>Which Sundays can you serve? *</label>
+          <div class="chip-group" id="sundayGroup">
+            <button type="button" class="chip" data-val="1">1st Sunday</button>
+            <button type="button" class="chip" data-val="2">2nd Sunday</button>
+            <button type="button" class="chip" data-val="3">3rd Sunday</button>
+            <button type="button" class="chip" data-val="4">4th Sunday</button>
+            <button type="button" class="chip" data-val="5">5th Sunday</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Which Saturdays can you serve?</label>
+          <div class="chip-group" id="saturdayGroup">
+            <button type="button" class="chip" data-val="1">1st Saturday</button>
+            <button type="button" class="chip" data-val="2">2nd Saturday</button>
+            <button type="button" class="chip" data-val="3">3rd Saturday</button>
+            <button type="button" class="chip" data-val="4">4th Saturday</button>
+            <button type="button" class="chip" data-val="5">5th Saturday</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Geographic Availability</div>
+        <div class="field">
+          <label>Where are you willing to serve? *</label>
+          <div class="chip-group" id="areaGroup">
+            <button type="button" class="chip" data-val="own_branch">Own Branch</button>
+            <button type="button" class="chip" data-val="ghaziabad">Ghaziabad</button>
+            <button type="button" class="chip" data-val="noida">Noida</button>
+            <button type="button" class="chip" data-val="delhi">Delhi</button>
+            <button type="button" class="chip" data-val="east_delhi">East Delhi / Yamuna Paar</button>
+            <button type="button" class="chip" data-val="indirapuram">Indirapuram</button>
+            <button type="button" class="chip" data-val="sahibabad">Sahibabad</button>
+            <button type="button" class="chip" data-val="delhi_ncr">Entire Delhi-NCR</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Additional</div>
+        <label style="display:flex;align-items:center;gap:8px;font-size:0.9rem;font-weight:600;margin-bottom:10px;cursor:pointer">
+          <input type="checkbox" name="isOutstation" value="yes" style="width:18px;height:18px" id="outstationCheck" />
+          I am an outstation pracharak (outside Delhi-NCR)
+        </label>
+        <div class="field" id="homeCityField" style="display:none">
+          <label>Home City</label>
+          <input type="text" name="homeCity" placeholder="e.g. Lucknow, Jaipur" />
+        </div>
+        <div class="field">
+          <label>Any notes or preferences</label>
+          <textarea name="notes" rows="3" placeholder="Optional - any additional information"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submitBtn">Submit Registration</button>
+    </form>
+
+    <div id="successMsg" class="success" style="display:none">
+      <h2>Registration Submitted!</h2>
+      <p>Thank you. Your details have been recorded and will be included in the duty allocation database.</p>
+    </div>
+  </div>
+
+  <script>
+    fetch("/api/duty/sectors").then(r => r.json()).then(data => {
+      const sel = document.getElementById("sectorSelect");
+      (data.sectors || []).forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = s.name;
+        sel.appendChild(opt);
+      });
+    }).catch(() => {});
+
+    document.querySelectorAll(".chip-group").forEach(group => {
+      group.addEventListener("click", e => {
+        const chip = e.target.closest(".chip");
+        if (!chip) return;
+        chip.classList.toggle("active");
+      });
+    });
+
+    function getChips(groupId) {
+      return Array.from(document.querySelectorAll("#" + groupId + " .chip.active")).map(c => c.dataset.val);
+    }
+
+    document.getElementById("outstationCheck").addEventListener("change", (e) => {
+      document.getElementById("homeCityField").style.display = e.target.checked ? "block" : "none";
+    });
+
+    document.getElementById("regForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = document.getElementById("submitBtn");
+      const errEl = document.getElementById("errorMsg");
+
+      const sundays = getChips("sundayGroup");
+      const saturdays = getChips("saturdayGroup");
+      const areas = getChips("areaGroup");
+      const specs = getChips("specGroup");
+
+      if (sundays.length === 0) {
+        errEl.textContent = "Please select at least one Sunday you are available.";
+        errEl.classList.add("show");
+        return;
+      }
+      if (areas.length === 0) {
+        errEl.textContent = "Please select at least one area where you can serve.";
+        errEl.classList.add("show");
+        return;
+      }
+
+      errEl.classList.remove("show");
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+
+      const payload = {
+        name: form.name.value.trim(),
+        contact: form.contact.value.trim(),
+        city: form.city.value.trim(),
+        sectorId: form.sectorId.value || null,
+        rating: Number(form.rating.value),
+        monthlyTarget: Number(form.monthlyTarget.value),
+        specializations: specs,
+        availableSundays: sundays.map(Number),
+        availableSaturdays: saturdays.map(Number),
+        allowedAreas: areas,
+        isOutstation: form.isOutstation.checked,
+        homeCity: form.isOutstation.checked ? form.homeCity.value.trim() : null,
+        notes: form.notes.value.trim(),
+      };
+
+      try {
+        const res = await fetch("/api/duty/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Registration failed");
+        form.style.display = "none";
+        document.getElementById("successMsg").style.display = "block";
+      } catch (err) {
+        errEl.textContent = err.message || "Registration failed. Please try again.";
+        errEl.classList.add("show");
+        btn.disabled = false;
+        btn.textContent = "Submit Registration";
+      }
+    });
+  </script>
+</body>
+</html>

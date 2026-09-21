@@ -263,6 +263,29 @@
         box-shadow: 0 16px 34px rgba(107, 162, 214, 0.28);
       }
 
+      .btn[disabled] {
+        opacity: 0.75;
+        cursor: not-allowed;
+      }
+
+      .btn .spinner {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 3px solid rgba(255, 255, 255, 0.35);
+        border-top-color: white;
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 10px;
+        animation: btn-spin 0.8s linear infinite;
+      }
+
+      @keyframes btn-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
       .result {
         margin-top: 18px;
         display: none;
@@ -1269,6 +1292,10 @@
           form.reportValidity();
           return;
         }
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalBtnHtml = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner" aria-hidden="true"></span>Submitting… / जमा हो रहा है…';
         const payload = buildPayload();
         resultPanel.classList.add("open");
         resultJson.textContent = "Submitting... / जमा हो रहा है...";
@@ -1286,11 +1313,16 @@
             regNoBadge.textContent = data.regNo || "";
             form.reset();
             clearZoneDetails();
+            submitBtn.innerHTML = "✓ Submitted";
           } else {
             resultJson.textContent = "Error: " + (data.error || "Submission failed") + "\nत्रुटि: जमा करने में विफल।";
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHtml;
           }
         } catch {
           resultJson.textContent = "Network error. Please try again.\nनेटवर्क त्रुटि। कृपया पुनः प्रयास करें।";
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHtml;
         }
 
         resultPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
