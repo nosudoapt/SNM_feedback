@@ -60,10 +60,29 @@
       .site-head {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 20px;
         width: 100%;
         padding: 14px 24px;
         margin-bottom: 26px;
+      }
+
+      .admin-btn {
+        margin-left: auto;
+        padding: 10px 22px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.7);
+        border: 1.5px solid var(--border);
+        color: var(--text);
+        font-weight: 700;
+        font-size: 0.92rem;
+        text-decoration: none;
+        transition: background 150ms, transform 150ms;
+      }
+
+      .admin-btn:hover {
+        background: #fff;
+        transform: translateY(-1px);
       }
 
       .site-logo {
@@ -203,6 +222,7 @@
   <body>
     <header class="site-head">
       <img src="/logo/logo.webp" alt="Logo" class="site-logo" />
+      <a href="/admin/login" class="admin-btn">Admin</a>
     </header>
 
     <main class="wrap">
