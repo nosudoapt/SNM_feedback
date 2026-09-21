@@ -641,6 +641,23 @@ export default function AdminDashboard() {
 
       {view === "dashboard" && stats && (
         <>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14, marginBottom: 24 }}>
+            {[
+              { title: "Feedback Submission", sub: "प्रतिक्रिया जमा करें", href: "/feedback", color: "linear-gradient(135deg, #6ba2d6, #91c7e6)" },
+              { title: "GBM-EBM Pre Registrations", sub: "GBM-EBM पूर्व पंजीकरण", href: "/gbm-ebm", color: "linear-gradient(135deg, #6ba2d6, #91c7e6)" },
+              { title: "Find me Pracharak", sub: "प्रचारक खोजें", href: "/find-pracharak", color: "linear-gradient(135deg, #6ba2d6, #91c7e6)" },
+            ].map((c) => (
+              <a key={c.title} href={c.href} target="_blank" rel="noopener" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", textDecoration: "none", background: c.color, color: "#fff", borderRadius: 16, padding: "22px 16px", boxShadow: "0 4px 16px rgba(107,162,214,0.25)", transition: "transform 150ms" }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"}
+                onMouseLeave={(e) => e.currentTarget.style.transform = "none"}
+              >
+                <div style={{ fontWeight: 800, fontSize: "0.95rem", marginBottom: 4 }}>{c.title}</div>
+                <div style={{ fontSize: "0.8rem", opacity: 0.9 }}>{c.sub}</div>
+                <div style={{ marginTop: 12, fontWeight: 700, fontSize: "0.82rem" }}>Open →</div>
+              </a>
+            ))}
+          </div>
+
           <div style={s.cards}>
             <StatCard label="Last 12 hours" value={stats.last12h} color="#2563EB" icon={ICON_CLOCK} />
             <StatCard label="Last 24 hours" value={stats.last24h} color="#0891B2" icon={ICON_CLOCK} />
