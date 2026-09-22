@@ -389,6 +389,66 @@
         gap: 6px;
       }
 
+      .error-box {
+        display: none;
+        margin: 24px auto;
+        max-width: 520px;
+        padding: 32px 24px 26px;
+        border-radius: 24px;
+        background: linear-gradient(160deg, #fef2f2 0%, #fecaca 40%, #fca5a5 100%);
+        border: 2px solid #ef4444;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(239,68,68,0.15), 0 2px 8px rgba(0,0,0,0.06);
+      }
+
+      .error-box.open {
+        display: block;
+        animation: successPop 0.4s ease;
+      }
+
+      .error-box .error-emoji {
+        font-size: 48px;
+        line-height: 1;
+      }
+
+      .error-box .error-title {
+        font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+        font-size: clamp(1.3rem, 5vw, 1.6rem);
+        font-weight: 800;
+        color: #991b1b;
+        margin: 10px 0 6px;
+        letter-spacing: -0.02em;
+      }
+
+      .error-box .error-msg {
+        font-family: "Inter", system-ui, sans-serif;
+        color: #991b1b;
+        font-size: 0.92rem;
+        line-height: 1.6;
+        margin: 0 0 16px;
+      }
+
+      .error-box .retry-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 11px 28px;
+        border-radius: 12px;
+        background: #dc2626;
+        color: #fff;
+        border: none;
+        font-family: "Inter", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 0.92rem;
+        cursor: pointer;
+        transition: background 150ms, transform 150ms;
+      }
+
+      .error-box .retry-btn:hover {
+        background: #b91c1c;
+        transform: translateY(-1px);
+      }
+
       .zone-search-wrap {
         position: relative;
       }
@@ -813,7 +873,7 @@
         <div class="congrats">Congratulations!</div>
         <h2>Registration Confirmed / पंजीकरण पक्का हो गया</h2>
         <p>Your unique registration number is below. Please note it down — you will need it for entry at the meeting.</p>
-        <p style="margin-top:4px">आपकी अनूठी पंजीकरण संख्या नीचे दी गई है। कृपया इसे नोट कर लें — मीटिंग में एंट्री के लिए इसकी आवश्यकता पड़ेगी।</p>
+        <p style="margin-top:4px">आपकी पंजीकरण संख्या नीचे दी गई है। कृपया इसे नोट कर लें — मीटिंग में एंट्री के लिए इसकी आवश्यकता पड़ेगी।</p>
         <div class="reg-no" id="regNoBadge"></div>
         <div class="screenshot-line">📸 Take a Screenshot / स्क्रीनशॉट लें</div>
       </div>
@@ -823,9 +883,16 @@
         <div class="congrats">Already Registered</div>
         <h2>पहले से पंजीकृत</h2>
         <p>You have already registered from this browser. Your unique number is shown below.</p>
-        <p style="margin-top:4px">आप इस ब्राउज़र से पहले ही पंजीकृत हो चुके हैं। आपकी अनूठी संख्या नीचे दी गई है।</p>
+        <p style="margin-top:4px">आप इस ब्राउज़र से पहले ही पंजीकृत हो चुके हैं। आपकी संख्या नीचे दी गई है।</p>
         <div class="reg-no" id="alreadyRegNo"></div>
         <div class="screenshot-line">📸 Take a Screenshot / स्क्रीनशॉट लें</div>
+      </div>
+
+      <div class="error-box" id="errorBox" aria-live="polite">
+        <div class="error-emoji">⚠️</div>
+        <div class="error-title">Submission Failed / जमा नहीं हो पाया</div>
+        <p class="error-msg" id="errorMsg"></p>
+        <button class="retry-btn" id="retryBtn" type="button">🔄 Try Again / पुनः प्रयास करें</button>
       </div>
     </main>
 
@@ -867,6 +934,9 @@
       const regNoBadge = document.getElementById("regNoBadge");
       const alreadyBox = document.getElementById("alreadyBox");
       const alreadyRegNo = document.getElementById("alreadyRegNo");
+      const errorBox = document.getElementById("errorBox");
+      const errorMsg = document.getElementById("errorMsg");
+      const retryBtn = document.getElementById("retryBtn");
       const zonePicker = document.getElementById("zonePicker");
       const zonePickerSearch = document.getElementById("zonePickerSearch");
       const zonePickerList = document.getElementById("zonePickerList");
@@ -1345,8 +1415,28 @@
         clearFieldValidity(event.target);
       });
 
+      function showError(msg) {
+        resultPanel.classList.remove("open");
+        errorMsg.textContent = msg;
+        errorBox.classList.add("open");
+        errorBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
+      function resetSubmitBtn(btn, html) {
+        btn.disabled = false;
+        btn.innerHTML = html;
+      }
+
+      retryBtn.addEventListener("click", () => {
+        errorBox.classList.remove("open");
+        form.querySelector('button[type="submit"]').disabled = false;
+        form.querySelector('button[type="submit"]').innerHTML = 'Submit Registration';
+        form.requestSubmit();
+      });
+
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
+        errorBox.classList.remove("open");
         validateZoneInput();
         if (!validateVisibleForm() || !form.checkValidity()) {
           form.reportValidity();
@@ -1361,11 +1451,15 @@
         resultJson.textContent = "Submitting... / जमा हो रहा है...";
 
         try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 15000);
           const res = await fetch("/api/submissions", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
+            signal: controller.signal,
           });
+          clearTimeout(timeout);
           const data = await res.json();
           if (res.ok) {
             resultPanel.classList.remove("open");
@@ -1378,14 +1472,23 @@
             clearZoneDetails();
             submitBtn.innerHTML = "✓ Submitted";
           } else {
-            resultJson.textContent = "Error: " + (data.error || "Submission failed") + "\nत्रुटि: जमा करने में विफल।";
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnHtml;
+            const errMsg = res.status === 400
+              ? "Please check your details and try again.\nकृपया अपनी जानकारी जांचें और पुनः प्रयास करें।"
+              : "Something went wrong. Please try again.\nकुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।";
+            showError(errMsg);
+            resetSubmitBtn(submitBtn, originalBtnHtml);
           }
-        } catch {
-          resultJson.textContent = "Network error. Please try again.\nनेटवर्क त्रुटि। कृपया पुनः प्रयास करें।";
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnHtml;
+        } catch (err) {
+          let msg;
+          if (err.name === "AbortError") {
+            msg = "Request timed out. Your internet may be slow.\nअनुरोध समय समाप्त हो गया। आपका इंटरनेट धीमा हो सकता है।";
+          } else if (!navigator.onLine) {
+            msg = "No internet connection. Please check your network and try again.\nइंटरनेट कनेक्शन नहीं है। कृपया अपना नेटवर्क जांचें और पुनः प्रयास करें।";
+          } else {
+            msg = "Network error. Please try again.\nनेटवर्क त्रुटि। कृपया पुनः प्रयास करें।";
+          }
+          showError(msg);
+          resetSubmitBtn(submitBtn, originalBtnHtml);
         }
 
         resultPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
