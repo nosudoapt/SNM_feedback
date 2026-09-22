@@ -309,50 +309,84 @@
 
       .success-box {
         display: none;
-        margin: 24px auto;
-        max-width: 540px;
-        padding: 28px 22px;
-        border-radius: 20px;
-        background: linear-gradient(145deg, #e8f9ec, #d4f5dd);
-        border: 2px solid #34a853;
+        margin: 32px auto;
+        max-width: 520px;
+        padding: 36px 28px 30px;
+        border-radius: 24px;
+        background: linear-gradient(160deg, #dcfce7 0%, #bbf7d0 40%, #86efac 100%);
+        border: 2px solid #22c55e;
         text-align: center;
+        box-shadow: 0 8px 32px rgba(34,197,94,0.18), 0 2px 8px rgba(0,0,0,0.06);
       }
 
       .success-box.open {
         display: block;
+        animation: successPop 0.4s ease;
+      }
+
+      @keyframes successPop {
+        0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
       }
 
       .success-box .success-emoji {
-        font-size: 44px;
+        font-size: 52px;
         line-height: 1;
+        margin-bottom: 4px;
+      }
+
+      .success-box .congrats {
+        font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+        font-size: clamp(1.6rem, 5vw, 2rem);
+        font-weight: 800;
+        color: #15803d;
+        margin: 8px 0 2px;
+        letter-spacing: -0.02em;
       }
 
       .success-box h2 {
-        font-family: "Comic Sans MS", "Chalkboard SE", "Segoe Print", cursive;
-        color: #1e7e34;
-        font-size: clamp(1.25rem, 5vw, 1.6rem);
-        margin: 10px 0 6px;
+        font-family: "Inter", system-ui, sans-serif;
+        color: #166534;
+        font-size: clamp(1rem, 4vw, 1.15rem);
+        font-weight: 600;
+        margin: 0 0 10px;
       }
 
       .success-box p {
-        font-family: "Comic Sans MS", "Chalkboard SE", "Segoe Print", cursive;
-        color: #256b32;
-        font-size: 1rem;
-        line-height: 1.55;
+        font-family: "Inter", system-ui, sans-serif;
+        color: #166534;
+        font-size: 0.92rem;
+        line-height: 1.6;
         margin: 0;
       }
 
       .success-box .reg-no {
         display: inline-block;
-        margin-top: 14px;
-        padding: 10px 26px;
-        border-radius: 999px;
-        background: #34a853;
+        margin-top: 18px;
+        padding: 12px 32px;
+        border-radius: 14px;
+        background: #15803d;
         color: #fff;
         font-family: ui-monospace, "SF Mono", Menlo, monospace;
         font-weight: 800;
-        font-size: clamp(1.4rem, 6vw, 1.9rem);
-        letter-spacing: 2px;
+        font-size: clamp(1.6rem, 7vw, 2.2rem);
+        letter-spacing: 3px;
+        box-shadow: 0 4px 14px rgba(21,128,61,0.3);
+      }
+
+      .success-box .screenshot-line {
+        margin-top: 18px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.6);
+        border: 1.5px dashed #22c55e;
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #166534;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
       }
 
       .zone-search-wrap {
@@ -775,19 +809,23 @@
       </div>
 
       <div class="success-box" id="successBox" aria-live="polite">
-        <div class="success-emoji">🎉</div>
-        <h2>Registration Confirmed! / पंजीकरण पक्का हो गया!</h2>
-        <p>Your unique registration number is shown below. Please note it down — you will need it for entry at the meeting.</p>
-        <p style="margin-top:6px">आपकी अनूठी पंजीकरण संख्या नीचे दी गई है। कृपया इसे नोट कर लें — मीटिंग में एंट्री के लिए इसकी आवश्यकता पड़ेगी।</p>
+        <div class="success-emoji">🙏</div>
+        <div class="congrats">Congratulations!</div>
+        <h2>Registration Confirmed / पंजीकरण पक्का हो गया</h2>
+        <p>Your unique registration number is below. Please note it down — you will need it for entry at the meeting.</p>
+        <p style="margin-top:4px">आपकी अनूठी पंजीकरण संख्या नीचे दी गई है। कृपया इसे नोट कर लें — मीटिंग में एंट्री के लिए इसकी आवश्यकता पड़ेगी।</p>
         <div class="reg-no" id="regNoBadge"></div>
+        <div class="screenshot-line">📸 Take a Screenshot / स्क्रीनशॉट लें</div>
       </div>
 
       <div class="success-box" id="alreadyBox" aria-live="polite">
         <div class="success-emoji">✅</div>
-        <h2>Already Registered / पहले से पंजीकृत</h2>
+        <div class="congrats">Already Registered</div>
+        <h2>पहले से पंजीकृत</h2>
         <p>You have already registered from this browser. Your unique number is shown below.</p>
-        <p style="margin-top:6px">आप इस ब्राउज़र से पहले ही पंजीकृत हो चुके हैं। आपकी अनूठी संख्या नीचे दी गई है।</p>
+        <p style="margin-top:4px">आप इस ब्राउज़र से पहले ही पंजीकृत हो चुके हैं। आपकी अनूठी संख्या नीचे दी गई है।</p>
         <div class="reg-no" id="alreadyRegNo"></div>
+        <div class="screenshot-line">📸 Take a Screenshot / स्क्रीनशॉट लें</div>
       </div>
     </main>
 
