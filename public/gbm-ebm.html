@@ -309,7 +309,8 @@
 
       .success-box {
         display: none;
-        margin-top: 18px;
+        margin: 24px auto;
+        max-width: 540px;
         padding: 28px 22px;
         border-radius: 20px;
         background: linear-gradient(145deg, #e8f9ec, #d4f5dd);
@@ -773,9 +774,18 @@
 
         <div class="success-box" id="successBox" aria-live="polite">
           <div class="success-emoji">🎉</div>
-          <h2>Badhai ho ji! Registration confirmed 🎊</h2>
-          <p>Aapki registration ho gayi hai ji. Aapka unique number niche hai — ise sambhal kar rakhein.</p>
+          <h2>Registration Confirmed! / पंजीकरण पक्का हो गया!</h2>
+          <p>Your unique registration number is shown below. Please note it down — you will need it for entry at the meeting.</p>
+          <p style="margin-top:6px">आपकी अनूठी पंजीकरण संख्या नीचे दी गई है। कृपया इसे नोट कर लें — मीटिंग में एंट्री के लिए इसकी आवश्यकता पड़ेगी।</p>
           <div class="reg-no" id="regNoBadge"></div>
+        </div>
+
+        <div class="success-box" id="alreadyBox" aria-live="polite">
+          <div class="success-emoji">✅</div>
+          <h2>Already Registered / पहले से पंजीकृत</h2>
+          <p>You have already registered from this browser. Your unique number is shown below.</p>
+          <p style="margin-top:6px">आप इस ब्राउज़र से पहले ही पंजीकृत हो चुके हैं। आपकी अनूठी संख्या नीचे दी गई है।</p>
+          <div class="reg-no" id="alreadyRegNo"></div>
         </div>
       </form>
     </main>
@@ -816,9 +826,21 @@
       const resultJson = document.getElementById("resultJson");
       const successBox = document.getElementById("successBox");
       const regNoBadge = document.getElementById("regNoBadge");
+      const alreadyBox = document.getElementById("alreadyBox");
+      const alreadyRegNo = document.getElementById("alreadyRegNo");
       const zonePicker = document.getElementById("zonePicker");
       const zonePickerSearch = document.getElementById("zonePickerSearch");
       const zonePickerList = document.getElementById("zonePickerList");
+
+      const STORAGE_KEY = "bal_mahila_ems_registration";
+      const existingReg = localStorage.getItem(STORAGE_KEY);
+      if (existingReg) {
+        form.style.display = "none";
+        document.querySelector(".hero").style.display = "none";
+        alreadyRegNo.textContent = existingReg;
+        alreadyBox.classList.add("open");
+        alreadyBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
 
       const isMobile = window.matchMedia("(max-width: 760px)").matches;
 
@@ -1308,9 +1330,12 @@
           const data = await res.json();
           if (res.ok) {
             resultPanel.classList.remove("open");
+            form.style.display = "none";
+            document.querySelector(".hero").style.display = "none";
             successBox.classList.add("open");
             regNoBadge.textContent = data.regNo || "";
-            form.reset();
+            localStorage.setItem(STORAGE_KEY, data.regNo || "");
+            successBox.scrollIntoView({ behavior: "smooth", block: "center" });
             clearZoneDetails();
             submitBtn.innerHTML = "✓ Submitted";
           } else {
