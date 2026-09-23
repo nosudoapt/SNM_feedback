@@ -1802,7 +1802,7 @@ function PracharakMaster({ sectors, sectorsById, showToast, router }) {
               )}
               <Field label="Specializations">
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {["hindi", "punjabi", "ramcharitmanas", "bhagavad_gita", "psychology", "general"].map((sp) => {
+                  {["hindi", "punjabi", "ramcharitmanas", "bhagavad_gita", "quran", "psychology", "general"].map((sp) => {
                     const active = (form.specializations || []).includes(sp);
                     const label = sp === "bhagavad_gita" ? "Bhagavad Gita" : sp === "ramcharitmanas" ? "Ramcharitmanas" : sp.charAt(0).toUpperCase() + sp.slice(1);
                     return (
@@ -1870,7 +1870,7 @@ function PracharakMaster({ sectors, sectorsById, showToast, router }) {
             <div style={s.drawerBody}>
               <p style={s.hint}>
                 Columns: <b>name</b> (required), contact, sector (name or number), rating (1-3), target, aw_ad (yes/no),
-                specializations (comma-separated: hindi, punjabi, ramcharitmanas, bhagavad_gita, psychology, general),
+                specializations (comma-separated: hindi, punjabi, ramcharitmanas, bhagavad_gita, quran, psychology, general),
                 city, is_outstation (yes/no), home_city.
                 Sectors are matched by name or number; unknown sectors import with no sector assigned.
               </p>
