@@ -664,9 +664,11 @@
 
       .event-meta {
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px 28px;
+        flex-direction: column;
+        gap: 6px;
         align-items: center;
+        justify-content: center;
+        text-align: center;
         margin-top: 6px;
         padding: 14px 18px;
         background: linear-gradient(135deg, rgba(107, 162, 214, 0.14), rgba(145, 199, 230, 0.14));
@@ -681,10 +683,6 @@
       }
 
       .event-meta > div {
-        white-space: nowrap;
-      }
-
-      .event-meta > div:first-child {
         white-space: normal;
       }
 
@@ -702,6 +700,16 @@
         .hero {
           text-align: center;
           margin-bottom: 22px;
+        }
+
+        .event-meta {
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .event-meta > div {
+          white-space: normal;
         }
 
         .site-head {
@@ -755,9 +763,10 @@
       <div class="hero">
         <h1>Bal-Mahila-EMS Pre Registrations</h1>
         <div class="event-meta" role="note" aria-label="Event venue, date and time">
-          <div><span class="meta-label">Venue:</span> Main Satsang Pandal Ground No. &ldquo;A&rdquo;</div>
           <div><span class="meta-label">Date:</span> 25.10.2026</div>
-          <div><span class="meta-label">Time:</span> 9:00 AM to 11:00 AM</div>
+          <div><span class="meta-label">Meeting Time:</span> 9:00 AM to 11:00 AM</div>
+          <div><span class="meta-label">Reporting Time:</span> 8:00 AM</div>
+          <div class="meta-venue"><span class="meta-label">Venue:</span> Main Satsang Pandal Ground No. &ldquo;A&rdquo;</div>
         </div>
         <p>
           Please fill in your details. You'll get a unique number at the end — save it, you'll need
