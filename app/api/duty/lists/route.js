@@ -11,6 +11,8 @@ import {
   getActivePreferencesByPracharak,
   getRecentAssignmentHistory,
   getRuleConfig,
+  getActiveToursForMonth,
+  getAllBranchLocalPools,
 } from "../../../../lib/duty-db";
 import { generateDutyList } from "../../../../lib/duty-engine";
 
@@ -54,12 +56,14 @@ export async function POST(request) {
     const comparisonYear = clampYear(body.comparisonYear);
     const seed = Number.isFinite(Number(body.seed)) ? Number(body.seed) : Math.floor(Math.random() * 2 ** 31);
 
-    const [satsangs, pracharaks, preferencesByPracharak, config, branches] = await Promise.all([
+    const [satsangs, pracharaks, preferencesByPracharak, config, branches, tours, branchLocalPool] = await Promise.all([
       getAllActiveSatsangs(),
       getAllActivePracharaks(),
       getActivePreferencesByPracharak(),
       getRuleConfig(),
       getAllActiveBranches(),
+      getActiveToursForMonth(year, month),
+      getAllBranchLocalPools(),
     ]);
 
     if (satsangs.length === 0) {
@@ -74,6 +78,7 @@ export async function POST(request) {
 
     const result = generateDutyList({
       year, month, satsangs, pracharaks, branches, preferencesByPracharak, history, config, seed,
+      tours, branchLocalPool,
     });
 
     const { id, version } = await createDraftList({

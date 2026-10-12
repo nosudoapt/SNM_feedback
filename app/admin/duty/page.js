@@ -17,6 +17,7 @@ const RATING_META = {
 
 const DUTY_VIEWS = [
   { id: "lists", label: "Duty Lists", sub: "Generate a monthly duty list, review and adjust assignments, commit and export" },
+  { id: "tours", label: "Tour Lists", sub: "Upload and manage pracharak tour lists — status workflow: not uploaded → uploaded → reviewed → locked" },
   { id: "branches", label: "Branches", sub: "Branch master data — location, tier requirements, specialization needs, Sunday/Saturday requirements" },
   { id: "satsangs", label: "Satsang Master", sub: "Satsang locations, weekly schedule, ratings and predefined local pracharaks" },
   { id: "pracharaks", label: "Pracharak Master", sub: "Pracharaks, capability ratings, monthly targets and CSV bulk import" },
@@ -31,6 +32,9 @@ const svgProps = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", st
 const NAV_ICONS = {
   lists: (
     <svg {...svgProps}><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /><path d="m9 16 2 2 4-4" /></svg>
+  ),
+  tours: (
+    <svg {...svgProps}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6" /><path d="M16 13H8" /><path d="M16 17H8" /><path d="M10 9H8" /></svg>
   ),
   branches: (
     <svg {...svgProps}><path d="M3 21h18" /><path d="M5 21V8l7-5 7 5v13" /><path d="M9 21v-6h6v6" /></svg>
@@ -239,6 +243,9 @@ export default function DutyAdmin() {
           {view === "lists" && (
             <DutyLists sectors={sectors} sectorsById={sectorsById} showToast={showToast} router={router} />
           )}
+          {view === "tours" && (
+            <TourLists showToast={showToast} router={router} />
+          )}
           {view === "branches" && (
             <BranchMaster sectors={sectors} sectorsById={sectorsById} showToast={showToast} router={router} />
           )}
@@ -416,6 +423,19 @@ function DutyLists({ sectors, sectorsById, showToast, router }) {
 
   async function commit() {
     if (!selectedId) return;
+    // Check tour list status before committing
+    try {
+      const tourRes = await fetch(`/api/duty/tours?year=${detail?.year || new Date().getFullYear()}&month=${detail?.month || new Date().getMonth() + 1}`);
+      if (tourRes.ok) {
+        const tourData = await tourRes.json().catch(() => ({}));
+        const tourStatus = tourData.status || "not_uploaded";
+        if (tourStatus === "not_uploaded") {
+          if (!window.confirm("Warning: No tour list has been uploaded for this month. Some pracharaks may be on tour. Proceed anyway?")) return;
+        } else if (tourStatus === "uploaded") {
+          if (!window.confirm("Tour list is uploaded but not yet reviewed. Some pracharaks may be on tour. Proceed anyway?")) return;
+        }
+      }
+    } catch { /* continue even if tour check fails */ }
     if (!window.confirm("Commit this list? Once committed it becomes the official record and can no longer be edited.")) return;
     setBusy(true);
     try {
@@ -841,6 +861,10 @@ function BranchMaster({ sectors, sectorsById, showToast, router }) {
   const [drawer, setDrawer] = useState(null);
   const [form, setForm] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [pool, setPool] = useState([]);
+  const [poolLoading, setPoolLoading] = useState(false);
+  const [poolPracharakId, setPoolPracharakId] = useState("");
+  const [allPracharaks, setAllPracharaks] = useState([]);
 
   const fetchRows = useCallback(async () => {
     setLoading(true); setError("");
@@ -888,6 +912,8 @@ function BranchMaster({ sectors, sectorsById, showToast, router }) {
       isActive: row.is_active,
     });
     setDrawer({ mode: "edit", id: row.id });
+    loadPool(row.id);
+    loadAllPracharaks();
   }
 
   async function save() {
@@ -933,6 +959,63 @@ function BranchMaster({ sectors, sectorsById, showToast, router }) {
     } finally {
       setSaving(false);
     }
+  }
+
+  async function loadPool(branchId) {
+    setPoolLoading(true);
+    try {
+      const res = await fetch(`/api/duty/branches/${branchId}/pool`);
+      if (res.status === 401) { router.push("/admin/login"); return; }
+      const data = await res.json().catch(() => ({}));
+      setPool(data.rows || []);
+    } catch { setPool([]); } finally { setPoolLoading(false); }
+  }
+
+  async function loadAllPracharaks() {
+    try {
+      const res = await fetch("/api/duty/pracharaks?limit=200&active=true");
+      if (res.status === 401) { router.push("/admin/login"); return; }
+      const data = await res.json().catch(() => ({}));
+      setAllPracharaks(data.rows || []);
+    } catch { setAllPracharaks([]); }
+  }
+
+  async function addPoolMember() {
+    if (!poolPracharakId || !drawer?.id) return;
+    try {
+      const res = await fetch(`/api/duty/branches/${drawer.id}/pool`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pracharakId: poolPracharakId }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { showToast(data.error || "Add failed", "error"); return; }
+      showToast("Added to pool");
+      setPoolPracharakId("");
+      loadPool(drawer.id);
+    } catch { showToast("Add failed", "error"); }
+  }
+
+  async function removePoolMember(entryId) {
+    if (!drawer?.id) return;
+    try {
+      const res = await fetch(`/api/duty/branches/${drawer.id}/pool/${entryId}`, { method: "DELETE" });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); showToast(d.error || "Remove failed", "error"); return; }
+      showToast("Removed from pool");
+      loadPool(drawer.id);
+    } catch { showToast("Remove failed", "error"); }
+  }
+
+  async function updatePoolPriority(entryId, priority) {
+    if (!drawer?.id) return;
+    try {
+      await fetch(`/api/duty/branches/${drawer.id}/pool/${entryId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priority }),
+      });
+      loadPool(drawer.id);
+    } catch {}
   }
 
   const totalPages = Math.max(1, Math.ceil(total / limit));
@@ -1003,7 +1086,12 @@ function BranchMaster({ sectors, sectorsById, showToast, router }) {
                       : <span style={{ color: "#94A3B8" }}>Any</span>
                     }
                   </td>
-                  <td style={s.td}>{(row.required_days || []).map((r) => `${r.week === 1 ? "1st" : r.week === 2 ? "2nd" : r.week === 3 ? "3rd" : r.week === 4 ? "4th" : "5th"} ${DAY_SHORT[r.day] || "?"}`).join(", ") || "---"}</td>
+                  <td style={s.td}>{(row.required_days || []).map((r) => {
+                    const weekLabel = r.week === 1 ? "1st" : r.week === 2 ? "2nd" : r.week === 3 ? "3rd" : r.week === 4 ? "4th" : "5th";
+                    const dayLabel = DAY_SHORT[r.day] || "?";
+                    const typeLabel = r.type === "main" ? " ★" : "";
+                    return `${weekLabel} ${dayLabel}${typeLabel}`;
+                  }).join(", ") || "---"}</td>
                   <td style={s.td}>{statusBadge(row.is_active)}</td>
                 </tr>
               ))
@@ -1083,13 +1171,14 @@ function BranchMaster({ sectors, sectorsById, showToast, router }) {
               <span style={s.hint}>Leave empty = any specialization accepted. Select specific ones if this branch requires them.</span>
 
               <span style={s.sectionLabel}>Required Schedule</span>
-              <span style={s.hint}>Specify which weeks and days this branch needs duty. 1st Sunday is always Huzoor Discourse.</span>
+              <span style={s.hint}>Specify which weeks and days this branch needs duty. 1st Sunday is always Huzoor Discourse. Mark each as Main Satsang or Regular Satsang.</span>
               <div style={{ marginTop: 8 }}>
                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead>
                     <tr>
-                      <th style={{ ...s.th, textAlign: "left", width: "40%" }}>Week</th>
-                      <th style={{ ...s.th, textAlign: "left", width: "50%" }}>Day</th>
+                      <th style={{ ...s.th, textAlign: "left", width: "28%" }}>Week</th>
+                      <th style={{ ...s.th, textAlign: "left", width: "32%" }}>Day</th>
+                      <th style={{ ...s.th, textAlign: "left", width: "30%" }}>Type</th>
                       <th style={{ ...s.th, width: "10%" }}></th>
                     </tr>
                   </thead>
@@ -1133,6 +1222,24 @@ function BranchMaster({ sectors, sectorsById, showToast, router }) {
                               </select>
                             )}
                           </td>
+                          <td style={{ ...s.td, padding: "4px 6px" }}>
+                            {isHuzoor ? (
+                              <span style={{ fontSize: "0.78rem", color: "#7C3AED", fontWeight: 600 }}>Huzoor Discourse</span>
+                            ) : (
+                              <select
+                                style={{ ...s.input, margin: 0 }}
+                                value={entry.type || "regular"}
+                                onChange={(e) => {
+                                  const updated = [...form.requiredDays];
+                                  updated[idx] = { ...updated[idx], type: e.target.value };
+                                  setForm({ ...form, requiredDays: updated });
+                                }}
+                              >
+                                <option value="main">Main Satsang</option>
+                                <option value="regular">Regular Satsang</option>
+                              </select>
+                            )}
+                          </td>
                           <td style={{ ...s.td, padding: "4px 6px", textAlign: "center" }}>
                             {!isHuzoor && (
                               <button type="button" onClick={() => {
@@ -1146,9 +1253,61 @@ function BranchMaster({ sectors, sectorsById, showToast, router }) {
                   </tbody>
                 </table>
                 <button type="button" onClick={() => {
-                  setForm({ ...form, requiredDays: [...(form.requiredDays || []), { week: 1, day: 1 }] });
+                  setForm({ ...form, requiredDays: [...(form.requiredDays || []), { week: 1, day: 1, type: "regular" }] });
                 }} style={{ ...s.btnGhost, marginTop: 6, fontSize: "0.8rem" }}>+ Add Row</button>
               </div>
+
+              {drawer.mode === "edit" && (
+                <>
+                  <span style={s.sectionLabel}>Local Pracharak Pool</span>
+                  <span style={s.hint}>Predefined pracharaks for this branch. They get priority for Main Satsang assignments before the open pool.</span>
+                  {poolLoading ? (
+                    <span style={{ fontSize: "0.8rem", color: "#6B7280" }}>Loading pool...</span>
+                  ) : (
+                    <>
+                      {pool.length > 0 && (
+                        <div style={{ marginTop: 6 }}>
+                          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                            <thead>
+                              <tr>
+                                <th style={{ ...s.th, textAlign: "left", width: "50%" }}>Pracharak</th>
+                                <th style={{ ...s.th, textAlign: "left", width: "20%" }}>Priority</th>
+                                <th style={{ ...s.th, width: "15%" }}></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {pool.filter((e) => e.is_active !== false).map((entry) => (
+                                <tr key={entry.id}>
+                                  <td style={{ ...s.td, padding: "4px 6px" }}>
+                                    <span style={{ fontWeight: 500 }}>{entry.pracharak_name || entry.pracharak_id}</span>
+                                    {entry.pracharak_contact && <span style={{ fontSize: "0.75rem", color: "#6B7280", marginLeft: 6 }}>{entry.pracharak_contact}</span>}
+                                  </td>
+                                  <td style={{ ...s.td, padding: "4px 6px" }}>
+                                    <input type="number" min={0} max={99} value={entry.priority ?? 0} onChange={(e) => updatePoolPriority(entry.id, Number(e.target.value))} style={{ ...s.input, margin: 0, width: 60, textAlign: "center" }} />
+                                  </td>
+                                  <td style={{ ...s.td, padding: "4px 6px", textAlign: "center" }}>
+                                    <button type="button" onClick={() => removePoolMember(entry.id)} style={{ background: "none", border: "none", color: "#DC2626", cursor: "pointer", fontSize: "1rem" }} title="Remove">✕</button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                      {pool.length === 0 && <span style={{ fontSize: "0.8rem", color: "#6B7280" }}>No pracharaks in pool yet.</span>}
+                      <div style={{ display: "flex", gap: 6, marginTop: 8, alignItems: "center" }}>
+                        <select style={{ ...s.input, margin: 0, flex: 1 }} value={poolPracharakId} onChange={(e) => setPoolPracharakId(e.target.value)}>
+                          <option value="">-- Add pracharak to pool --</option>
+                          {allPracharaks.filter((p) => !pool.some((e) => e.pracharak_id === p.id && e.is_active !== false)).map((p) => (
+                            <option key={p.id} value={p.id}>{p.name} ({p.contact || p.id})</option>
+                          ))}
+                        </select>
+                        <button type="button" onClick={addPoolMember} disabled={!poolPracharakId} style={{ ...s.btnGhost, fontSize: "0.8rem", whiteSpace: "nowrap" }}>+ Add</button>
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
 
               {drawer.mode === "edit" && (
                 <label style={s.checkRow}>
@@ -1170,6 +1329,157 @@ function BranchMaster({ sectors, sectorsById, showToast, router }) {
         </div>
       )}
     </>
+  );
+}
+
+/* ============================ TOUR LISTS ============================ */
+const TOUR_STATUSES = ["not_uploaded", "uploaded", "reviewed", "locked"];
+const TOUR_STATUS_LABELS = { not_uploaded: "Not Uploaded", uploaded: "Uploaded", reviewed: "Reviewed", locked: "Locked" };
+const TOUR_STATUS_COLORS = {
+  not_uploaded: { bg: "#F3F4F6", border: "#D1D5DB", text: "#6B7280" },
+  uploaded: { bg: "#EFF6FF", border: "#BFDBFE", text: "#1E40AF" },
+  reviewed: { bg: "#F0FDF4", border: "#BBF7D0", text: "#15803D" },
+  locked: { bg: "#FEF2F2", border: "#FECACA", text: "#B91C1C" },
+};
+
+function TourLists({ showToast, router }) {
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [tours, setTours] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadText, setUploadText] = useState("");
+  const [status, setStatus] = useState("not_uploaded");
+  const fileInputRef = useRef(null);
+
+  const loadTours = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({ year: String(year), month: String(month) });
+      const res = await fetch(`/api/duty/tours?${params.toString()}`);
+      if (res.status === 401) { router.push("/admin/login"); return; }
+      const data = await res.json().catch(() => ({}));
+      setTours(data.tours || []);
+      setStatus(data.status || "not_uploaded");
+    } catch {
+      setTours([]); setStatus("not_uploaded");
+    } finally { setLoading(false); }
+  }, [year, month, router]);
+
+  useEffect(() => { loadTours(); }, [loadTours]);
+
+  async function handleUpload() {
+    if (!uploadText.trim()) { showToast("Paste tour data first", "error"); return; }
+    setUploading(true);
+    try {
+      const res = await fetch("/api/duty/tours", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ year, month, tours: uploadText }),
+      });
+      if (res.status === 401) { router.push("/admin/login"); return; }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { showToast(data.error || "Upload failed", "error"); return; }
+      showToast(data.message || "Tour list uploaded");
+      setUploadText("");
+      loadTours();
+    } catch { showToast("Upload failed", "error"); } finally { setUploading(false); }
+  }
+
+  async function updateStatus(newStatus) {
+    try {
+      const res = await fetch("/api/duty/tours", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ year, month, status: newStatus }),
+      });
+      if (res.status === 401) { router.push("/admin/login"); return; }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { showToast(data.error || "Status update failed", "error"); return; }
+      showToast(`Status changed to ${TOUR_STATUS_LABELS[newStatus]}`);
+      loadTours();
+    } catch { showToast("Status update failed", "error"); }
+  }
+
+  const statusMeta = TOUR_STATUS_COLORS[status] || TOUR_STATUS_COLORS.not_uploaded;
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 16, flexWrap: "wrap" }}>
+        <Field label="Month">
+          <select style={s.input} value={month} onChange={(e) => setMonth(Number(e.target.value))}>
+            {MONTHS.map((m, i) => <option key={i + 1} value={i + 1}>{m}</option>)}
+          </select>
+        </Field>
+        <Field label="Year">
+          <select style={s.input} value={year} onChange={(e) => setYear(Number(e.target.value))}>
+            {[year - 1, year, year + 1].map((y) => <option key={y} value={y}>{y}</option>)}
+          </select>
+        </Field>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 8, alignItems: "center" }}>
+          <span style={{ fontSize: "0.8rem", fontWeight: 600 }}>Status:</span>
+          <span style={{ ...s.tag, background: statusMeta.bg, borderColor: statusMeta.border, color: statusMeta.text }}>{TOUR_STATUS_LABELS[status]}</span>
+        </div>
+      </div>
+
+      {status === "not_uploaded" && (
+        <div style={{ ...s.card, marginBottom: 16 }}>
+          <span style={s.sectionLabel}>Upload Tour List</span>
+          <span style={s.hint}>Paste tab-separated or CSV data with columns: pracharak_id (or name), start_date (YYYY-MM-DD), end_date (YYYY-MM-DD), purpose</span>
+          <textarea style={{ ...s.input, minHeight: 120, fontFamily: "monospace", fontSize: "0.8rem", marginTop: 6 }} placeholder={"P1\t2026-09-15\t2026-09-20\tZonal training\nP2\t2026-09-18\t2026-09-22\tNational conference"} value={uploadText} onChange={(e) => setUploadText(e.target.value)} />
+          <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+            <button type="button" onClick={handleUpload} disabled={uploading || !uploadText.trim()} style={s.btnPrimary}>{uploading ? "Uploading..." : "Upload Tour List"}</button>
+          </div>
+        </div>
+      )}
+
+      {status !== "not_uploaded" && tours.length > 0 && (
+        <div style={{ marginBottom: 16, display: "flex", gap: 8 }}>
+          {status === "uploaded" && <button type="button" onClick={() => updateStatus("reviewed")} style={s.btnPrimary}>Mark as Reviewed</button>}
+          {status === "reviewed" && <button type="button" onClick={() => updateStatus("locked")} style={{ ...s.btnDanger, background: "#DC2626" }}>Lock Tour List</button>}
+          {status === "locked" && <span style={{ fontSize: "0.8rem", color: "#6B7280" }}>Tour list is locked — duty generation can proceed.</span>}
+        </div>
+      )}
+
+      {loading ? (
+        <span style={{ fontSize: "0.85rem", color: "#6B7280" }}>Loading tours...</span>
+      ) : tours.length === 0 ? (
+        <div style={{ padding: 24, textAlign: "center", color: "#6B7280", background: "#F9FAFB", borderRadius: 8, border: "1px dashed #D1D5DB" }}>
+          <p style={{ margin: 0 }}>No tour records for {MONTHS[month - 1]} {year}.</p>
+          {status === "not_uploaded" && <p style={{ margin: "6px 0 0", fontSize: "0.8rem" }}>Upload a tour list above to populate this view.</p>}
+        </div>
+      ) : (
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th style={s.th}>Pracharak</th>
+                <th style={s.th}>Start Date</th>
+                <th style={s.th}>End Date</th>
+                <th style={s.th}>Purpose</th>
+                <th style={s.th}>Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tours.map((t, i) => {
+                const start = new Date(t.start_date);
+                const end = new Date(t.end_date);
+                const days = Math.round((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                return (
+                  <tr key={i} style={{ borderBottom: "1px solid #E5E7EB" }}>
+                    <td style={s.td}>{t.pracharak_name || t.pracharak_id}</td>
+                    <td style={s.td}>{t.start_date}</td>
+                    <td style={s.td}>{t.end_date}</td>
+                    <td style={s.td}>{t.purpose || "—"}</td>
+                    <td style={s.td}>{days} day{days !== 1 ? "s" : ""}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }
 
