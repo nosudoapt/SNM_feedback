@@ -854,6 +854,22 @@ document.getElementById("tabAdmin").addEventListener("click", function () { setT
 function renderAll() { renderCounts(); renderList(); }
 
 /* ================= boot ================= */
+// Signed out locally, but the browser may already hold a valid session cookie
+// from the unified /admin/login door. Ask /me once; a 200 means "this browser
+// is authenticated" — enter the portal directly, no second sign-in page.
+async function ssoProbe() {
+  if (!navigator.onLine) return; // cookie gone + offline → login card stays
+  try {
+    var res = await fetch("/api/attendance/gp/me");
+    if (!res.ok) return; // not signed in anywhere → keep login card up
+    var data = await res.json();
+    session = data.user;
+    mode = "live";
+    saveSession();
+    bootProbe();
+  } catch (e) { /* server unreachable → login card stays */ }
+}
+
 async function bootProbe() {
   if (session.role && canRole(session.role, "viewer") && navigator.onLine) {
     try {
@@ -875,4 +891,13 @@ loadSession();
 document.getElementById("credHint").textContent = effectiveUsers().length
   ? "Accounts in this file: " + effectiveUsers().map(function (u) { return u.u + " (" + roleLabel(u.r) + ")"; }).join(" · ")
   : "";
-if (session) bootProbe();
+if (session) {
+  bootProbe();
+} else {
+  // No stored session — before showing the login screen, ask the server once:
+  // the integrated portal login (admin/login page) may have already issued the
+  // browser a valid session cookie. If so, enter straight into the portal; the
+  // login card only appears when the provider truly has no session offline.
+  ssoProbe();
+}
+
