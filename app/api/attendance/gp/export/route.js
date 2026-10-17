@@ -2,30 +2,33 @@ import { NextResponse } from "next/server";
 import { getAdminIdentity } from "../../../../../lib/auth";
 import { can, ACTIONS } from "../../../../../lib/rbac";
 import { getGpMarks } from "../../../../../lib/gp-attendance-db";
-import { GP_DATA, GP_META } from "../../../../../lib/gp-data";
+import { GP_DATA } from "../../../../../lib/gp-data";
+import { istTodayISO } from "../../../../../lib/gp-attendance";
 import { buildXlsx } from "../../../../../lib/xlsx-writer";
 
 export const runtime = "nodejs";
 
-// GET → .xlsx download. Sheet 1: full GP roster + a column per attendance date.
-// Sheet 2: raw mark log (who marked whom, when, from where).
-export async function GET() {
+// GET → .xlsx download. Sheet 1: full GP roster + ONE "Present or Not" column
+// for the selected day (no per-date columns as requested). Defaults to
+// today (IST). Sheet 2 stays the raw audit log of who marked whom.
+export async function GET(request) {
   const identity = await getAdminIdentity();
   if (!identity || !can(identity.role, ACTIONS.EXPORT_SUBMISSIONS)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
+    // Selected day — either ?date=YYYY-MM-DD or today in IST.
+    let day = istTodayISO();
+    const q = new URL(request.url).searchParams.get("date");
+    if (q && /^\d{4}-\d{2}-\d{2}$/.test(q)) day = q;
+
     const marks = await getGpMarks();
-    const byPerson = new Map(); // rid -> Map(date -> {at, by})
-    const dates = new Set();
-    for (const m of marks) {
-      const d = String(m.marked_on).slice(0, 10);
-      dates.add(d);
-      if (!byPerson.has(m.rid)) byPerson.set(m.rid, new Map());
-      byPerson.get(m.rid).set(d, { at: m.at, by: m.by });
-    }
-    const dateList = [...dates].sort();
+    const presentToday = new Set(
+      marks
+        .filter((m) => String(m.marked_on).slice(0, 10) === day)
+        .map((m) => m.rid)
+    );
 
     // lib/gp-data.js stores compact rows: [gpNo, zoneNo, zoneName, name, station, phones, age, from, to]
     const roster = (rid) => {
@@ -33,13 +36,32 @@ export async function GET() {
       return { gpNo: r[0] || "", zoneName: r[2] || "", name: r[3] || "" };
     };
 
+    let daysByPerson;
+    const byPerson = new Map(); // rid -> distinct dates overall (for "Days present")
+    for (const m of marks) {
+      const d = String(m.marked_on).slice(0, 10);
+      if (!byPerson.has(m.rid)) byPerson.set(m.rid, new Set());
+      byPerson.get(m.rid).add(d);
+    }
+
     const rosterRows = [
-      ["SR", "GP No.", "Zone/Sector No.", "Zone/Sector Name", "Name", "Station", "Mobile No.", "Age", "From", "To", "Days present", ...dateList].map((h) => ({
-        v: h,
-        bold: true,
-      })),
+      [
+        "SR",
+        "GP No.",
+        "Zone/Sector No.",
+        "Zone/Sector Name",
+        "Name",
+        "Station",
+        "Mobile No.",
+        "Age",
+        "From",
+        "To",
+        "Days present",
+        { v: "Present or Not", bold: true },
+      ].map((h) => (typeof h === "object" ? h : { v: h, bold: true })),
       ...GP_DATA.map((row, i) => {
-        const mine = byPerson.get(i + 1);
+        const rid = i + 1;
+        const mine = byPerson.get(rid);
         return [
           i + 1,
           row[0] || "",
@@ -52,7 +74,7 @@ export async function GET() {
           row[7] || "",
           row[8] || "",
           mine ? mine.size : 0,
-          ...dateList.map((d) => (mine && mine.has(d) ? "✓" : "")),
+          presentToday.has(rid) ? "Present" : "Not present",
         ];
       }),
     ];
@@ -71,7 +93,7 @@ export async function GET() {
     const buf = buildXlsx([
       {
         name: "Attendance",
-        columns: [6, 8, 10, 16, 34, 18, 20, 6, 9, 9, 6, ...dateList.map(() => 10)].map((w) => ({ width: w })),
+        columns: [6, 8, 10, 16, 34, 18, 20, 6, 9, 9, 9, 22].map((w) => ({ width: w })),
         rows: rosterRows,
       },
       {
@@ -81,7 +103,7 @@ export async function GET() {
       },
     ]);
 
-    const filename = `gp-attendance-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    const filename = `gp-attendance-${day}.xlsx`;
     return new NextResponse(new Uint8Array(buf), {
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

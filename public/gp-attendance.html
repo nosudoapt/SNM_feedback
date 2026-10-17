@@ -834,7 +834,7 @@ document.getElementById("nuAdd").addEventListener("click", function () {
 
 /* ================= excel + tabs ================= */
 document.getElementById("btnExcel").addEventListener("click", function () {
-  window.open("/api/attendance/gp/export", "_blank");
+  window.open("/api/attendance/gp/export?date=" + encodeURIComponent(selDate), "_blank");
 });
 
 function setTab(tab) {
