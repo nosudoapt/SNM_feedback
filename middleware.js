@@ -24,19 +24,24 @@ export function middleware(request) {
     return gateFor(request, pathname, false, null);
   }
 
+  // Only CURRENT-format tokens count as a session. Anything not starting with
+  // "v3." is a stale pre-audience cookie and is treated as logged out, so old
+  // gp/admin cookies can never sneak through the gate.
+  const hasV3 = cookieValue.startsWith("v3.");
+
   // Shallow (UNVERIFIED) audience peek — signature-free so it stays Edge-safe.
   // It only refines the redirect UX; the authoritative audience + role checks
   // happen in every handler via requireAdminSession()/getAdminIdentity().
   let aud = "admin";
-  try {
-    if (cookieValue.startsWith("v2.")) {
+  if (hasV3) {
+    try {
       const b64 = cookieValue.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
       aud = JSON.parse(atob(b64)).a || "admin";
+    } catch {
+      aud = "admin"; // unparseable → assume admin; signature gate decides later
     }
-  } catch {
-    aud = "admin"; // unparseable → assume admin; signature gate decides later
   }
-  return gateFor(request, pathname, true, aud);
+  return gateFor(request, pathname, hasV3, aud);
 }
 
 function gateFor(request, pathname, hasSession, aud) {

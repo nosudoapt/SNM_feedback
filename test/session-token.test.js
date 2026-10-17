@@ -48,6 +48,26 @@ test("rejects a tampered payload", () => {
   assert.equal(verifySessionToken(tampered), false);
 });
 
+test("pre-v3 (audience-less) cookies are rejected outright", () => {
+  // Forge a perfectly-valid-SIGNATURE v2 token, as the old gp/admin login did.
+  const body = Buffer.from(
+    JSON.stringify({ e: "old@gp.com", r: "super_admin", iat: Date.now() })
+  ).toString("base64url");
+  const sig = crypto
+    .createHmac("sha256", "unit-test-secret-please-ignore")
+    .update(body)
+    .digest("hex");
+  assert.equal(readSessionToken(`v2.${body}.${sig}`), null);
+  assert.equal(verifySessionToken(`v2.${body}.${sig}`), false);
+  // Also a hand-crafted legacy v1 token.
+  const ts = String(Date.now());
+  const sig1 = crypto
+    .createHmac("sha256", "unit-test-secret-please-ignore")
+    .update(ts)
+    .digest("hex");
+  assert.equal(readSessionToken(`${ts}.${sig1}`), null);
+});
+
 test("audience defaults to admin; attendance audience round-trips separately", () => {
   const adminTok = createSessionToken("a@b.com", ROLES.SUPER_ADMIN);
   assert.equal(readSessionToken(adminTok).aud, "admin");
@@ -76,14 +96,11 @@ test("rejects an expired token", () => {
   assert.ok(readSessionToken(t, iat + SESSION_TTL_MS - 1));
 });
 
-test("accepts a correctly-signed legacy v1 token as owner/super_admin", () => {
+test("rejects even a correctly-signed legacy v1 token (v3 bump invalidates all old formats)", () => {
   const issuedAt = String(Date.now());
   const sig = crypto.createHmac("sha256", process.env.AUTH_SECRET).update(issuedAt).digest("hex");
   const legacy = `${issuedAt}.${sig}`;
-  const id = readSessionToken(legacy);
-  assert.ok(id);
-  assert.equal(id.email, ownerEmail());
-  assert.equal(id.role, ROLES.SUPER_ADMIN);
+  assert.equal(readSessionToken(legacy), null);
 });
 
 test("rejects garbage and empty tokens", () => {
