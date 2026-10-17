@@ -27,17 +27,37 @@ export default function AdminLoginPage() {
     setError("");
     setLoading(true);
     try {
+      // ONE unified door. Try the admin login first; on failure, try the GP
+      // attendance login with the same credentials. Whichever succeeds decides
+      // what the person can see: admins land in the admin dashboard;
+      // recorder/viewer land directly inside GP attendance with only that
+      // app's role-gated access (and middleware keeps them out of /admin).
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Login failed");
+      if (res.ok) {
+        router.push("/admin");
         return;
       }
-      router.push("/admin");
+      const data = await res.json().catch(() => ({}));
+
+      const gpRes = await fetch("/api/attendance/gp/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, pin: password }),
+      });
+      if (gpRes.ok) {
+        const gpData = await gpRes.json();
+        try {
+          sessionStorage.setItem("gp_session_v1", JSON.stringify(gpData.user));
+        } catch { /* private mode: the app will just ask again */ }
+        window.location.href = "/gp-attendance.html";
+        return;
+      }
+      const gpData = await gpRes.json().catch(() => ({}));
+      setError(gpData.error || data.error || "Login failed");
     } catch {
       setError("Network error. Try again.");
     } finally {
@@ -49,8 +69,12 @@ export default function AdminLoginPage() {
     <div style={styles.wrap}>
       <div style={styles.card}>
         <img src="/logo/logo.webp" alt="Logo" style={styles.logo} />
-        <h1 style={styles.title}>Admin Login</h1>
+        <h1 style={styles.title}>Sign In</h1>
         <p style={styles.subtitle}>Pracharak Mahatma Feedback</p>
+        <p style={styles.hint}>
+          One login for everyone. Admins land in the admin dashboard; attendance
+          team (recorder / viewer) lands directly in GP attendance.
+        </p>
         {notice && <p style={styles.notice}>{notice}</p>}
         <form onSubmit={handleSubmit} style={styles.form}>
           <input
@@ -63,7 +87,7 @@ export default function AdminLoginPage() {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Password / PIN"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -119,7 +143,12 @@ const styles = {
     width: "min(400px, 100%)",
   },
   title: { margin: 0, fontSize: "2rem", fontFamily: '"Space Grotesk", sans-serif', color: "#3d556e" },
-  subtitle: { margin: "4px 0 24px", color: "#7d93aa", fontSize: "0.95rem" },
+  subtitle: { margin: "4px 0 12px", color: "#7d93aa", fontSize: "0.95rem" },
+  hint: {
+    margin: "0 0 20px", padding: "10px 14px", borderRadius: 12,
+    background: "#eef5fc", border: "1px solid #d9e5f1",
+    color: "#56718c", fontSize: "0.86rem", lineHeight: 1.45,
+  },
   form: { display: "flex", flexDirection: "column", gap: 14 },
   input: {
     width: "100%",
