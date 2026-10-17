@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>GP Attendance — Braham Gyan Kaksh</title>
+<style>
+  :root { color-scheme: light; --blue:#1d3557; --blue2:#2b5288; --green:#2a9d3f; --red:#b02a2a; --bg:#f4f6f9; --line:#dfe6ee; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); min-height: 100vh; color: #22303f; }
+
+  /* ---- login screen ---- */
+  #loginScreen { position: fixed; inset: 0; background: linear-gradient(160deg, var(--blue), var(--blue2)); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 18px; }
+  #loginCard { background: #fff; border-radius: 18px; padding: 26px 22px; width: min(94vw, 380px); box-shadow: 0 20px 50px rgba(0,0,0,.3); }
+  #loginCard h1 { font-size: 18px; color: var(--blue); margin-bottom: 4px; }
+  #loginCard .sub { font-size: 12.5px; color: #5c6b7c; margin-bottom: 18px; line-height: 1.45; }
+  .fld { margin-bottom: 12px; }
+  .fld label { display: block; font-size: 12px; font-weight: 700; color: #4a5b6e; margin-bottom: 5px; }
+  .fld input { width: 100%; padding: 12px 14px; font-size: 16px; border: 1.5px solid var(--line); border-radius: 12px; outline: none; }
+  .fld input:focus { border-color: var(--blue2); }
+  #loginBtn { width: 100%; padding: 13px; border: 0; border-radius: 12px; background: var(--blue); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 6px; }
+  #loginErr { color: var(--red); font-size: 12.5px; margin-top: 10px; min-height: 16px; text-align: center; }
+
+  /* ---- header ---- */
+  header { background: var(--blue); color: #fff; padding: 12px 14px 10px; position: sticky; top: 0; z-index: 10; }
+  .hrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  header h1 { font-size: 15px; line-height: 1.3; }
+  header .sub { font-size: 10.5px; opacity: .82; margin-top: 2px; line-height: 1.35; }
+  .mode { font-size: 10px; font-weight: 800; letter-spacing: .6px; border-radius: 20px; padding: 4px 9px; white-space: nowrap; }
+  .mode.live { background: #27c26a; color: #06281a; }
+  .mode.off { background: rgba(255,255,255,.2); color: #fff; }
+  .counts { display: flex; gap: 8px; margin-top: 9px; }
+  .counts div { flex: 1; background: rgba(255,255,255,.12); border-radius: 10px; padding: 7px 4px; text-align: center; }
+  .counts b { display: block; font-size: 19px; }
+  .counts span { font-size: 10px; opacity: .8; }
+  .daterow { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+  .daterow label { font-size: 11px; opacity: .85; }
+  .daterow input[type=date] { border: 0; border-radius: 8px; padding: 6px 8px; font-size: 12.5px; background: rgba(255,255,255,.92); color: #22303f; }
+
+  /* ---- main ---- */
+  main { padding: 12px 12px 110px; max-width: 620px; margin: 0 auto; }
+  .tools { display: flex; gap: 8px; margin-bottom: 10px; }
+  #q { flex: 1; padding: 12px 14px; font-size: 16px; border-radius: 12px; border: 1.5px solid var(--line); outline: none; background: #fff; }
+  #zoneSel { padding: 8px; border: 1.5px solid var(--line); border-radius: 12px; background: #fff; font-size: 12px; max-width: 130px; color: #22303f; }
+  .hint { font-size: 11.5px; color: #6c7c8e; margin: 2px 2px 10px; }
+
+  .card { background: #fff; border-radius: 14px; padding: 12px 14px; margin-bottom: 9px; box-shadow: 0 1px 3px rgba(20,40,70,.07); border-left: 5px solid var(--line); }
+  .card.present { border-left-color: var(--green); }
+  .card h3 { font-size: 15px; margin-bottom: 3px; line-height: 1.35; }
+  .meta { font-size: 12px; color: #5c6b7c; line-height: 1.55; }
+  .meta .gpno { font-family: ui-monospace, Menlo, monospace; background: #eef2f7; border-radius: 5px; padding: 0 6px; font-weight: 700; }
+  .status { display: inline-block; font-size: 10.5px; font-weight: 800; color: var(--green); background: #e7f6ec; border-radius: 6px; padding: 2px 7px; margin-top: 5px; }
+  button.mark { margin-top: 9px; width: 100%; padding: 11px; font-size: 14px; font-weight: 700; border: 0; border-radius: 10px; cursor: pointer; }
+  button.mark.yes { background: var(--green); color: #fff; }
+  button.mark.undo { background: #fbeceb; color: var(--red); }
+  .empty { text-align: center; color: #7b8a9b; padding: 28px 0; font-size: 13.5px; }
+
+  /* ---- footer ---- */
+  footer { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 9px 12px; display: flex; gap: 8px; z-index: 10; }
+  footer button { flex: 1; padding: 11px 4px; font-size: 12px; font-weight: 700; border-radius: 10px; border: 0; cursor: pointer; background: #eef2f7; color: var(--blue); }
+  footer button.primary { background: var(--blue); color: #fff; }
+  footer button:disabled { opacity: .45; cursor: default; }
+  #pendingBadge { position: absolute; top: -6px; right: 10px; background: #e67e22; color: #fff; border-radius: 10px; font-size: 9.5px; font-weight: 800; padding: 2px 6px; }
+
+  /* ---- views / panels ---- */
+  .panel { background: #fff; border-radius: 14px; padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(20,40,70,.07); }
+  .panel h2 { font-size: 15px; color: var(--blue); margin-bottom: 8px; }
+  .panel p.note { font-size: 12px; color: #5c6b7c; line-height: 1.6; margin-bottom: 10px; }
+  textarea { width: 100%; min-height: 120px; font-size: 11.5px; font-family: ui-monospace, Menlo, monospace; border: 1.5px solid var(--line); border-radius: 10px; padding: 10px; outline: none; }
+  .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .actions button { flex: 1; min-width: 110px; padding: 11px; font-size: 13px; font-weight: 700; border: 0; border-radius: 10px; cursor: pointer; background: var(--blue); color: #fff; }
+  .actions button.ghost { background: #eef2f7; color: var(--blue); }
+  .result { margin-top: 10px; font-size: 12.5px; line-height: 1.6; }
+  .result .ok { color: var(--green); font-weight: 700; }
+  .result .warn { color: #8a6d3b; }
+  .result .err { color: var(--red); font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  th, td { text-align: left; padding: 6px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: #5c6b7c; font-size: 10px; text-transform: uppercase; letter-spacing: .4px; }
+  .ugrid .urow { display: flex; gap: 8px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 12.5px; flex-wrap: wrap; }
+  .ugrid .urow b { min-width: 90px; }
+  .rolechip { font-size: 10px; font-weight: 800; border-radius: 6px; padding: 2px 7px; background: #eef2f7; color: var(--blue); }
+  .addrow { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .addrow input { flex: 1; min-width: 70px; padding: 9px; border: 1.5px solid var(--line); border-radius: 9px; font-size: 12.5px; }
+  .addrow select { padding: 9px; border: 1.5px solid var(--line); border-radius: 9px; font-size: 12.5px; background:#fff; color:#22303f; }
+  .addrow button { padding: 9px 14px; border: 0; border-radius: 9px; background: var(--blue); color: #fff; font-weight: 700; font-size: 12.5px; cursor: pointer; }
+
+  .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 104px; background: #22303f; color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 12.5px; opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 60; max-width: 88vw; text-align: center; }
+  .toast.show { opacity: 1; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen">
+  <div id="loginCard">
+    <h1>GP Attendance</h1>
+    <div class="sub">79th Annual Nirankari Sant Samagam, Oct. 2026 (Samalkha)<br/>Gyan Prachark Sewa in Braham Gyan Kaksh</div>
+    <div class="fld">
+      <label>Username</label>
+      <input id="inUser" autocomplete="username" autocapitalize="none" />
+    </div>
+    <div class="fld">
+      <label>PIN</label>
+      <input id="inPin" type="password" inputmode="numeric" autocomplete="current-password" />
+    </div>
+    <button id="loginBtn">Sign in</button>
+    <div id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<header id="hdr" class="hidden">
+  <div class="hrow">
+    <div>
+      <h1>GP Attendance — Braham Gyan Kaksh</h1>
+      <div class="sub">79th Annual Nirankari Sant Samagam, Oct. 2026 · Samalkha</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span id="modeBadge" class="mode off">OFFLINE</span>
+      <button id="logoutBtn" style="border:0;background:rgba(255,255,255,.18);color:#fff;font-size:11px;font-weight:700;border-radius:8px;padding:6px 9px;cursor:pointer">Logout</button>
+    </div>
+  </div>
+  <div class="counts">
+    <div><b id="cPresent">0</b><span>Present on selected day</span></div>
+    <div><b id="cTotal">0</b><span>Total list</span></div>
+  </div>
+  <div class="daterow">
+    <label for="selDate">Day:</label>
+    <input type="date" id="selDate" />
+    <span id="pendingBadge" class="hidden">0 pending</span>
+  </div>
+</header>
+
+<main>
+  <!-- MARK VIEW -->
+  <div id="markView">
+    <div class="tools">
+      <input type="search" id="q" placeholder="Name or mobile number…" autocomplete="off" />
+      <select id="zoneSel"><option value="">All zones</option></select>
+    </div>
+    <p class="hint">Search works without internet: type a name, or the full/part mobile number (last digits also work), or GP No.</p>
+    <div id="list"></div>
+  </div>
+
+  <!-- LOG VIEW -->
+  <div id="logView" class="hidden">
+    <div class="panel">
+      <h2>Attendance log</h2>
+      <p class="note">Every mark merged from live sync, pasted payloads and this device. Duplicate marks for the same person on the same day are impossible.</p>
+      <div style="overflow-x:auto"><table id="logTable"><thead><tr><th>Date</th><th>Roll</th><th>Name</th><th>Zone</th><th>Marked by</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- ADMIN VIEW -->
+  <div id="adminView" class="hidden">
+    <div class="panel">
+      <h2>Paste attendance payload</h2>
+      <p class="note">A field recorder taps <b>Copy attendance</b> and sends you the small JSON on WhatsApp. Paste it here — it merges into this file automatically (same person + same day = never duplicated).</p>
+      <textarea id="payloadBox" placeholder='{"app":"gp-att","v":"…","d":"2026-10-21","came":[12,45,78]}'></textarea>
+      <div class="actions">
+        <button id="mergeBtn">Merge payload</button>
+      </div>
+      <div id="mergeResult" class="result"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Download updated file</h2>
+      <p class="note">Creates a copy of this app with the full attendance log baked in. Share that file back on WhatsApp — the next person's file then already knows who is present, and searching still works fully offline.</p>
+      <div class="actions">
+        <button id="dlBtn" class="ghost">Download attendance file</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Team users (this device)</h2>
+      <div class="ugrid" id="userGrid"></div>
+      <div class="addrow">
+        <input id="nuUser" placeholder="username" autocapitalize="none" />
+        <input id="nuName" placeholder="full name" />
+        <input id="nuPin" placeholder="PIN (4-8 digits)" inputmode="numeric" />
+        <select id="nuRole">
+          <option value="viewer">Viewer</option>
+          <option value="editor">Recorder</option>
+          <option value="super_admin">Admin</option>
+        </select>
+        <button id="nuAdd">Add</button>
+      </div>
+      <p class="note" style="margin-top:10px">Users are saved on this device and baked into every file you download. In <b>online mode</b> the Users screen on the website manages accounts for everyone instead.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="hidden" id="ftr">
+  <button class="primary" id="tabMark">Mark</button>
+  <button id="tabLog">Log</button>
+  <button id="tabAdmin" class="hidden">Admin</button>
+  <button id="btnExcel" class="hidden">Excel</button>
+  <button id="btnCopy" title="Copy today's attendance as JSON">Copy attendance</button>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script id="gp-meta">var META = __LIST_META__;</script>
+<script id="gp-users">var USERS = __GP_USERS__;</script>
+<script id="gp-log">var LOG = {};</script>
+<script id="gp-data">var RAW = __GP_DATA__;</script>
+<script>
+/* ================= tiny sha256 (for offline PIN checks) ================= */
+function sha256(ascii) {
+  function rightRotate(v, a) { return (v >>> a) | (v << (32 - a)); }
+  var mathPow = Math.pow, maxWord = mathPow(2, 32);
+  var result = "", words = [], asciiBitLength = ascii.length * 8;
+  var hash = [], k = [], primeCounter = 0;
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+      k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+    }
+  }
+  ascii += "\x80";
+  while (ascii.length % 64 - 56) ascii += "\x00";
+  for (i = 0; i < ascii.length; i++) {
+    var j = ascii.charCodeAt(i);
+    if (j >> 8) return "";
+    words[i >> 2] |= j << ((3 - i) % 4) * 8;
+  }
+  words[words.length] = (asciiBitLength / maxWord) | 0;
+  words[words.length] = asciiBitLength;
+  for (j = 0; j < words.length; ) {
+    var w = words.slice(j, j += 16);
+    var oldHash = hash;
+    hash = hash.slice(0, 8);
+    for (i = 0; i < 64; i++) {
+      var w15 = w[i - 15], w2 = w[i - 2];
+      var a = hash[0], e = hash[4];
+      var temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+        + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i]
+        + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | 0);
+      var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(temp1 + temp2) | 0].concat(hash);
+      hash[4] = (hash[4] + temp1) | 0;
+    }
+    for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+  }
+  for (i = 0; i < 8; i++) {
+    for (j = 3; j + 1; j--) {
+      var b = (hash[i] >> (j * 8)) & 255;
+      result += ((b < 16) ? 0 : "") + b.toString(16);
+    }
+  }
+  return result;
+}
+
+/* ================= helpers (same pure logic as lib/gp-attendance.js) ================= */
+function normSearch(s) { return String(s || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+function digitsOnly(s) { return String(s || "").replace(/\D/g, ""); }
+function todayISO() { var n = new Date(); return n.getFullYear() + "-" + String(n.getMonth() + 1).padStart(2, "0") + "-" + String(n.getDate()).padStart(2, "0"); }
+function roleLabel(r) { return r === "super_admin" ? "Admin" : r === "editor" ? "Recorder" : "Viewer"; }
+function rankOf(r) { return r === "super_admin" ? 3 : r === "editor" ? 2 : r === "viewer" ? 1 : 0; }
+function canRole(role, min) { return rankOf(role) >= rankOf(min); }
+function localUsers() { try { return JSON.parse(localStorage.getItem("gp_users_local") || "[]"); } catch (e) { return []; } }
+function saveLocalUsers(list) { localStorage.setItem("gp_users_local", JSON.stringify(list)); renderUsers(); }
+function effectiveUsers() {
+  var map = {};
+  USERS.forEach(function (u) { if (u && u.u && u.p && u.r) map[String(u.u).toLowerCase()] = u; });
+  localUsers().forEach(function (u) { if (u && u.u && u.p && u.r) map[String(u.u).toLowerCase()] = u; });
+  return Object.keys(map).map(function (k) { return map[k]; });
+}
+
+/* ================= roster ================= */
+var DATA = RAW.map(function (r, i) {
+  var rec = {
+    rid: i + 1,
+    gpNo: r[0], zoneNo: r[1], zoneName: r[2], name: r[3] || "(name not in sheet)",
+    station: r[4], phones: r[5] || "", age: r[6], from: r[7], to: r[8]
+  };
+  rec.nname = normSearch(rec.name);
+  rec.nphone = digitsOnly(rec.phones);
+  rec.ngp = digitsOnly(rec.gpNo);
+  rec.nzone = normSearch(rec.zoneName) + normSearch(rec.zoneNo);
+  return rec;
+});
+
+/* ================= state ================= */
+var LS_MARKS = "gp_marks_v1", LS_PENDING = "gp_pending_v1", LS_SESSION = "gp_session_v1";
+
+var session = null;          // {username, name, role}
+var mode = "offline";        // "live" | "offline"
+var serverLog = {};          // rid -> {date -> {at, by}} (live only)
+var marks = loadMarks();     // local marks: baked payload merge + optimistic offline marks
+var pending = loadPending(); // [{rid, date, at, by}] waiting to post
+var selDate = todayISO();
+var pollTimer = null;
+
+function loadMarks() {
+  var local = {};
+  try { local = JSON.parse(localStorage.getItem(LS_MARKS) || "{}") || {}; } catch (e) {}
+  // merge: baked LOG payload first, then local (local wins)
+  var out = {};
+  Object.keys(LOG).forEach(function (rid) { out[rid] = Object.assign({}, LOG[rid]); });
+  Object.keys(local).forEach(function (rid) { out[rid] = Object.assign({}, out[rid] || {}, local[rid]); });
+  return out;
+}
+function loadPending() { try { return JSON.parse(localStorage.getItem(LS_PENDING) || "[]") || []; } catch (e) { return []; } }
+function saveMarks() {
+  // persist only the local (non-baked) overlay
+  var overlay = {};
+  Object.keys(marks).forEach(function (rid) {
+    Object.keys(marks[rid]).forEach(function (d) {
+      if (!(LOG[rid] && LOG[rid][d])) (overlay[rid] = overlay[rid] || {})[d] = marks[rid][d];
+    });
+  });
+  localStorage.setItem(LS_MARKS, JSON.stringify(overlay));
+}
+function savePending() { localStorage.setItem(LS_PENDING, JSON.stringify(pending)); }
+
+function mergedLog(rid, date) {
+  if (marks[rid] && marks[rid][date]) return marks[rid][date];
+  if (LOG[rid] && LOG[rid][date]) return LOG[rid][date];
+  if (serverLog[rid] && serverLog[rid][date]) return serverLog[rid][date];
+  return null;
+}
+function allDates(rows) {
+  var set = {};
+  Object.keys(rows).forEach(function (rid) { Object.keys(rows[rid]).forEach(function (d) { set[d] = 1; }); });
+  return Object.keys(set).sort();
+}
+function isMarkedToday(rid) { return !!mergedLog(rid, selDate); }
+function totalDays(rid) {
+  var s = {};
+  [marks[rid], LOG[rid], serverLog[rid]].forEach(function (src) { if (src) Object.keys(src).forEach(function (d) { s[d] = 1; }); });
+  return Object.keys(s).length;
+}
+
+/* ================= UI scaffolding ================= */
+function toast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.remove("show"); }, 2200);
+}
+function show(id, on) { document.getElementById(id).classList[on ? "remove" : "add"]("hidden"); }
+
+document.getElementById("selDate").value = selDate;
+document.getElementById("selDate").addEventListener("change", function (e) {
+  var v = e.target.value;
+  if (!v) return;
+  selDate = v; renderAll();
+});
+
+/* ================= login ================= */
+function saveSession() { sessionStorage.setItem(LS_SESSION, JSON.stringify(session)); }
+function loadSession() {
+  try {
+    session = JSON.parse(sessionStorage.getItem(LS_SESSION) || "null");
+    if (session && !session.role) session = null;
+  } catch (e) { session = null; }
+}
+
+async function tryLogin(u, pin) {
+  u = String(u || "").trim();
+  // 1) online (authoritative)
+  if (navigator.onLine) {
+    try {
+      var ctrl = new AbortController();
+      var tmr = setTimeout(function () { ctrl.abort(); }, 5000);
+      var res = await fetch("/api/attendance/gp/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: u, pin: pin }),
+        signal: ctrl.signal
+      });
+      clearTimeout(tmr);
+      if (res.ok) {
+        var data = await res.json();
+        session = data.user;
+        mode = "live";
+        return true;
+      }
+      if (res.status !== 401) { /* server error — fall through to offline */ }
+    } catch (e) { /* network failed -> offline path */ }
+  }
+  // 2) offline (baked users + local additions)
+  var h = sha256(u + ":" + pin);
+  var users = effectiveUsers();
+  for (var i = 0; i < users.length; i++) {
+    if (users[i].u.toLowerCase() === u.toLowerCase() && users[i].p === h) {
+      session = { username: users[i].u, name: users[i].n || users[i].u, role: users[i].r };
+      mode = navigator.onLine ? "offline" : "offline";
+      return true;
+    }
+  }
+  return false;
+}
+
+document.getElementById("loginBtn").addEventListener("click", doLogin);
+document.getElementById("inPin").addEventListener("keydown", function (e) { if (e.key === "Enter") doLogin(); });
+async function doLogin() {
+  var err = document.getElementById("loginErr");
+  var u = document.getElementById("inUser").value, pin = document.getElementById("inPin").value;
+  if (!u || !pin) { err.textContent = "Enter username and PIN."; return; }
+  err.textContent = "Checking…";
+  var ok = await tryLogin(u, pin);
+  if (!ok) { err.textContent = "Wrong username or PIN (or no account on this device)."; return; }
+  saveSession();
+  enterApp();
+}
+
+/* ================= entering the app ================= */
+function applyRoleVisibility() {
+  var isAdmin = canRole(session.role, "super_admin");
+  var isManager = canRole(session.role, "editor");
+  show("tabAdmin", isAdmin);
+  show("btnExcel", mode === "live" && isManager);
+}
+
+async function enterApp() {
+  show("loginScreen", false);
+  show("hdr", true);
+  show("ftr", true);
+  document.getElementById("modeBadge").textContent = mode === "live" ? "LIVE" : "OFFLINE";
+  document.getElementById("modeBadge").className = "mode " + (mode === "live" ? "live" : "off");
+  applyRoleVisibility();
+  show("btnCopy", mode === "offline");
+  renderAll();
+
+  if (mode === "live") {
+    await syncFromServer(true);
+    pollTimer = setInterval(function () { syncFromServer(false); }, 15000);
+  } else {
+    updateBadge();
+  }
+}
+
+document.getElementById("logoutBtn").addEventListener("click", function () {
+  if (pollTimer) clearInterval(pollTimer);
+  session = null; mode = "offline";
+  sessionStorage.removeItem(LS_SESSION);
+  show("hdr", false); show("ftr", false);
+  show("markView", true); show("logView", false); show("adminView", false);
+  document.getElementById("inPin").value = "";
+  show("loginScreen", true);
+});
+
+/* ================= live sync ================= */
+async function syncFromServer(first) {
+  try {
+    var res = await fetch("/api/attendance/gp", { headers: { "Accept": "application/json" } });
+    if (res.status === 401) {
+      if (first) { toast("Session expired — please log in again."); document.getElementById("logoutBtn").click(); }
+      return;
+    }
+    if (!res.ok) return;
+    var data = await res.json();
+    serverLog = {};
+    (data.marks || []).forEach(function (m) {
+      (serverLog[m.rid] = serverLog[m.rid] || {})[m.date] = { at: m.at, by: m.by };
+    });
+    // retry pending
+    if (pending.length) {
+      var batch = pending.slice(0, 2000);
+      var ok = await postMarks(batch);
+      if (ok) { pending = []; savePending(); }
+    }
+    updateBadge();
+    renderAll();
+  } catch (e) {
+    if (mode === "live" && e.name === "TypeError") {
+      // network dropped mid-session — degrade gracefully
+      mode = "offline";
+      document.getElementById("modeBadge").textContent = "OFFLINE";
+      document.getElementById("modeBadge").className = "mode off";
+      show("btnCopy", true);
+      if (pollTimer) clearInterval(pollTimer);
+      toast("Internet lost — continuing offline. Cloud marks kept.");
+    }
+  }
+}
+
+async function postMarks(batch, source) {
+  try {
+    var res = await fetch("/api/attendance/gp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ marks: batch.map(function (m) { return { rid: m.rid, date: m.date, at: m.at, by: m.by }; }), source: source || "live" })
+    });
+    if (res.ok) {
+      var data = await res.json();
+      (data.marks || []).forEach(function (m) { (serverLog[m.rid] = serverLog[m.rid] || {})[m.date] = { at: m.at, by: m.by }; });
+      return true;
+    }
+    if (res.status === 401 || res.status === 403) { toast("Not allowed — re-login."); return false; }
+    return false;
+  } catch (e) { return false; }
+}
+
+function updateBadge() {
+  var b = document.getElementById("pendingBadge");
+  b.classList[pending.length ? "remove" : "add"]("hidden");
+  b.textContent = pending.length + " pending";
+}
+
+/* ================= marking ================= */
+function toggleMark(rid) {
+  var existing = mergedLog(rid, selDate);
+  if (existing) {
+    // undo: local first, then live (server is authoritative)
+    if (marks[rid] && marks[rid][selDate]) {
+      delete marks[rid][selDate]; if (!Object.keys(marks[rid]).length) delete marks[rid]; saveMarks();
+      if (mode === "live") postUnmark(rid);
+    }
+    else if (mode === "live") {
+      postUnmark(rid);
+    } else if (LOG[rid] && LOG[rid][selDate]) { toast("Marked from a payload — ask an Admin to remove it."); return; }
+    else { toast("Not marked."); return; }
+  } else {
+    var ent = { at: new Date().toISOString(), by: session.username, date: selDate };
+    (marks[rid] = marks[rid] || {})[selDate] = { at: ent.at, by: ent.by };
+    saveMarks();
+    if (mode === "live") {
+      pending.push({ rid: rid, date: selDate, at: ent.at, by: ent.by });
+      savePending(); updateBadge();
+      flushPending();
+    }
+  }
+  renderAll();
+}
+async function flushPending() {
+  if (!pending.length) return;
+  var batch = pending.slice(0, 2000);
+  var ok = await postMarks(batch);
+  if (ok) { pending = pending.slice(batch.length); savePending(); updateBadge(); }
+}
+async function postUnmark(rid) {
+  try {
+    var res = await fetch("/api/attendance/gp", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ unmark: [{ rid: rid, date: selDate }] })
+    });
+    if (res.ok) {
+      var data = await res.json();
+      serverLog = {};
+      (data.marks || []).forEach(function (m) { (serverLog[m.rid] = serverLog[m.rid] || {})[m.date] = { at: m.at, by: m.by }; });
+    } else if (res.status === 403) toast("Only Admin can remove live marks.");
+  } catch (e) { toast("Network error — mark kept."); }
+  renderAll();
+}
+
+/* ================= list rendering ================= */
+function zoneOptions() {
+  var seen = {}, list = [];
+  DATA.forEach(function (r) {
+    var k = r.zoneNo + "|" + r.zoneName;
+    if (!seen[k]) { seen[k] = 1; list.push({ k: k, label: (r.zoneNo || "") + " " + (r.zoneName || "") }); }
+  });
+  list.sort(function (a, b) { return a.label < b.label ? -1 : 1; });
+  return list;
+}
+(function fillZones() {
+  var sel = document.getElementById("zoneSel");
+  zoneOptions().forEach(function (z) {
+    var o = document.createElement("option");
+    o.value = z.k; o.textContent = z.label.trim() || "—";
+    sel.appendChild(o);
+  });
+})();
+
+function renderList() {
+  var q = document.getElementById("q").value.trim();
+  var nq = normSearch(q);
+  var zone = document.getElementById("zoneSel").value;
+  var list = document.getElementById("list");
+  var out = [];
+  for (var i = 0; i < DATA.length; i++) {
+    var r = DATA[i];
+    if (zone && (r.zoneNo + "|" + r.zoneName) !== zone) continue;
+    if (nq) {
+      var toks = q.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean), ok = true;
+      for (var t = 0; t < toks.length; t++) {
+        var tok = toks[t];
+        if (/^\d+$/.test(tok)) { // digits → phone / gpNo
+          var d = digitsOnly(tok);
+          if (r.nphone.indexOf(d) === -1 && (r.ngp.indexOf(d) === -1 || d.length < 2)) { ok = false; break; }
+        } else if (r.nname.indexOf(normSearch(tok)) === -1) { ok = false; break; }
+      }
+      if (!ok) continue;
+    }
+    out.push(r);
+    if (out.length >= 60) break;
+  }
+  if (!out.length) { list.innerHTML = '<div class="empty">No matching person. Try a different spelling or fewer digits.</div>'; return; }
+  var html = "";
+  out.forEach(function (r) {
+    var m = mergedLog(r.rid, selDate);
+    var days = totalDays(r.rid);
+    html += '<div class="card' + (m ? " present" : "") + '">';
+    html += "<h3>" + esc(r.name) + "</h3>";
+    html += '<div class="meta">';
+    if (r.gpNo) html += '<span class="gpno">GP ' + esc(r.gpNo) + "</span> · ";
+    html += esc(r.zoneNo) + " " + esc(r.zoneName) + (r.station ? " · " + esc(r.station) : "") + "<br/>";
+    if (r.phones) html += esc(r.phones) + "<br/>";
+    if (r.age) html += "Age " + esc(r.age) + " · ";
+    if (r.from || r.to) html += "Sewa " + esc(r.from || "?") + " → " + esc(r.to || "?") + "<br/>";
+    html += "Days present: <b>" + days + "</b>";
+    html += "</div>";
+    if (m) html += '<span class="status">✓ Present ' + esc(selDate) + " · by " + esc(m.by || "?") + "</span>";
+    html += '<button class="mark ' + (m ? "undo" : "yes") + '" data-rid="' + r.rid + '">' + (m ? "✓ Marked — tap to undo" : "Mark present") + "</button>";
+    html += "</div>";
+  });
+  list.innerHTML = html;
+}
+
+document.getElementById("list").addEventListener("click", function (ev) {
+  var btn = ev.target.closest("button.mark");
+  if (!btn) return;
+  toggleMark(Number(btn.getAttribute("data-rid")));
+});
+document.getElementById("q").addEventListener("input", renderList);
+document.getElementById("zoneSel").addEventListener("change", renderList);
+
+function esc(s) {
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+/* ================= counters + log ================= */
+function renderCounts() {
+  var n = 0;
+  DATA.forEach(function (r) { if (mergedLog(r.rid, selDate)) n++; });
+  document.getElementById("cPresent").textContent = n;
+  document.getElementById("cTotal").textContent = DATA.length;
+}
+
+function renderLog() {
+  var rows = [];
+  var dates = allDates(marks);
+  dates.forEach(function (d) {
+    Object.keys(marks).forEach(function (rid) {
+      if (marks[rid][d]) rows.push({ rid: rid, date: d, m: marks[rid][d] });
+    });
+  });
+  dates = allDates(LOG);
+  dates.forEach(function (d) {
+    Object.keys(LOG).forEach(function (rid) {
+      if (LOG[rid][d]) rows.push({ rid: rid, date: d, m: LOG[rid][d] });
+    });
+  });
+  if (mode === "live") {
+    dates = allDates(serverLog);
+    dates.forEach(function (d) {
+      Object.keys(serverLog).forEach(function (rid) {
+        if (serverLog[rid][d]) rows.push({ rid: rid, date: d, m: serverLog[rid][d] });
+      });
+    });
+  }
+  // dedupe (rid+date) keeping local first
+  var seen = {};
+  rows = rows.filter(function (r) {
+    var k = r.rid + "|" + r.date;
+    if (seen[k]) return false;
+    seen[k] = 1; return true;
+  });
+  rows.sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : a.rid - b.rid; });
+  var tb = document.querySelector("#logTable tbody");
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="5" style="color:#7b8a9b;padding:16px;text-align:center">Nothing marked yet.</td></tr>'; return; }
+  tb.innerHTML = rows.slice(0, 1000).map(function (r) {
+    var p = DATA[r.rid - 1] || {};
+    return "<tr><td>" + esc(r.date) + "</td><td>" + r.rid + "</td><td>" + esc(p.name) + "</td><td>" + esc(p.zoneName) + "</td><td>" + esc(r.m.by || "?") + "</td></tr>";
+  }).join("");
+}
+
+/* ================= payload copy / merge ================= */
+document.getElementById("btnCopy").addEventListener("click", function () {
+  var came = [];
+  DATA.forEach(function (r) { if (mergedLog(r.rid, selDate)) came.push(r.rid); });
+  var payload = { app: "gp-att", v: META.v, h: META.h, d: selDate, by: session.username, came: came };
+  var text = JSON.stringify(payload);
+  var ta = document.createElement("textarea");
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); } catch (e) {}
+  if (navigator.clipboard) navigator.clipboard.writeText(text).catch(function () {});
+  ta.remove();
+  toast(came.length ? "Copied " + came.length + " roll numbers — send it to the Admin." : "Nothing marked yet for " + selDate + ".");
+});
+
+function parsePayloadText(text) {
+  var data;
+  try { data = JSON.parse(String(text || "").trim()); } catch (e) { return { ok: false, error: "Not valid JSON." }; }
+  if (!data || typeof data !== "object" || !Array.isArray(data.came)) return { ok: false, error: "Missing came array." };
+  if (data.app && data.app !== "gp-att") return { ok: false, error: "This is not a GP attendance payload." };
+  if (data.v && data.v !== META.v) return { ok: false, error: "List version mismatch (payload: " + data.v + ", this file: " + META.v + "). Ask for the latest file." };
+  if (data.h && data.h !== META.h) return { ok: false, error: "List checksum mismatch — payload came from a different list. Ask for the latest file." };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(data.d || ""))) return { ok: false, error: "Missing/invalid date in payload." };
+  var came = data.came.map(Number).filter(function (n) { return Number.isInteger(n) && n > 0; });
+  if (!came.length) return { ok: false, error: "Payload has no roll numbers." };
+  return { ok: true, data: { v: data.v, h: data.h, d: data.d, by: data.by || "imported", came: came } };
+}
+
+function applyPayload(data, online) {
+  var added = [], skipped = 0, unknown = [];
+  data.came.forEach(function (rid) {
+    if (rid > DATA.length) { unknown.push(rid); return; }
+    if (mergedLog(rid, data.d)) { skipped++; return; }
+    (marks[rid] = marks[rid] || {})[data.d] = { at: new Date().toISOString(), by: data.by };
+    added.push(rid);
+  });
+  if (added.length) saveMarks();
+  return { added: added, skipped: skipped, unknown: unknown };
+}
+
+document.getElementById("mergeBtn").addEventListener("click", async function () {
+  var box = document.getElementById("payloadBox");
+  var res = document.getElementById("mergeResult");
+  var parsed = parsePayloadText(box.value);
+  if (!parsed.ok) { res.innerHTML = '<span class="err">✗ ' + esc(parsed.error) + "</span>"; return; }
+  var data = parsed.data;
+  if (mode === "live") {
+    // authoritative: send to server
+    var ok = await postMarks(data.came.map(function (rid) { return { rid: rid, date: data.d, by: data.by }; }), "payload");
+    if (ok) {
+      res.innerHTML = '<span class="ok">✓ Merged on the server.</span> Payload: ' + data.came.length + " people for " + esc(data.d) + " (by " + esc(data.by) + "). Duplicates were ignored.";
+      renderAll();
+    } else {
+      res.innerHTML = '<span class="err">✗ Could not reach the server. Paste again when online.</span>';
+    }
+    return;
+  }
+  var out = applyPayload(data, false);
+  var html = '<span class="ok">✓ Merged ' + out.added.length + " person(s)</span> for " + esc(data.d) + " (by " + esc(data.by) + ").";
+  if (out.skipped) html += ' <span class="warn">' + out.skipped + " already present — not duplicated.</span>";
+  if (out.unknown.length) html += ' <span class="err">' + out.unknown.length + " unknown roll number(s): " + esc(out.unknown.join(", ")) + "</span>";
+  res.innerHTML = html;
+  box.value = "";
+  renderAll();
+});
+
+/* ================= file download (bakes the log) ================= */
+document.getElementById("dlBtn").addEventListener("click", function () {
+  var html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+  html = html.replace(/(<script id="gp-log">)[\s\S]*?(<\/script>)/, function (m, a, b) {
+    return a + "var LOG = " + JSON.stringify(marks).replace(/</g, "\\u003c") + ";" + b;
+  });
+  var localU = localUsers();
+  if (localU.length) {
+    html = html.replace(/(<script id="gp-users">)[\s\S]*?(<\/script>)/, function (m, a, b) {
+      return a + "var USERS = " + JSON.stringify(effectiveUsers()).replace(/</g, "\\u003c") + ";" + b;
+    });
+  }
+  var blob = new Blob([html], { type: "text/html" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "gp-attendance-" + selDate + ".html";
+  a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 3000);
+  toast("File downloaded — share it forward.");
+});
+
+/* ================= offline user management ================= */
+function renderUsers() {
+  var grid = document.getElementById("userGrid");
+  var users = effectiveUsers();
+  if (!users.length) { grid.innerHTML = '<p class="note">No users yet.</p>'; return; }
+  grid.innerHTML = users.map(function (u) {
+    return '<div class="urow"><b>' + esc(u.u) + "</b><span>" + esc(u.n || "") + '</span><span class="rolechip">' + esc(roleLabel(u.r)) + "</span>" +
+      '<button data-del="' + esc(u.u) + '" style="margin-left:auto;border:0;background:#fbeceb;color:#b02a2a;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer">Remove</button></div>';
+  }).join("");
+}
+document.getElementById("userGrid").addEventListener("click", function (ev) {
+  var b = ev.target.closest("button[data-del]");
+  if (!b) return;
+  var u = b.getAttribute("data-del");
+  saveLocalUsers(localUsers().filter(function (x) { return x.u.toLowerCase() !== u.toLowerCase(); }));
+  toast(u + " removed on this device (baked users come back unless removed before sharing).");
+});
+document.getElementById("nuAdd").addEventListener("click", function () {
+  var u = document.getElementById("nuUser").value.trim();
+  var n = document.getElementById("nuName").value.trim();
+  var pin = document.getElementById("nuPin").value.trim();
+  var role = document.getElementById("nuRole").value;
+  if (!u || !/^\d{4,8}$/.test(pin)) { toast("Username + 4-8 digit PIN required."); return; }
+  var list = localUsers().filter(function (x) { return x.u.toLowerCase() !== u.toLowerCase(); });
+  list.push({ u: u, n: n || u, p: sha256(u + ":" + pin), r: role });
+  saveLocalUsers(list);
+  document.getElementById("nuUser").value = ""; document.getElementById("nuName").value = ""; document.getElementById("nuPin").value = "";
+  toast(u + " added — download the file to share accounts.");
+});
+
+/* ================= excel + tabs ================= */
+document.getElementById("btnExcel").addEventListener("click", function () {
+  window.open("/api/attendance/gp/export", "_blank");
+});
+
+function setTab(tab) {
+  show("markView", tab === "mark");
+  show("logView", tab === "log");
+  show("adminView", tab === "admin");
+  document.getElementById("tabMark").className = tab === "mark" ? "primary" : "";
+  document.getElementById("tabLog").className = tab === "log" ? "primary" : "";
+  document.getElementById("tabAdmin").className = tab === "admin" ? "primary" : "";
+  if (tab === "log") renderLog();
+  if (tab === "admin") renderUsers();
+}
+document.getElementById("tabMark").addEventListener("click", function () { setTab("mark"); });
+document.getElementById("tabLog").addEventListener("click", function () { setTab("log"); });
+document.getElementById("tabAdmin").addEventListener("click", function () { setTab("admin"); });
+
+function renderAll() { renderCounts(); renderList(); }
+
+/* ================= boot ================= */
+async function bootProbe() {
+  if (session.role && canRole(session.role, "viewer") && navigator.onLine) {
+    try {
+      var ctrl = new AbortController();
+      var tmr = setTimeout(function () { ctrl.abort(); }, 4000);
+      var res = await fetch("/api/attendance/gp", { signal: ctrl.signal });
+      clearTimeout(tmr);
+      if (res.ok) { mode = "live"; }
+    } catch (e) { mode = "offline"; }
+  } else {
+    mode = "offline";
+  }
+  enterApp();
+}
+
+loadSession();
+if (session) bootProbe();

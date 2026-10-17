@@ -14,8 +14,8 @@ const COOKIE_NAME = "snm_admin_session";
 export function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // The login page must always be reachable.
-  if (pathname === "/admin/login") {
+  // The login pages must always be reachable.
+  if (pathname === "/admin/login" || pathname === "/api/attendance/gp/login") {
     return NextResponse.next();
   }
 
