@@ -103,11 +103,12 @@
       <input id="inUser" autocomplete="username" autocapitalize="none" />
     </div>
     <div class="fld">
-      <label>PIN</label>
-      <input id="inPin" type="password" inputmode="numeric" autocomplete="current-password" />
+      <label>PIN / Password</label>
+      <input id="inPin" type="password" autocomplete="current-password" />
     </div>
     <button id="loginBtn">Sign in</button>
     <div id="loginErr"></div>
+    <p id="credHint" style="font-size:10.5px;color:#8a97a5;margin-top:12px;text-align:center;line-height:1.5"></p>
   </div>
 </div>
 
@@ -380,10 +381,12 @@ async function tryLogin(u, pin) {
         var data = await res.json();
         session = data.user;
         mode = "live";
+        window._serverReachable = true;
         return true;
       }
+      window._serverReachable = res.status === 401;
       if (res.status !== 401) { /* server error — fall through to offline */ }
-    } catch (e) { /* network failed -> offline path */ }
+    } catch (e) { window._serverReachable = false; /* network failed -> offline path */ }
   }
   // 2) offline (baked users + local additions)
   var h = sha256(u + ":" + pin);
@@ -406,7 +409,12 @@ async function doLogin() {
   if (!u || !pin) { err.textContent = "Enter username and PIN."; return; }
   err.textContent = "Checking…";
   var ok = await tryLogin(u, pin);
-  if (!ok) { err.textContent = "Wrong username or PIN (or no account on this device)."; return; }
+  if (!ok) {
+    err.textContent = navigator.onLine && !window._serverReachable
+      ? "Server unreachable — offline mode: PINs must match what was baked into this file."
+      : "Wrong username or PIN (or no account on this device).";
+    return;
+  }
   saveSession();
   enterApp();
 }
@@ -781,7 +789,7 @@ document.getElementById("nuAdd").addEventListener("click", function () {
   var n = document.getElementById("nuName").value.trim();
   var pin = document.getElementById("nuPin").value.trim();
   var role = document.getElementById("nuRole").value;
-  if (!u || !/^\d{4,8}$/.test(pin)) { toast("Username + 4-8 digit PIN required."); return; }
+  if (!u || !/^[A-Za-z0-9@#._-]{4,16}$/.test(pin)) { toast("Username + a 4-16 character PIN required."); return; }
   var list = localUsers().filter(function (x) { return x.u.toLowerCase() !== u.toLowerCase(); });
   list.push({ u: u, n: n || u, p: sha256(u + ":" + pin), r: role });
   saveLocalUsers(list);
@@ -827,4 +835,7 @@ async function bootProbe() {
 }
 
 loadSession();
+document.getElementById("credHint").textContent = effectiveUsers().length
+  ? "Accounts in this file: " + effectiveUsers().map(function (u) { return u.u + " (" + roleLabel(u.r) + ")"; }).join(" · ")
+  : "";
 if (session) bootProbe();

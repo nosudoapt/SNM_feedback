@@ -48,8 +48,8 @@ export async function POST(request) {
       return NextResponse.json({ ok: true, user });
     }
 
-    if (body?.pin && !/^\d{4,8}$/.test(String(body.pin))) {
-      return NextResponse.json({ error: "PIN must be 4-8 digits" }, { status: 400 });
+    if (body?.pin && !/^[A-Za-z0-9@#._-]{4,16}$/.test(String(body.pin))) {
+      return NextResponse.json({ error: "PIN must be 4-16 letters/digits" }, { status: 400 });
     }
 
     const user = await upsertGpUser({

@@ -183,28 +183,43 @@ fs.writeFileSync(path.join(HERE, "gp-data.json"), JSON.stringify({ meta, data: c
 // ---------------------------------------------------------------------
 // Emit public/gp-attendance.html from the template
 // ---------------------------------------------------------------------
-// Baked-in users (offline logins are checked against this list). Override at
-// build time via GP_BUILD_USERS="name:pin:role,name2:pin2:role" (roles:
-// viewer | editor | super_admin). Default admin:1234 = break-glass; change it.
+// Baked-in users (offline logins are checked against this list). Sources, in
+// priority order:
+//   1. GP_BUILD_USERS="name:pin:role,..."  (build-time override)
+//   2. GP_ATTENDANCE_USERS from process.env (same var the server seeds from —
+//      keeps offline PINs identical to the online ones)
+//   3. .env.local 's GP_ATTENDANCE_USERS (for local builds)
+//   4. Fallback: admin:admin123:super_admin (break-glass; change it)
 function sha256u(s) {
   return crypto.createHash("sha256").update(s).digest("hex");
 }
-function parseBuildUsers(raw) {
+function parseUsersRaw(raw) {
   return String(raw || "")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean)
     .map((s) => {
       const [u, p, r] = s.split(":").map((x) => x.trim());
-      return u && /^\d{4,8}$/.test(p || "") ? { u, n: u, p, r: r || "viewer" } : null;
+      return u && /^[A-Za-z0-9@#._-]{4,16}$/.test(p || "") ? { u, n: u, p, r: r || "viewer" } : null;
     })
     .filter(Boolean);
 }
-const USERS = parseBuildUsers(process.env.GP_BUILD_USERS).length
-  ? parseBuildUsers(process.env.GP_BUILD_USERS)
-  : [{ u: "admin", n: "Admin", p: "1234", r: "super_admin" }];
-console.log("Baked offline users: " + USERS.map((u) => u.u + " (" + u.r + ")").join(", "));
-const usersJs = JSON.stringify(USERS.map((u) => ({ u: u.u, n: u.n, p: sha256u(u.u + ":" + u.p), r: u.r })));
+function envLocalValue(key) {
+  try {
+    const envText = fs.readFileSync(path.join(ROOT, ".env.local"), "utf8");
+    const line = envText.split("\n").find((l) => l.startsWith(key + "="));
+    if (line) return line.slice(key.length + 1).trim();
+  } catch {}
+  return "";
+}
+const USERS = parseUsersRaw(process.env.GP_BUILD_USERS || "")
+  .concat(parseUsersRaw(process.env.GP_ATTENDANCE_USERS || "") || [])
+  .concat(parseUsersRaw(envLocalValue("GP_ATTENDANCE_USERS")) || []);
+const usersFinal = USERS.length
+  ? USERS.filter((u, i, a) => a.findIndex((x) => x.u.toLowerCase() === u.u.toLowerCase()) === i)
+  : [{ u: "admin", n: "Admin", p: "admin123", r: "super_admin" }];
+const usersJs = JSON.stringify(usersFinal.map((u) => ({ u: u.u, n: u.n, p: sha256u(u.u + ":" + u.p), r: u.r })));
+console.log("Baked offline users: " + usersFinal.map((u) => u.u + " (" + u.r + ")").join(", "));
 
 let template = fs.readFileSync(TEMPLATE, "utf8");
 template = template
