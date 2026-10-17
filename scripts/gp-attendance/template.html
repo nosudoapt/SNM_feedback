@@ -371,16 +371,29 @@ async function tryLogin(u, pin) {
   u = String(u || "").trim();
   // 1) online (authoritative)
   if (navigator.onLine) {
-    try {
-      var ctrl = new AbortController();
-      var tmr = setTimeout(function () { ctrl.abort(); }, 5000);
-      var res = await fetch("/api/attendance/gp/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: u, pin: pin }),
-        signal: ctrl.signal
-      });
-      clearTimeout(tmr);
+    // Up to 2 attempts: the FIRST request after a cold start lands while the
+    // database connection is opening (measured: 8-9 s on Neon cold start), so
+    // a single short timeout would abort a perfectly good login. 15 s + one
+    // retry keeps real logins reliable while still failing fast enough to
+    // fall back to baked offline PINs when the server is truly unreachable.
+    var res = null;
+    for (var att = 0; att < 2 && !res; att++) {
+      try {
+        var ctrl = new AbortController();
+        var tmr = setTimeout(function () { ctrl.abort(); }, 15000);
+        res = await fetch("/api/attendance/gp/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: u, pin: pin }),
+          signal: ctrl.signal
+        });
+        clearTimeout(tmr);
+      } catch (e) {
+        clearTimeout(tmr);
+        res = null; // network fail / timeout → retry once, then go offline
+      }
+    }
+    if (res) {
       if (res.ok) {
         var data = await res.json();
         session = data.user;
@@ -390,7 +403,7 @@ async function tryLogin(u, pin) {
       }
       window._serverReachable = res.status === 401;
       if (res.status !== 401) { /* server error — fall through to offline */ }
-    } catch (e) { window._serverReachable = false; /* network failed -> offline path */ }
+    }
   }
   // 2) offline (baked users + local additions)
   var h = sha256(u + ":" + pin);
@@ -427,6 +440,7 @@ async function doLogin() {
       : "Wrong username or PIN (or no account on this device).";
     return;
   }
+  err.textContent = "";
   saveSession();
   enterApp();
 }
@@ -842,8 +856,10 @@ function renderAll() { renderCounts(); renderList(); }
 async function bootProbe() {
   if (session.role && canRole(session.role, "viewer") && navigator.onLine) {
     try {
+      // Cold DB connects have measured at 8-9 s; a 4 s probe would mislabel a
+      // healthy online session as offline. Give it the same generous window.
       var ctrl = new AbortController();
-      var tmr = setTimeout(function () { ctrl.abort(); }, 4000);
+      var tmr = setTimeout(function () { ctrl.abort(); }, 12000);
       var res = await fetch("/api/attendance/gp", { signal: ctrl.signal });
       clearTimeout(tmr);
       if (res.ok) { mode = "live"; }
