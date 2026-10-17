@@ -48,6 +48,18 @@ test("rejects a tampered payload", () => {
   assert.equal(verifySessionToken(tampered), false);
 });
 
+test("audience defaults to admin; attendance audience round-trips separately", () => {
+  const adminTok = createSessionToken("a@b.com", ROLES.SUPER_ADMIN);
+  assert.equal(readSessionToken(adminTok).aud, "admin");
+  const attTok = createSessionToken("recorder1", ROLES.EDITOR, Date.now(), "attendance");
+  const id = readSessionToken(attTok);
+  assert.equal(id.aud, "attendance");
+  assert.equal(id.role, ROLES.EDITOR);
+  // an unknown audience is signed but reads back as admin — signature intact
+  const weird = createSessionToken("a@b.com", ROLES.VIEWER, Date.now(), "banana");
+  assert.equal(readSessionToken(weird).aud, "admin");
+});
+
 test("rejects a bad signature", () => {
   const t = createSessionToken("x@y.com", ROLES.EDITOR);
   const parts = t.split(".");

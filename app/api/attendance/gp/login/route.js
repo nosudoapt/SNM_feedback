@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createSessionToken, adminCookieOptions } from "../../../../../lib/auth";
+import { AUD_ATTENDANCE, createSessionToken, adminCookieOptions } from "../../../../../lib/auth";
 import { verifyGpUser } from "../../../../../lib/gp-attendance-db";
 import { recordAudit } from "../../../../../lib/access-db";
 
 export const runtime = "nodejs";
 
 // Login for the GP attendance field team (5-10 people with username + PIN).
-// Issues the SAME signed session cookie as the admin area so the existing
-// requireAdminSession()/getAdminIdentity() guards work unchanged on every
-// /api/attendance/gp/* endpoint. Role comes from gp_attendance_users.
+// Issues the same signed session cookie format, but with AUDIENCE
+// "attendance" — one centralized RBAC (roles viewer|editor|super_admin from
+// lib/rbac.js), while the audience guarantees an attendance account can never
+// sign into the admin area, and admin accounts keep their separate audiences.
 export async function POST(request) {
   let body;
   try {
@@ -29,7 +30,7 @@ export async function POST(request) {
       return NextResponse.json({ error: "Wrong username or PIN" }, { status: 401 });
     }
     const store = await cookies();
-    const token = createSessionToken(user.username, user.role);
+    const token = createSessionToken(user.username, user.role, Date.now(), AUD_ATTENDANCE);
     store.set("snm_admin_session", token, adminCookieOptions());
     await recordAudit({ actorEmail: user.username, action: "attendance.gp.login", target: user.username, detail: { role: user.role } });
     return NextResponse.json({ ok: true, user: { username: user.username, name: user.name, role: user.role } });

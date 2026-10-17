@@ -89,6 +89,9 @@
   .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 104px; background: #22303f; color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 12.5px; opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 60; max-width: 88vw; text-align: center; }
   .toast.show { opacity: 1; }
   .hidden { display: none !important; }
+  @keyframes gpSpin { to { transform: rotate(360deg); } }
+  .spinner { width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; display: inline-block; animation: gpSpin .8s linear infinite; vertical-align: -2px; margin-right: 6px; }
+  #loginBtn.busy, footer button.busy { opacity: .75; cursor: wait; }
 </style>
 </head>
 <body>
@@ -120,6 +123,7 @@
       <div class="sub">79th Annual Nirankari Sant Samagam, Oct. 2026 · Samalkha</div>
     </div>
     <div style="display:flex;align-items:center;gap:8px">
+      <span id="syncSpin" class="spinner hidden"></span>
       <span id="modeBadge" class="mode off">OFFLINE</span>
       <button id="logoutBtn" style="border:0;background:rgba(255,255,255,.18);color:#fff;font-size:11px;font-weight:700;border-radius:8px;padding:6px 9px;cursor:pointer">Logout</button>
     </div>
@@ -405,12 +409,20 @@ document.getElementById("loginBtn").addEventListener("click", doLogin);
 document.getElementById("inPin").addEventListener("keydown", function (e) { if (e.key === "Enter") doLogin(); });
 async function doLogin() {
   var err = document.getElementById("loginErr");
+  var btn = document.getElementById("loginBtn");
   var u = document.getElementById("inUser").value, pin = document.getElementById("inPin").value;
   if (!u || !pin) { err.textContent = "Enter username and PIN."; return; }
   err.textContent = "Checking…";
-  var ok = await tryLogin(u, pin);
+  btn.disabled = true; btn.classList.add("busy");
+  btn.innerHTML = '<span class="spinner"></span>Checking…';
+  var ok = false;
+  try {
+    ok = await tryLogin(u, pin);
+  } finally {
+    btn.disabled = false; btn.classList.remove("busy"); btn.textContent = "Sign in";
+  }
   if (!ok) {
-    err.textContent = navigator.onLine && !window._serverReachable
+    err.textContent = window._serverReachable === false
       ? "Server unreachable — offline mode: PINs must match what was baked into this file."
       : "Wrong username or PIN (or no account on this device).";
     return;
@@ -456,7 +468,12 @@ document.getElementById("logoutBtn").addEventListener("click", function () {
 });
 
 /* ================= live sync ================= */
+function setSyncing(on) {
+  var el = document.getElementById("syncSpin");
+  if (el) el.classList[on ? "remove" : "add"]("hidden");
+}
 async function syncFromServer(first) {
+  setSyncing(true);
   try {
     var res = await fetch("/api/attendance/gp", { headers: { "Accept": "application/json" } });
     if (res.status === 401) {
@@ -487,10 +504,13 @@ async function syncFromServer(first) {
       if (pollTimer) clearInterval(pollTimer);
       toast("Internet lost — continuing offline. Cloud marks kept.");
     }
+  } finally {
+    setSyncing(false);
   }
 }
 
 async function postMarks(batch, source) {
+  setSyncing(true);
   try {
     var res = await fetch("/api/attendance/gp", {
       method: "POST",
@@ -504,7 +524,7 @@ async function postMarks(batch, source) {
     }
     if (res.status === 401 || res.status === 403) { toast("Not allowed — re-login."); return false; }
     return false;
-  } catch (e) { return false; }
+  } catch (e) { return false; } finally { setSyncing(false); }
 }
 
 function updateBadge() {

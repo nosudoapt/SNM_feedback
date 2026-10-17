@@ -19,8 +19,39 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  const hasSession = Boolean(request.cookies.get(COOKIE_NAME)?.value);
-  if (hasSession) {
+  const cookieValue = request.cookies.get(COOKIE_NAME)?.value || "";
+  if (!cookieValue) {
+    return gateFor(request, pathname, false, null);
+  }
+
+  // Shallow (UNVERIFIED) audience peek — signature-free so it stays Edge-safe.
+  // It only refines the redirect UX; the authoritative audience + role checks
+  // happen in every handler via requireAdminSession()/getAdminIdentity().
+  let aud = "admin";
+  try {
+    if (cookieValue.startsWith("v2.")) {
+      const b64 = cookieValue.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+      aud = JSON.parse(atob(b64)).a || "admin";
+    }
+  } catch {
+    aud = "admin"; // unparseable → assume admin; signature gate decides later
+  }
+  return gateFor(request, pathname, true, aud);
+}
+
+function gateFor(request, pathname, hasSession, aud) {
+  const isAttendanceApi = pathname.startsWith("/api/attendance/");
+
+  // Attendance endpoints accept EITHER audience (attendance users and site
+  // admins alike) — role checks live in the handlers.
+  if (isAttendanceApi) {
+    if (hasSession) return NextResponse.next();
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Everything else in the matcher is admin-area: must be an admin-audience
+  // session. An attendance cookie redirects to login (strict, as before).
+  if (hasSession && aud === "admin") {
     return NextResponse.next();
   }
 
