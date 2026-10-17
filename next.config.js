@@ -30,6 +30,11 @@ const nextConfig = {
       { source: "/feedback/branch-incharge", destination: "/feedback/branch-incharge.html" },
       { source: "/gbm-ebm", destination: "/gbm-ebm.html" },
       { source: "/find-pracharak", destination: "/find-pracharak.html" },
+      // GP attendance niceties: several address spellings must land on the
+      // offline-capable app file.
+      { source: "/gp-attendance", destination: "/gp-attendance.html" },
+      { source: "/gp", destination: "/gp-attendance.html" },
+      { source: "/gp/attendance", destination: "/gp-attendance.html" },
     ];
   },
   async headers() {
